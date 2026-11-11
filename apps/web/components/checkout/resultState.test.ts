@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Order, Ticket } from '@/lib/api/client';
-import { advanceAttempt, classify, CONFIRMING_AFTER_MS, currentAttempt, pollDelay, retryKey, ticketsForOrder } from './resultState';
+import { advanceAttempt, classify, needsTickets, CONFIRMING_AFTER_MS, currentAttempt, pollDelay, retryKey, ticketsForOrder } from './resultState';
 
 const order = (p: Partial<Order>): Order => ({ orderId: 'o1', orderNo: 'NN1', status: 'pending', paymentStatus: 'none', ticketCount: 2, ...p });
 const tk = (id: string, orderId?: string, visitDate = '2026-11-20'): Ticket => ({
@@ -36,6 +36,12 @@ describe('order result', () => {
   it('paid: success only when all of this order\'s tickets are issued', () => {
     expect(classify(order({ status: 'confirmed' }), [tk('a', 'o1')], 1_000).view).toBe('issuing');
     expect(classify(order({ status: 'confirmed' }), [tk('a', 'o1'), tk('b', 'o1')], 1_000)).toEqual({ view: 'success', done: true });
+  });
+  it("a 'completed' order loads its tickets and reaches success", () => {
+    for (const st of ['confirmed', 'paid', 'completed']) expect(needsTickets(order({ status: st }))).toBe(true);
+    expect(needsTickets(order({ paymentStatus: 'paid' }))).toBe(true);
+    expect(needsTickets(order({}))).toBe(false);
+    expect(classify(order({ status: 'completed' }), [tk('a', 'o1'), tk('b', 'o1')], 1_000)).toEqual({ view: 'success', done: true });
   });
   it('tickets match strictly by orderId (no visitDate fallback)', () => {
     const all = [tk('a', 'o1'), tk('b', 'o2'), tk('c', undefined), tk('d', '')];

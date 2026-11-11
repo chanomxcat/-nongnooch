@@ -10,6 +10,9 @@ export const ISSUING_SLOW_AFTER_MS = 60_000;
 export const POLL_LIMIT_MS = 20 * 60_000;
 
 export const isPaid = (o: Order) => ['confirmed', 'paid', 'completed'].includes(o.status) || o.paymentStatus === 'paid';
+/** Tickets are fetched for exactly the orders classify() treats as paid (single source of truth). */
+export const needsTickets = (o: Order) => isPaid(o);
+
 /** Only an explicit failure from commerce counts; a slow webhook is not a failure. */
 export const isFailed = (o: Order) => o.status === 'failed' || o.status === 'payment_failed' || ['failed', 'cancelled'].includes(o.paymentStatus);
 export const isExpired = (o: Order) => o.status === 'expired' || o.status === 'cancelled';

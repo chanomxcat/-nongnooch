@@ -8,7 +8,7 @@ import { Icon } from '@/components/ui/Icon';
 import { useErrorText, useI18n } from '@/components/providers/Providers';
 import { ApiError, commerce, ticket, type Order, type Ticket } from '@/lib/api/client';
 import { formatTHB } from '@/lib/format';
-import { advanceAttempt, classify, currentAttempt, pollDelay, retryKey, ticketsForOrder, type View } from './resultState';
+import { advanceAttempt, classify, currentAttempt, needsTickets, pollDelay, retryKey, ticketsForOrder, type View } from './resultState';
 import { clearPersisted } from './state';
 import s from '@/components/account/account.module.css';
 
@@ -44,7 +44,7 @@ export function OrderResult({ orderId }: { orderId: string }) {
         if (!live) return;
         setOrder(o);
         let mine: Ticket[] = [];
-        if (o.status === 'confirmed' || o.status === 'paid' || o.paymentStatus === 'paid') {
+        if (needsTickets(o)) {
           mine = ticketsForOrder(await ticket.mine().catch(() => [] as Ticket[]), orderId);
           if (!live) return;
           setTickets(mine);
