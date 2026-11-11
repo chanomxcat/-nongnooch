@@ -326,3 +326,13 @@ func TestAuthAndEndpoints(t *testing.T) {
 		t.Fatalf("seed: %d", w.Code)
 	}
 }
+
+func TestTicketsKeepOrderItemOrder(t *testing.T) {
+	e := newEnv(t)
+	d := today(e)
+	e.issue(e.paid("o-ord", dayItem(d, "Somchai Jaidee", "0708"), dayItem(d, "Wei Zhang", "5678"), dayItem(d, "Third Person", "9999")))
+	got := e.mine()
+	if len(got) != 3 || got[0].HolderName != "Somchai Jaidee" || got[1].HolderName != "Wei Zhang" || got[2].HolderName != "Third Person" {
+		t.Fatalf("order: %+v", got)
+	}
+}

@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+	"sync/atomic"
 	"syscall"
 
 	"github.com/nats-io/nats.go"
@@ -82,14 +83,21 @@ func run(ctx context.Context, cfg config.Base) error {
 	}
 	go (&outbox.Relay{DB: d, JS: js}).Run(ctx)
 
+	var consumerReady atomic.Bool
 	svc := &Service{DB: d, Signer: signer}
 	go func() {
-		err := consumer.Run(ctx, d, js, consumer.Config{Name: "ticket-issuer", EventTypes: []string{events.OrderPaid}}, svc.Issue)
+		err := consumer.Run(ctx, d, js, consumer.Config{Name: "ticket-issuer", EventTypes: []string{events.OrderPaid}, Ready: &consumerReady}, svc.Issue)
 		if err != nil && ctx.Err() == nil {
 			slog.Error("ticket-issuer stopped", "err", err)
 		}
 	}()
 	srv := server.New(cfg, d)
+	srv.ReadyChecks = append(srv.ReadyChecks, func() error {
+		if !consumerReady.Load() {
+			return errors.New("ticket-issuer consumer not running")
+		}
+		return nil
+	})
 	(&API{Svc: svc, DemoMode: os.Getenv("DEMO_MODE") == "true"}).Register(srv.Mux)
 	ticketv1.RegisterTicketServiceServer(srv.GRPC, &GRPCServer{Svc: svc})
 	return srv.Run(ctx)

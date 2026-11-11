@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/go-sql-driver/mysql"
@@ -148,6 +149,7 @@ type lineItem struct {
 	ID, ProductID, Kind, Audience, Name, Nationality, IDLast4 string
 	Price                                                     int64
 	ThaiPrice                                                 bool
+	Me                                                        bool // holder is the buyer
 }
 
 func (s *Service) nextOrderNo(ctx context.Context, now time.Time) (string, error) {
@@ -187,7 +189,7 @@ func (s *Service) CreateOrder(ctx context.Context, tx *sql.Tx, memberID, lang st
 		if err != nil {
 			return result{}, err
 		}
-		li := lineItem{ID: uuid.NewString(), ProductID: it.ProductID, Kind: kind, Audience: it.Audience}
+		li := lineItem{ProductID: it.ProductID, Kind: kind, Audience: it.Audience}
 		switch it.Audience {
 		case "thai", "foreign":
 		default:
@@ -204,6 +206,7 @@ func (s *Service) CreateOrder(ctx context.Context, tx *sql.Tx, memberID, lang st
 				}
 				me = &h
 			}
+			li.Me = true
 			li.Name, li.Nationality, li.IDLast4 = me.Name, me.Nationality, me.IDLast4
 			li.ThaiPrice = me.ThaiVerified
 		} else {
@@ -231,6 +234,16 @@ func (s *Service) CreateOrder(ctx context.Context, tx *sql.Tx, memberID, lang st
 			dayCount++
 		}
 		items = append(items, li)
+	}
+	// Deterministic order: the buyer's own item first, then request order; ids are
+	// time-ordered (v7) so ORDER BY id (order items, tickets) keeps that order.
+	sort.SliceStable(items, func(i, j int) bool { return items[i].Me && !items[j].Me })
+	for i := range items {
+		v7, err := uuid.NewV7()
+		if err != nil {
+			return result{}, err
+		}
+		items[i].ID = v7.String()
 	}
 	if dayCount > 0 {
 		r, err := tx.ExecContext(ctx, `UPDATE quota SET held=held+? WHERE visit_date=? AND total-held-sold>=?`, dayCount, req.VisitDate, dayCount)

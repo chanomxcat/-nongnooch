@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"log/slog"
+	"sync/atomic"
 	"time"
 
 	"github.com/nats-io/nats.go"
@@ -26,16 +27,29 @@ type Config struct {
 	EventTypes []string
 	MaxDeliver int           // default 10
 	AckWait    time.Duration // default 30s
+
+	// Ready, if set, is true while the consumer is subscribed (for /readyz).
+	Ready *atomic.Bool
+	// RetryMin/RetryMax bound the startup retry backoff (default 1s / 30s).
+	RetryMin, RetryMax time.Duration
 }
 
 // Run consumes until ctx is cancelled. Each message is processed in one DB
-// transaction together with its processed_events marker.
+// transaction together with its processed_events marker. Startup failures
+// (consumer creation / subscribe) are logged and retried with exponential
+// backoff forever; cfg.Ready (if set) is true only while subscribed.
 func Run(ctx context.Context, db *sql.DB, js jetstream.JetStream, cfg Config, h Handler) error {
 	if cfg.MaxDeliver <= 0 {
 		cfg.MaxDeliver = 10
 	}
 	if cfg.AckWait <= 0 {
 		cfg.AckWait = 30 * time.Second
+	}
+	if cfg.RetryMin <= 0 {
+		cfg.RetryMin = time.Second
+	}
+	if cfg.RetryMax <= 0 {
+		cfg.RetryMax = 30 * time.Second
 	}
 	subjects := make([]string, len(cfg.EventTypes))
 	for i, t := range cfg.EventTypes {
@@ -52,19 +66,43 @@ func Run(ctx context.Context, db *sql.DB, js jetstream.JetStream, cfg Config, h 
 	} else {
 		cc.FilterSubjects = subjects
 	}
-	cons, err := js.CreateOrUpdateConsumer(ctx, events.Stream, cc)
-	if err != nil {
-		return err
+	if cfg.Ready != nil {
+		cfg.Ready.Store(false)
+		defer cfg.Ready.Store(false)
 	}
-	cctx, err := cons.Consume(func(msg jetstream.Msg) {
-		process(ctx, db, js, cfg, h, msg)
-	})
-	if err != nil {
-		return err
+	start := func() (jetstream.ConsumeContext, error) {
+		cons, err := js.CreateOrUpdateConsumer(ctx, events.Stream, cc)
+		if err != nil {
+			return nil, err
+		}
+		return cons.Consume(func(msg jetstream.Msg) {
+			process(ctx, db, js, cfg, h, msg)
+		})
 	}
-	<-ctx.Done()
-	cctx.Stop()
-	return nil
+	backoff := cfg.RetryMin
+	for {
+		cctx, err := start()
+		if err == nil {
+			if cfg.Ready != nil {
+				cfg.Ready.Store(true)
+			}
+			<-ctx.Done()
+			cctx.Stop()
+			return nil
+		}
+		if ctx.Err() != nil {
+			return nil
+		}
+		slog.ErrorContext(ctx, "consumer start failed, will retry", "consumer", cfg.Name, "err", err, "retry_in", backoff.String())
+		select {
+		case <-ctx.Done():
+			return nil
+		case <-time.After(backoff):
+		}
+		if backoff *= 2; backoff > cfg.RetryMax {
+			backoff = cfg.RetryMax
+		}
+	}
 }
 
 func process(ctx context.Context, db *sql.DB, js jetstream.JetStream, cfg Config, h Handler, msg jetstream.Msg) {

@@ -10,7 +10,7 @@ services:
       - --innodb-buffer-pool-size=128M
       - --max-connections=200
       - --performance-schema=OFF
-    ports: ["3306:3306"]
+    ports: ["127.0.0.1:3306:3306"]
     volumes:
       - mariadb-data:/var/lib/mysql
       - ./deploy/mariadb-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
@@ -25,7 +25,7 @@ services:
   nats:
     image: nats:2.10-alpine
     command: ["-js", "-sd", "/data", "-m", "8222"]
-    ports: ["4222:4222"]
+    ports: ["127.0.0.1:4222:4222"]
     volumes:
       - nats-data:/data
     healthcheck:
@@ -41,7 +41,7 @@ services:
       dockerfile: deploy/Dockerfile.go
       args: {SVC: mockext}
     image: nongnooch/mockext:dev
-    ports: ["8090:8090"]
+    ports: ["127.0.0.1:8090:8090"]
     environment:
       MOCKEXT_PUBLIC_URL: http://localhost:8090
       KBANK_API_KEY: demo-key
@@ -146,12 +146,12 @@ services:
       dockerfile: deploy/Dockerfile.go
       args: {SVC: gateway}
     image: nongnooch/gateway:dev
-    ports: ["8000:8080"]
+    ports: ["127.0.0.1:8000:8080"]
     environment:
       JWKS_URL: http://identity:8080/.well-known/jwks.json
       GATEWAY_SERVICES: identity,member,commerce,ticket,notify,content,agent,report
       # Peers allowed to set X-Forwarded-For: IPs, CIDRs or container names (re-resolved every 30s).
-      TRUSTED_PROXIES: caddy,web,admin,gate
+      TRUSTED_PROXIES: web,admin
       CORS_ORIGINS: http://localhost:3000,http://localhost:3001,http://localhost:3002
     depends_on:
       identity: {condition: service_started}
@@ -185,7 +185,7 @@ services:
       dockerfile: deploy/Dockerfile.web
       args: {APP: web, NEXT_PUBLIC_DEMO_TOOLS: "true", NEXT_PUBLIC_TURNSTILE_MODE: mock}
     image: nongnooch/web:dev
-    ports: ["3000:3000"]
+    ports: ["127.0.0.1:3000:3000"]
     environment:
       GATEWAY_URL: http://gateway:8080
       SITE_URL: http://localhost:3000
@@ -202,7 +202,7 @@ services:
       dockerfile: deploy/Dockerfile.web
       args: {APP: admin}
     image: nongnooch/admin:dev
-    ports: ["3001:3000"]
+    ports: ["127.0.0.1:3001:3000"]
     environment:
       GATEWAY_URL: http://gateway:8080
       SITE_URL: http://localhost:3001

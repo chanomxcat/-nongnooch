@@ -17,7 +17,7 @@ button{background:#D9A52E;border:0;border-radius:4px;padding:3px 10px;cursor:poi
 <header><b>Nongnooch Mock Console</b> <small style="color:#cfe">รีเฟรชทุก 3 วินาที</small></header>
 <main>
 <section><h2>SMS (OTP)</h2><ul>
-{{range .SMS}}<li><span class="otp">{{.Body}}</span><br><small>ถึง {{.Title}} · {{.At.Format "15:04:05"}}</small></li>{{else}}<li><small>ยังไม่มีข้อความ</small></li>{{end}}
+{{range .SMS}}<li><span class="otp">{{.Body}}</span><br><small>ถึง {{.Title}} · {{clock .At}}</small></li>{{else}}<li><small>ยังไม่มีข้อความ</small></li>{{end}}
 </ul></section>
 <section><h2>การจ่ายเงิน (KBank)</h2><ul>
 {{range .Payments}}<li><b>{{.Ref}}</b> · {{.Status}} · {{printf "%.2f" .BahtAmount}} บาท · {{.Method}}<br>
@@ -26,7 +26,7 @@ button{background:#D9A52E;border:0;border-radius:4px;padding:3px 10px;cursor:poi
 <form method="post" action="/pg/payments/{{.ID}}/webhook:resend" style="display:inline"><button>ส่ง webhook ซ้ำ</button></form></li>{{else}}<li><small>ยังไม่มีรายการ</small></li>{{end}}
 </ul></section>
 <section><h2>Webhook ที่ส่งออก</h2><ul>
-{{range .Webhooks}}<li>{{.Title}} <small>{{.Body}} · {{.At.Format "15:04:05"}}</small></li>{{else}}<li><small>ยังไม่มี</small></li>{{end}}
+{{range .Webhooks}}<li>{{.Title}} <small>{{.Body}} · {{clock .At}}</small></li>{{else}}<li><small>ยังไม่มี</small></li>{{end}}
 </ul></section>
 <section><h2>อีเมล</h2><a href="http://localhost:8025">Mailpit</a></section>
 </main></body></html>

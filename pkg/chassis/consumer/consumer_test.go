@@ -192,3 +192,39 @@ func TestThaiPayloadRoundTrip(t *testing.T) {
 		t.Fatal("timeout")
 	}
 }
+
+// flakyJS fails CreateOrUpdateConsumer the first n times.
+type flakyJS struct {
+	jetstream.JetStream
+	fails atomic.Int32
+	calls atomic.Int32
+}
+
+func (f *flakyJS) CreateOrUpdateConsumer(ctx context.Context, stream string, cfg jetstream.ConsumerConfig) (jetstream.Consumer, error) {
+	f.calls.Add(1)
+	if f.fails.Add(-1) >= 0 {
+		return nil, errors.New("nats unavailable")
+	}
+	return f.JetStream.CreateOrUpdateConsumer(ctx, stream, cfg)
+}
+
+func TestStartupRetriesUntilReady(t *testing.T) {
+	e := setup(t, 3)
+	fj := &flakyJS{JetStream: e.js}
+	fj.fails.Store(2)
+	var ready atomic.Bool
+	e.cfg.Ready = &ready
+	e.cfg.RetryMin, e.cfg.RetryMax = 20*time.Millisecond, 50*time.Millisecond
+	var got atomic.Int32
+	ctx, cancel := context.WithCancel(context.Background())
+	t.Cleanup(cancel)
+	go consumer.Run(ctx, e.d, fj, e.cfg, func(context.Context, *sql.Tx, events.Envelope) error { got.Add(1); return nil })
+	waitFor(t, "consumer ready after retries", ready.Load)
+	if c := fj.calls.Load(); c != 3 {
+		t.Fatalf("calls=%d want 3", c)
+	}
+	e.publish(t, events.Envelope{ID: "retry-1", Type: e.typ, OccurredAt: time.Now(), Payload: []byte(`{}`)})
+	waitFor(t, "event handled", func() bool { return got.Load() == 1 })
+	cancel()
+	waitFor(t, "not ready after stop", func() bool { return !ready.Load() })
+}

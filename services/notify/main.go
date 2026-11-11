@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"sync/atomic"
 	"syscall"
 
 	"github.com/nats-io/nats.go"
@@ -81,8 +82,9 @@ func run(ctx context.Context, cfg config.Base) error {
 		return err
 	}
 	go (&outbox.Relay{DB: d, JS: js}).Run(ctx)
+	var consumerReady atomic.Bool
 	go func() {
-		err := consumer.Run(ctx, d, js, consumer.Config{Name: "notify-otp", EventTypes: []string{events.OTPRequested}},
+		err := consumer.Run(ctx, d, js, consumer.Config{Name: "notify-otp", EventTypes: []string{events.OTPRequested}, Ready: &consumerReady},
 			OTPHandler(HTTPSMSSender{BaseURL: os.Getenv("SMS_BASE_URL")}, nil, tpl))
 		if err != nil {
 			slog.Error("otp consumer stopped", "err", err)
@@ -90,6 +92,12 @@ func run(ctx context.Context, cfg config.Base) error {
 	}()
 
 	srv := server.New(cfg, d)
+	srv.ReadyChecks = append(srv.ReadyChecks, func() error {
+		if !consumerReady.Load() {
+			return errors.New("notify-otp consumer not running")
+		}
+		return nil
+	})
 	demo := os.Getenv("DEMO_MODE") == "true"
 	srv.Mux.HandleFunc("POST /internal/seed", func(w http.ResponseWriter, r *http.Request) {
 		if !demo {

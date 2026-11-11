@@ -465,3 +465,32 @@ func TestCatalogSeedIdempotentAndI18n(t *testing.T) {
 		t.Fatalf("%s", w.Body)
 	}
 }
+
+func TestOrderItemsBuyerFirst(t *testing.T) {
+	e := newEnv(t)
+	friend := map[string]any{"name": "Friend", "nationality": "CN", "idLast4": "1234"}
+	body := map[string]any{"visitDate": e.today(), "items": []map[string]any{
+		{"productId": e.pid("day-adult"), "audience": "foreign", "holder": friend},
+		{"productId": e.pid("day-adult"), "audience": "thai", "holder": me()},
+	}}
+	w := e.do("m-thai", "POST", "/orders", nil, body)
+	if w.Code != 201 {
+		t.Fatalf("order: %d %s", w.Code, w.Body)
+	}
+	var out struct{ OrderID string }
+	_ = json.Unmarshal(w.Body.Bytes(), &out)
+	rows, err := e.d.Query(`SELECT holder_name FROM order_items WHERE order_id=? ORDER BY id`, out.OrderID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer rows.Close()
+	var names []string
+	for rows.Next() {
+		var n string
+		_ = rows.Scan(&n)
+		names = append(names, n)
+	}
+	if len(names) != 2 || names[0] != "Somchai Jaidee" || names[1] != "Friend" {
+		t.Fatalf("order %v", names)
+	}
+}

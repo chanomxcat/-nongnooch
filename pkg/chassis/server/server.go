@@ -26,6 +26,9 @@ type Server struct {
 	Mux  *http.ServeMux
 	GRPC *grpc.Server
 
+	// ReadyChecks are extra /readyz conditions; a non-nil error means not ready.
+	ReadyChecks []func() error
+
 	cfg    config.Base
 	db     *sql.DB
 	health *health.Server
@@ -45,15 +48,19 @@ func New(cfg config.Base, db *sql.DB) *Server {
 		_, _ = w.Write([]byte("ok"))
 	})
 	s.Mux.HandleFunc("GET /readyz", func(w http.ResponseWriter, r *http.Request) {
-		if s.db == nil {
-			_, _ = w.Write([]byte("ok"))
-			return
+		if s.db != nil {
+			ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+			defer cancel()
+			if err := s.db.PingContext(ctx); err != nil {
+				http.Error(w, "db unavailable", http.StatusServiceUnavailable)
+				return
+			}
 		}
-		ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
-		defer cancel()
-		if err := s.db.PingContext(ctx); err != nil {
-			http.Error(w, "db unavailable", http.StatusServiceUnavailable)
-			return
+		for _, c := range s.ReadyChecks {
+			if err := c(); err != nil {
+				http.Error(w, err.Error(), http.StatusServiceUnavailable)
+				return
+			}
 		}
 		_, _ = w.Write([]byte("ok"))
 	})

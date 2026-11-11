@@ -4,12 +4,18 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
+	"time"
 )
 
 //go:embed templates/*.html
 var tplFS embed.FS
 
-var tpl = template.Must(template.ParseFS(tplFS, "templates/*.html"))
+// ict is Asia/Bangkok (UTC+7, no DST); a fixed zone avoids needing tzdata in distroless.
+var ict = time.FixedZone("ICT", 7*3600)
+
+var tpl = template.Must(template.New("").Funcs(template.FuncMap{
+	"clock": func(t time.Time) string { return t.In(ict).Format("15:04:05") },
+}).ParseFS(tplFS, "templates/*.html"))
 
 func (a *App) consoleRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {

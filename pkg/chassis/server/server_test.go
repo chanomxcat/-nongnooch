@@ -3,9 +3,11 @@ package server_test
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -89,5 +91,28 @@ func TestReadyzWithoutDB(t *testing.T) {
 	s.Mux.ServeHTTP(rec, httptest.NewRequest("GET", "/readyz", nil))
 	if rec.Code != 200 {
 		t.Fatal(rec.Code)
+	}
+}
+
+func TestReadyzHonoursReadyChecks(t *testing.T) {
+	s := server.New(config.Base{ServiceName: "t"}, nil)
+	var up atomic.Bool
+	s.ReadyChecks = append(s.ReadyChecks, func() error {
+		if !up.Load() {
+			return errors.New("consumer not running")
+		}
+		return nil
+	})
+	code := func() int {
+		rec := httptest.NewRecorder()
+		s.Mux.ServeHTTP(rec, httptest.NewRequest("GET", "/readyz", nil))
+		return rec.Code
+	}
+	if c := code(); c != 503 {
+		t.Fatalf("before: %d", c)
+	}
+	up.Store(true)
+	if c := code(); c != 200 {
+		t.Fatalf("after: %d", c)
 	}
 }
