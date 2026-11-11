@@ -179,6 +179,47 @@ services:
       mockext: {condition: service_healthy}
     mem_limit: 96m
 
+  web:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.web
+      args: {APP: web}
+    image: nongnooch/web:dev
+    ports: ["3000:3000"]
+    environment:
+      GATEWAY_URL: http://gateway:8080
+      SITE_URL: http://localhost:3000
+      MOCKEXT_PUBLIC_URL: http://localhost:8090
+      NEXT_PUBLIC_TURNSTILE_MODE: mock
+      NEXT_PUBLIC_DEMO_TOOLS: "true"
+    depends_on:
+      gateway: {condition: service_started}
+    mem_limit: 256m
+
+  node:
+    image: node:20-bookworm
+    profiles: [tools]
+    working_dir: /src
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+    volumes:
+      - .:/src
+      - nodemods:/src/node_modules
+      - npmcache:/root/.npm
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.48.2-jammy
+    profiles: [e2e]
+    working_dir: /src
+    environment:
+      BASE_URL: http://web:3000
+      MOCKEXT_URL: http://mockext:8090
+    volumes:
+      - .:/src
+      - nodemods:/src/node_modules
+    depends_on:
+      web: {condition: service_started}
+
   gotest:
     image: golang:1.23-bookworm
     profiles: [tools]
@@ -199,3 +240,5 @@ volumes:
   nats-data:
   gomod:
   gobuild:
+  nodemods:
+  npmcache:

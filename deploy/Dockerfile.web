@@ -1,0 +1,26 @@
+# Next.js apps (apps/web, later apps/admin, apps/gate). Build: make build-web APP=web
+FROM node:20-bookworm-slim AS deps
+WORKDIR /src
+COPY package.json package-lock.json ./
+COPY packages/tokens/package.json packages/tokens/
+COPY apps/web/package.json apps/web/
+RUN npm ci --no-audit --no-fund
+
+FROM deps AS build
+ARG APP=web
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY packages/tokens packages/tokens
+COPY apps/${APP} apps/${APP}
+RUN npm run build -w @nn/tokens && npm run build -w apps/${APP}
+
+FROM node:20-bookworm-slim AS run
+ARG APP=web
+WORKDIR /app
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0 APP=${APP}
+COPY --from=build --chown=node:node /src/apps/${APP}/.next/standalone ./
+COPY --from=build --chown=node:node /src/apps/${APP}/.next/static ./apps/${APP}/.next/static
+COPY --from=build --chown=node:node /src/apps/${APP}/public ./apps/${APP}/public
+USER node
+EXPOSE 3000
+HEALTHCHECK --interval=5s --timeout=3s --retries=20 CMD node -e "fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["sh", "-c", "exec node apps/${APP}/server.js"]

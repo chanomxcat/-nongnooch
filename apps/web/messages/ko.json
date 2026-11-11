@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "skip": "본문으로 건너뛰기",
+    "hours": "매일 08:00 – 18:00 운영",
+    "language": "언어",
+    "home": "홈",
+    "activities": "액티비티",
+    "zone": "구역",
+    "auditorium": "강당",
+    "accommodation": "숙박",
+    "contact": "문의하기",
+    "signIn": "로그인",
+    "register": "회원가입",
+    "buyTickets": "티켓 구매",
+    "myTickets": "내 티켓",
+    "myPoints": "내 포인트",
+    "signOut": "로그아웃"
+  },
+  "hero": {
+    "chip": "매일 운영 · 8:00 – 18:00",
+    "title": "아름다운 정원",
+    "subtitle": "60개 이상의 테마 정원",
+    "cta": "액티비티 보기",
+    "ctaTickets": "티켓 구매"
+  },
+  "checkout": { "title": "티켓 구매", "thai": "태국인", "foreign": "외국인" },
+  "tickets": { "title": "내 티켓" },
+  "points": { "title": "내 포인트" }
+}

@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "skip": "本文へスキップ",
+    "hours": "毎日 08:00 – 18:00 営業",
+    "language": "言語",
+    "home": "ホーム",
+    "activities": "アクティビティ",
+    "zone": "ゾーン",
+    "auditorium": "ホール",
+    "accommodation": "宿泊",
+    "contact": "お問い合わせ",
+    "signIn": "ログイン",
+    "register": "会員登録",
+    "buyTickets": "チケット購入",
+    "myTickets": "マイチケット",
+    "myPoints": "マイポイント",
+    "signOut": "ログアウト"
+  },
+  "hero": {
+    "chip": "毎日営業 · 8:00 – 18:00",
+    "title": "美しい庭園",
+    "subtitle": "60以上のテーマガーデン",
+    "cta": "アクティビティを見る",
+    "ctaTickets": "チケット購入"
+  },
+  "checkout": { "title": "チケット購入", "thai": "タイ人", "foreign": "外国人" },
+  "tickets": { "title": "マイチケット" },
+  "points": { "title": "マイポイント" }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "nongnooch",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
+}

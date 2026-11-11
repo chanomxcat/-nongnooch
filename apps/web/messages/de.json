@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "skip": "Zum Inhalt springen",
+    "hours": "Täglich geöffnet 08:00 – 18:00",
+    "language": "Sprache",
+    "home": "Start",
+    "activities": "Aktivitäten",
+    "zone": "Zonen",
+    "auditorium": "Auditorium",
+    "accommodation": "Unterkunft",
+    "contact": "Kontakt",
+    "signIn": "Anmelden",
+    "register": "Registrieren",
+    "buyTickets": "Tickets kaufen",
+    "myTickets": "Meine Tickets",
+    "myPoints": "Meine Punkte",
+    "signOut": "Abmelden"
+  },
+  "hero": {
+    "chip": "Täglich geöffnet · 8:00 – 18:00",
+    "title": "Wunderschöner Garten",
+    "subtitle": "Über 60 Themengärten",
+    "cta": "Aktivitäten entdecken",
+    "ctaTickets": "Tickets kaufen"
+  },
+  "checkout": { "title": "Tickets kaufen", "thai": "Thailänder", "foreign": "Ausländer" },
+  "tickets": { "title": "Meine Tickets" },
+  "points": { "title": "Meine Punkte" }
+}

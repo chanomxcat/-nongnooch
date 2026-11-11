@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "skip": "Aller au contenu",
+    "hours": "Ouvert tous les jours 08:00 – 18:00",
+    "language": "Langue",
+    "home": "Accueil",
+    "activities": "Activités",
+    "zone": "Zones",
+    "auditorium": "Auditorium",
+    "accommodation": "Hébergement",
+    "contact": "Contact",
+    "signIn": "Connexion",
+    "register": "Inscription",
+    "buyTickets": "Acheter des billets",
+    "myTickets": "Mes billets",
+    "myPoints": "Mes points",
+    "signOut": "Déconnexion"
+  },
+  "hero": {
+    "chip": "Ouvert tous les jours · 8:00 – 18:00",
+    "title": "Jardin magnifique",
+    "subtitle": "Plus de 60 jardins thématiques",
+    "cta": "Découvrir les activités",
+    "ctaTickets": "Acheter des billets"
+  },
+  "checkout": { "title": "Acheter des billets", "thai": "Thaï", "foreign": "Étranger" },
+  "tickets": { "title": "Mes billets" },
+  "points": { "title": "Mes points" }
+}

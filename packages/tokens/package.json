@@ -1,0 +1,19 @@
+{
+  "name": "@nn/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./tokens.css": "./generated/tokens.css",
+    "./icons.svg": "./generated/icons.svg",
+    "./icon-names": "./generated/icon-names.ts"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "vitest run",
+    "lint": "node build.mjs && echo tokens ok"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.9"
+  }
+}

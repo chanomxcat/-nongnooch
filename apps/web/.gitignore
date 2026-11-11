@@ -1,0 +1,7 @@
+.next/
+node_modules/
+*.tsbuildinfo
+public/icons.svg
+public/fonts/
+test-results/
+playwright-report/

@@ -33,3 +33,31 @@ gen:
 
 build:
 	docker build -f deploy/Dockerfile.go --build-arg SVC=$(SVC) -t $(REGISTRY)/$(SVC):$(TAG) .
+
+# ---- Frontend (Next.js) — all in node:20-bookworm via the `node` tools service ----
+APP ?= web
+WS   = $(if $(filter web admin gate,$(APP)),apps/$(APP),packages/$(APP))
+NODE = $(COMPOSE) run --rm --no-deps node
+
+.PHONY: fe-install fe-lint fe-test fe-build build-web e2e tokens
+
+fe-install:
+	$(NODE) npm ci --no-audit --no-fund
+
+tokens:
+	$(NODE) npm run build -w @nn/tokens
+
+fe-lint:
+	$(NODE) sh -c "npm run build -w @nn/tokens && npm run lint -w $(WS)"
+
+fe-test:
+	$(NODE) npm run test -w $(WS) -- $(RUN)
+
+fe-build:
+	$(NODE) sh -c "npm run build -w @nn/tokens && npm run build -w $(WS)"
+
+build-web:
+	docker build -f deploy/Dockerfile.web --build-arg APP=$(APP) -t $(REGISTRY)/$(APP):$(TAG) .
+
+e2e:
+	$(COMPOSE) --profile e2e run --rm -w /src/apps/$(APP) playwright npx playwright test $(SPEC)

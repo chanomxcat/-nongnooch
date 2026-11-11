@@ -1,0 +1,11 @@
+**/node_modules
+**/.next
+.git
+docs
+roadmap
+assets
+gen-cache
+services
+pkg
+api
+gen
