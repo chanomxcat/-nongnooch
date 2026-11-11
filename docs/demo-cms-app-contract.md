@@ -8,7 +8,7 @@ The CMS and App teams build in parallel. Both follow this file.
 `GET /api/content/public/items?type=<type>&lang=<th|en|zh|ja|ko|de|fr>` returns published items, sorted by `attrs.order` ascending:
 
 ```json
-{"items":[{"id":"uuid","type":"hero_slide","attrs":{"order":1,"imageUrl":"/images/landing/hero-1.jpg","ctaHref":"/checkout"},
+{"items":[{"id":"uuid","type":"hero_slide","attrs":{"order":1,"imageUrl":"/images/act-thai-cultural-show.webp","ctaHref":"/checkout"},
            "texts":{"title":"...","subtitle":"...","ctaLabel":"..."}}]}
 ```
 
