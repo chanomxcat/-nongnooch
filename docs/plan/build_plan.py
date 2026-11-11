@@ -63,7 +63,7 @@ DATA = """
 
 1.1 | Platform และ Infrastructure
 1.1.1 | Go service template (chassis) | TL | 5 | 2026-11-13 | 1.2 | config, structured log, OpenTelemetry, health check, HTTP + gRPC server, DB migration, ตาราง outbox + processed_events, outbox relay → NATS, consumer แบบ idempotent ทุก service ใช้ร่วมกัน
-1.1.2 | Contract: OpenAPI + proto + Event schema | TL | 3 | 1.1.1 | 1.3, O3 | OpenAPI ภายนอกต่อ service, proto gRPC (ValidateInvite, GetTickets, VoidTickets, GetContactPrefs), schema 17 event และชื่อ subject บน JetStream
+1.1.2 | Contract: OpenAPI + proto + Event schema | TL | 3 | 1.1.15 | 1.3, O3 | OpenAPI ภายนอกต่อ service, proto gRPC (ValidateInvite, GetTickets, VoidTickets, GetContactPrefs), schema 17 event และชื่อ subject บน JetStream
 1.1.3 | Staging ชั่วคราว (VM + Docker Compose) | TL | 2 | 1.8.1 | Q20 | MariaDB, NATS, MinIO, CMS ขึ้นให้นงนุชกรอกเนื้อหาได้ก่อน Staging จริงพร้อม
 1.1.4 | API Gateway | TL | 4 | 1.8.3,1.0.2 | O2, S6, Q19 | ตรวจ JWT, route ไป 8 service, rate limit, รวม OpenAPI, ตรวจ access token ของ Waiting room ก่อน route POST /orders
 1.1.5 | Staging จริง: MariaDB cluster + NATS JetStream cluster + Object Storage (IaC) | DO | 5 | 2026-12-01 | 2, Q18 | ตามรูปแบบ Cloud ที่เลือก 27 พ.ย., 1 schema ต่อ service, ผู้ใช้ DB แยกต่อ service (ห้ามอ่าน schema อื่น)
@@ -76,6 +76,7 @@ DATA = """
 1.1.12 | Mock ระบบภายนอก: Console + Turnstile + SMS + Mailpit + Social login IdP | BE1 | 5 | 2026-11-13 | Demo, O1, S2 | service mockext ตาม Plan 00 Task 1–3: Mock Console, siteverify จำลอง, SMS inbox, Mailpit, OIDC LINE / Google / Apple + WeChat (UnionID)
 1.1.13 | Mock KBank Payment Gateway | BE2 | 3 | 1.6.3 | Demo, S3, S4 | Plan 00 Task 4: หน้า checkout จำลอง (สำเร็จ / ล้มเหลว / ไม่ส่ง webhook / ยอดไม่ตรง), webhook ลงลายเซ็น + retry + ส่งซ้ำ, inquiry, refund
 1.1.14 | Mock Push FCM / Huawei + ระบบประตูเดิม | BE3 | 2 | 2026-12-01 | Demo, S5, S7 | Plan 00 Task 5: token invalid- ได้ UNREGISTERED, รับ gate-events / tickets แสดงใน Console
+1.1.15 | แพ็กเกจ authn (ตัวตนจาก header ของ gateway) | TL | 1 | 1.1.1 | contracts §3 | `pkg/chassis/authn`: Principal, From(ctx), Require, RequireRole · Plan 12 Task 1 · ต้อง merge ก่อนงานที่ใช้ตัวตน (Plan 03, 04 Task 3, 05, 07, 09)
 
 1.2 | UX/UI Design
 1.2.1 | Web UI ตาม Figma + หน้าที่ยังไม่มีในต้นแบบ | UX | 6 | 2026-11-13 | 4.5 | ใช้ Concept ที่เลือก, ออกแบบเพิ่ม: สมัครสมาชิก + กรอกเลขบัตร, พ้อยของฉัน, หน้า Agent, ผู้ใช้บัตรรายใบ, ส่งบัตรให้เพื่อน, หน้ารอคิว
@@ -203,7 +204,7 @@ DATA = """
 1.16.8 | UAT รอบ 1 | NN | 5 | 2027-01-28 | W13 | ผู้ใช้จริงของนงนุชทุกฝ่าย
 1.16.9 | UAT รอบ 2 | NN | 5 | | W14 | ตรวจบั๊กที่แก้จากรอบ 1
 1.16.10 | แก้บั๊กจาก UAT | ALL | 13 | 2027-01-28 | W13–W15 | ปิดบั๊ก Critical / High ก่อน 12 ก.พ.
-1.16.11 | ข้อมูลตัวอย่าง + สคริปต์สาธิต (demo) | TL | 4 | 2027-01-04 | Demo | สคริปต์ seed ที่รันใน Docker: บัตร / ราคา / รอบการแสดง, เนื้อหา 7 ภาษา, สมาชิก ไทย / ต่างชาติ, บริษัททัวร์ + ไกด์, ออเดอร์ตัวอย่าง · เขียนสคริปต์สาธิตทีละขั้น (สมัครด้วย invite → ซื้อบัตร → จ่ายใน mockext → สแกนประตู offline → Dashboard) · `make seed` รีเซ็ตกลับสถานะเริ่มต้นได้
+1.16.11 | ข้อมูลตัวอย่าง + สคริปต์สาธิต (demo) | TL | 4 | 1.8.6 | Demo | สคริปต์ seed ที่รันใน Docker: บัตร / ราคา / รอบการแสดง, เนื้อหา 7 ภาษา, สมาชิก ไทย / ต่างชาติ, บริษัททัวร์ + ไกด์, ออเดอร์ตัวอย่าง · เขียนสคริปต์สาธิตทีละขั้น (สมัครด้วย invite → ซื้อบัตร → จ่ายใน mockext → สแกนประตู offline → Dashboard) · `make seed` รีเซ็ตกลับสถานะเริ่มต้นได้
 
 1.17 | Launch และ Hypercare
 1.17.1 | ซ้อม Deploy Production | DO | 3 | 2027-02-15 | W15 | ซ้อมทั้ง 8 service + migration + rollback
@@ -338,7 +339,7 @@ PREWORK = [
     ("Plan 00 Mock ระบบภายนอก (demo)", "เสร็จ (รอ review)", "../superpowers/plans/2026-11-11-00-mock-external.md"),
     ("Plan 01 Platform chassis", "เสร็จ (รอ review)", "../superpowers/plans/2026-11-11-01-platform-chassis.md"),
     ("Plan 02 Identity OTP + JWT", "เสร็จ (รอ review)", "../superpowers/plans/2026-11-11-02-identity-otp.md"),
-    ("Plan 03–16", "ยังไม่เขียน", "../superpowers/plans/2026-11-11-phase1-index.md"),
+    ("Plan 03–16 + contracts v2", "เสร็จ (รอ review)", "../superpowers/plans/2026-11-11-phase1-index.md"),
     ("DESIGN.md จาก Figma", "เสร็จ · รอ Designer ยืนยัน 6 ข้อ (หัวข้อ 9)", "../design/DESIGN.md"),
 ]
 
@@ -354,6 +355,29 @@ PLAN_LINK = {
 # กลุ่ม WBS → เลขแผนในดัชนี (ยังไม่เขียน)
 PLAN_INDEX = {"1.3": "08", "1.4": "03", "1.5": "09", "1.6": "05 / 06", "1.7": "07", "1.8": "04", "1.9": "10",
               "1.10": "11", "1.11": "13", "1.12": "14", "1.13": "14", "1.14": "15", "1.1": "12 / 16"}
+
+# แผน 03–16 (PLAN_LINK จากรายงานของแต่ละแผน)
+_PL = {
+    "03-member-point": "1.4.1=1;1.4.2=2;1.4.3=3,4;1.4.4=5;1.4.5=6,7;1.4.6=7;1.4.7=8",
+    "04-content-cms": "1.8.1=1,2,3;1.8.2=3;1.8.3=4;1.8.4=5;1.8.5=6;1.8.6=7",
+    "05-commerce-catalog-order": "1.6.1=1,2,6;1.6.2=3,5;1.6.3=4,5",
+    "06-commerce-payment": "1.6.4=1,2,3;1.6.5=4;1.6.6=5;1.6.7=6;1.6.8=7;1.6.9=8",
+    "07-ticket-gate": "1.7.1=1,2;1.7.2=3;1.7.3=4;1.7.4=5,6;1.7.5=7;1.7.6=8;1.7.7=9",
+    "08-social-login": "1.3.3=1,2,3;1.3.4=1,4;1.3.5=5",
+    "09-agent": "1.5.1=1,2;1.5.2=3;1.5.3=4;1.5.4=5;1.5.5=6;1.5.6=7",
+    "10-notification": "1.9.1=1;1.9.3=2,3;1.9.4=4;1.9.5=5",
+    "11-report": "1.10.1=1,2;1.10.2=3,4;1.10.3=5,6",
+    "12-api-gateway": "1.1.15=1;1.1.4=2,3,4,5,6,7",
+    "13-website": "1.11.10=1;1.11.1=2;1.11.2=3;1.11.3=4;1.11.4=5,6;1.11.5=7;1.11.6=8;1.11.12=8;1.11.7=9;1.11.8=10;1.11.9=11;1.11.11=2,11",
+    "14-admin-gate": "1.12.1=1;1.12.2=2;1.12.3=3;1.12.4=4;1.12.5=5;1.12.6=6;1.13.1=7,8;1.13.2=9;1.12.7=10;1.12.8=11;1.12.9=12",
+    "15-mobile": "1.14.1=1,2;1.14.2=3;1.14.3=4;1.14.4=5,6;1.14.5=7;1.14.6=8;1.14.7=9;1.14.8=10;1.14.9=11;1.14.10=11",
+    "16-infra": "1.1.8=1;1.1.5=2,6;1.1.7=3;1.1.10=4,6;1.16.11=5;1.17.1=6;1.1.6=7;1.1.9=8;1.16.5=9;1.16.7=10",
+}
+for _name, _spec in _PL.items():
+    for _part in _spec.split(";"):
+        _w, _t = _part.split("=")
+        PLAN_LINK[_w] = (PLANS + "2026-11-11-" + _name + ".md", "Task " + _t.replace(",", ", "))
+
 DEV_OWNERS = {"TL", "BE1", "BE2", "BE3", "FE1", "FE2", "MB1", "MB2", "DO"}
 
 PHASE_COLOR = {"1": "16A34A", "2": "2563EB", "3": "EA580C", "4": "9333EA"}
@@ -716,7 +740,7 @@ def write_task_files(rows):
          f"| Task ทั้งหมด | เสร็จ | กำลังทำ | ติดปัญหา | ยังไม่เริ่ม | Milestone |",
          "|---|---|---|---|---|---|",
          f"| {len(subs)} | {cnt('เสร็จ')} | {cnt('กำลังทำ')} | {cnt('ติดปัญหา')} | {cnt('ยังไม่เริ่ม')} | {len(leaves) - len(subs)} |", "",
-         f"**พร้อมส่ง subagent (มีแผน implementation แล้ว):** {ready} จาก {len(p1dev)} task โค้ดของเฟส 1 · ที่เหลือต้องเขียนแผนก่อน ตามลำดับใน[ดัชนีแผน]({PLANS}2026-11-11-phase1-index.md)", "",
+         f"**พร้อมส่ง subagent (มีแผน implementation แล้ว):** {ready} จาก {len(p1dev)} task โค้ดของเฟส 1 · ดู[ดัชนีแผน]({PLANS}2026-11-11-phase1-index.md) และ[สัญญากลาง]({PLANS}2026-11-11-contracts.md)", "",
          "### งานเตรียมการที่ทำแล้ว", "", "| งาน | สถานะ |", "|---|---|"]
     R += [f"| [{n}]({l}) | {s} |" for n, s, l in PREWORK]
     R += ["", "### ความคืบหน้ารายกลุ่ม", "", "| กลุ่ม | ช่วงเวลา | ความคืบหน้า | เสร็จ / ทั้งหมด |", "|---|---|---|---|"]

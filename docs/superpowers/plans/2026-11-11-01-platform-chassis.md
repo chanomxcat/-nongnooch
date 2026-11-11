@@ -21,7 +21,7 @@
 - "ส่ง trace และ log ผ่าน **OpenTelemetry**"
 - "ทุก schema มีตาราง `outbox` และ `processed_events` (สำหรับ idempotency)"
 - Saga: "เกินจำนวนครั้งที่กำหนด → dead-letter + แจ้ง on-call" (S3)
-- ชื่อ event ทั้ง 17 ตัวตาม O3 (เช่น `order.paid`, `ticket.issued`) ใช้ตรงตามนี้เป็นชื่อ type
+- ชื่อ event ทั้ง 20 ตัวตาม contracts §5 (17 ตัวตาม O3 + `account.deleted`, `member.invite_added`, `member.consent_changed`) ใช้ตรงตามนี้เป็นชื่อ type
 
 ## Review Focus
 
@@ -43,7 +43,7 @@ deploy/mariadb-init.sql                 CREATE DATABASE ต่อ service + user
 pkg/chassis/config/config.go            โหลด env ร่วม
 pkg/chassis/db/db.go                    Open + Migrate (goose, embed FS)
 pkg/chassis/db/migrations/00001_outbox.sql   outbox + processed_events (ทุก service ใช้ไฟล์นี้)
-pkg/chassis/events/events.go            Envelope, ชื่อ event 17 ตัว, Subject()
+pkg/chassis/events/events.go            Envelope, ชื่อ event 20 ตัว, Subject()
 pkg/chassis/outbox/outbox.go            Write(tx, ...) + Relay
 pkg/chassis/consumer/consumer.go        Run(...) idempotent + DLQ
 pkg/chassis/server/server.go            HTTP + gRPC + health + graceful shutdown
@@ -68,7 +68,7 @@ services/example/main.go                service ตัวอย่างที�
   - `make up` / `make down`: `docker compose -f deploy/compose.yaml up -d --wait` (mariadb, nats, mockext, mailpit มี healthcheck ครบ)
   - `make test PKG=./... RUN=`: `docker compose run --rm gotest go test -race -count=1 -run "$(RUN)" $(PKG)` (unit test ไม่ต้องใช้ DB)
   - `make test-int PKG=./...`: เหมือน `make test` แต่ใส่ `-tags=integration` และ service `gotest` ต้อง `depends_on` mariadb / nats แบบ `condition: service_healthy` พร้อม env `TEST_DB_DSN=root:root@tcp(mariadb:3306)/test?parseTime=true&charset=utf8mb4`, `TEST_NATS_URL=nats://nats:4222`
-  - `make build SVC=identity`: `docker build -f deploy/Dockerfile.go --build-arg SVC=$(SVC) -t nongnooch/$(SVC):dev .`
+  - `make build SVC=identity [REGISTRY= TAG=]`: `docker build -f deploy/Dockerfile.go --build-arg SVC=$(SVC) -t $(REGISTRY)/$(SVC):$(TAG) .` (`REGISTRY ?= nongnooch`, `TAG ?= dev` จึงได้ `nongnooch/identity:dev`, contracts §1)
   - service `gotest` ใน compose: image `golang:1.23-bookworm` (มี gcc สำหรับ `-race`), mount repo ที่ `/src`, volume `gomod:/go/pkg/mod` และ `gobuild:/root/.cache/go-build` เพื่อไม่ต้องโหลด module ซ้ำ, `working_dir: /src`, `profiles: [tools]` (ไม่ขึ้นตอน `make up`)
   - `deploy/Dockerfile.go`: multi-stage `golang:1.23-bookworm` → `gcr.io/distroless/static-debian12:nonroot`, `CGO_ENABLED=0`, ARG `SVC` เลือก `./services/$SVC`
   - integration test ทุกไฟล์ขึ้นต้นด้วย `//go:build integration`
@@ -153,12 +153,12 @@ func TestMigrateTwiceIsNoop(t *testing.T) { /* เรียก Migrate 2 คร�
 **Interfaces:**
 - Produces:
   - `type Envelope struct { ID string; Type string; OccurredAt time.Time; Payload json.RawMessage }` (JSON tag: `id,type,occurredAt,payload`)
-  - ค่าคงที่ 17 ตัวตาม O3: `OTPRequested = "otp.requested"`, `MemberRegistered`, `ReferralCreated`, `AgentApproved`, `OrderPaid`, `OrderRefunded`, `TicketIssued`, `TicketScanned`, `PriceApproved`, `ContentPublished`, `PointsChanged`, `MissionCompleted`, `OrderExpired`, `PaymentDiscrepancy`, `BillPaid`, `PartnerOrderUpdated`, `TicketTransferred`
+  - ค่าคงที่ 20 ตัวตาม contracts §5: `OTPRequested = "otp.requested"`, `MemberRegistered`, `ReferralCreated`, `AgentApproved`, `OrderPaid`, `OrderRefunded`, `TicketIssued`, `TicketScanned`, `PriceApproved`, `ContentPublished`, `PointsChanged`, `MissionCompleted`, `OrderExpired`, `PaymentDiscrepancy`, `BillPaid`, `PartnerOrderUpdated`, `TicketTransferred` และ `AccountDeleted = "account.deleted"`, `MemberInviteAdded = "member.invite_added"`, `MemberConsentChanged = "member.consent_changed"`
   - `func Subject(eventType string) string` คืนค่า `"evt." + eventType`
   - `const Stream = "EVENTS"` และ `const DLQPrefix = "dlq."`
   - `func New(eventType string, payload any) (Envelope, error)` ID เป็น `uuid.NewV7()` และ OccurredAt เป็น UTC
 
-- [ ] **Step 1: เขียน test ที่ fail**: `Subject("order.paid") == "evt.order.paid"`, `New` ได้ ID ที่เรียงตามเวลา (สร้าง 2 ตัว ตัวหลังต้องมากกว่าเมื่อเทียบ string) และ `len(All) == 17` โดยไม่มีชื่อซ้ำ
+- [ ] **Step 1: เขียน test ที่ fail**: `Subject("order.paid") == "evt.order.paid"`, `New` ได้ ID ที่เรียงตามเวลา (สร้าง 2 ตัว ตัวหลังต้องมากกว่าเมื่อเทียบ string) และ `len(All) == 20` โดยไม่มีชื่อซ้ำ และมี `account.deleted`, `member.invite_added`, `member.consent_changed`
 - [ ] **Step 2: รันให้ fail** — `make test PKG=./pkg/chassis/events/...`
 - [ ] **Step 3: เขียนตาม Interfaces** พร้อม `var All = []string{...}`
 - [ ] **Step 4: รันให้ผ่าน**

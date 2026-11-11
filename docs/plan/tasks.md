@@ -94,11 +94,11 @@
 
 - [ ] **1.1.1 Go service template (chassis)** · TL · 13/11/26 – 19/11/26 · 5 วัน · อ้างอิง 1.2
   - config, structured log, OpenTelemetry, health check, HTTP + gRPC server, DB migration, ตาราง outbox + processed_events, outbox relay → NATS, consumer แบบ idempotent ทุก service ใช้ร่วมกัน
-- [ ] **1.1.2 Contract: OpenAPI + proto + Event schema** · TL · 20/11/26 – 24/11/26 · 3 วัน · ต่อจาก 1.1.1 · อ้างอิง 1.3, O3
+- [ ] **1.1.2 Contract: OpenAPI + proto + Event schema** · TL · 23/11/26 – 25/11/26 · 3 วัน · ต่อจาก 1.1.15 · อ้างอิง 1.3, O3
   - OpenAPI ภายนอกต่อ service, proto gRPC (ValidateInvite, GetTickets, VoidTickets, GetContactPrefs), schema 17 event และชื่อ subject บน JetStream
-- [ ] **1.1.3 Staging ชั่วคราว (VM + Docker Compose)** · TL · 01/12/26 – 02/12/26 · 2 วัน · ต่อจาก 1.8.1 · อ้างอิง Q20
+- [ ] **1.1.3 Staging ชั่วคราว (VM + Docker Compose)** · TL · 02/12/26 – 03/12/26 · 2 วัน · ต่อจาก 1.8.1 · อ้างอิง Q20
   - MariaDB, NATS, MinIO, CMS ขึ้นให้นงนุชกรอกเนื้อหาได้ก่อน Staging จริงพร้อม
-- [ ] **1.1.4 API Gateway** · TL · 14/12/26 – 17/12/26 · 4 วัน · ต่อจาก 1.8.3, 1.0.2 · อ้างอิง O2, S6, Q19
+- [ ] **1.1.4 API Gateway** · TL · 15/12/26 – 18/12/26 · 4 วัน · ต่อจาก 1.8.3, 1.0.2 · อ้างอิง O2, S6, Q19
   - ตรวจ JWT, route ไป 8 service, rate limit, รวม OpenAPI, ตรวจ access token ของ Waiting room ก่อน route POST /orders
 - [ ] **1.1.5 Staging จริง: MariaDB cluster + NATS JetStream cluster + Object Storage (IaC)** · DO · 01/12/26 – 08/12/26 · 5 วัน · อ้างอิง 2, Q18
   - ตามรูปแบบ Cloud ที่เลือก 27 พ.ย., 1 schema ต่อ service, ผู้ใช้ DB แยกต่อ service (ห้ามอ่าน schema อื่น)
@@ -112,7 +112,7 @@
   - OTel collector, trace ข้าม service, uptime check, error tracking, crash reporting App, alert ไป on-call, รองรับ SLA 99.5%
 - [ ] **1.1.10 Production environment + Backup + ทดสอบกู้คืน** · DO · 11/01/27 – 15/01/27 · 5 วัน · อ้างอิง 4.3
   - ขนาดเครื่องรับพีค, backup อัตโนมัติ, ทดสอบ restore จริง
-- [ ] **1.1.11 สร้าง client TS / Dart อัตโนมัติจาก OpenAPI** · TL · 03/12/26 – 03/12/26 · 1 วัน · ต่อจาก 1.1.3 · อ้างอิง 2
+- [ ] **1.1.11 สร้าง client TS / Dart อัตโนมัติจาก OpenAPI** · TL · 04/12/26 – 04/12/26 · 1 วัน · ต่อจาก 1.1.3 · อ้างอิง 2
   - ใช้ร่วมกันใน Next.js และ Flutter
 - [ ] **1.1.12 Mock ระบบภายนอก: Console + Turnstile + SMS + Mailpit + Social login IdP** · BE1 · 13/11/26 – 19/11/26 · 5 วัน · อ้างอิง Demo, O1, S2
   - service mockext ตาม Plan 00 Task 1–3: Mock Console, siteverify จำลอง, SMS inbox, Mailpit, OIDC LINE / Google / Apple + WeChat (UnionID)
@@ -120,6 +120,8 @@
   - Plan 00 Task 4: หน้า checkout จำลอง (สำเร็จ / ล้มเหลว / ไม่ส่ง webhook / ยอดไม่ตรง), webhook ลงลายเซ็น + retry + ส่งซ้ำ, inquiry, refund
 - [ ] **1.1.14 Mock Push FCM / Huawei + ระบบประตูเดิม** · BE3 · 01/12/26 – 02/12/26 · 2 วัน · อ้างอิง Demo, S5, S7
   - Plan 00 Task 5: token invalid- ได้ UNREGISTERED, รับ gate-events / tickets แสดงใน Console
+- [ ] **1.1.15 แพ็กเกจ authn (ตัวตนจาก header ของ gateway)** · TL · 20/11/26 – 20/11/26 · 1 วัน · ต่อจาก 1.1.1 · อ้างอิง contracts §3
+  - `pkg/chassis/authn`: Principal, From(ctx), Require, RequireRole · Plan 12 Task 1 · ต้อง merge ก่อนงานที่ใช้ตัวตน (Plan 03, 04 Task 3, 05, 07, 09)
 
 ### 1.2 UX/UI Design
 
@@ -229,19 +231,19 @@
 
 ### 1.8 Content service (CMS)
 
-25/11/26 – 30/12/26 (24 วันทำงาน)
+26/11/26 – 04/01/27 (24 วันทำงาน)
 
-- [ ] **1.8.1 Schema content + ชนิดเนื้อหา 7 ภาษา** · TL · 25/11/26 – 30/11/26 · 4 วัน · ต่อจาก 1.1.2 · อ้างอิง E6, F5
+- [ ] **1.8.1 Schema content + ชนิดเนื้อหา 7 ภาษา** · TL · 26/11/26 – 01/12/26 · 4 วัน · ต่อจาก 1.1.2 · อ้างอิง E6, F5
   - แก้ 7 ภาษาคู่กัน, Preview, ภาษาที่ยังไม่แปลแสดง EN, login เจ้าหน้าที่เบื้องต้น
-- [ ] **1.8.2 RBAC 7 บทบาท** · TL · 04/12/26 – 08/12/26 · 2 วัน · ต่อจาก 1.1.11 · อ้างอิง E6
+- [ ] **1.8.2 RBAC 7 บทบาท** · TL · 08/12/26 – 09/12/26 · 2 วัน · ต่อจาก 1.1.11 · อ้างอิง E6
   - Admin, Editor, Approver, Finance, Gate Staff, Agent Manager, Viewer
-- [ ] **1.8.3 Media upload** · TL · 09/12/26 – 11/12/26 · 2 วัน · ต่อจาก 1.8.2 · อ้างอิง 2
+- [ ] **1.8.3 Media upload** · TL · 11/12/26 – 14/12/26 · 2 วัน · ต่อจาก 1.8.2 · อ้างอิง 2
   - อัปโหลดไป Object Storage แปลง WebP / AVIF
-- [ ] **1.8.4 Workflow อนุมัติ + Audit log** · TL · 18/12/26 – 23/12/26 · 4 วัน · ต่อจาก 1.1.4 · อ้างอิง F5, Q5
+- [ ] **1.8.4 Workflow อนุมัติ + Audit log** · TL · 21/12/26 – 24/12/26 · 4 วัน · ต่อจาก 1.1.4 · อ้างอิง F5, Q5
   - ร่าง → รออนุมัติ → อนุมัติ / ตีกลับ, four-eyes [Q5], ล้าง cache Cloudflare, outbox price.approved / content.published
-- [ ] **1.8.5 Zone / POI + ตารางการแสดง + FAQ + เบอร์ฉุกเฉิน** · TL · 24/12/26 – 28/12/26 · 3 วัน · ต่อจาก 1.8.4 · อ้างอิง E6, #27
+- [ ] **1.8.5 Zone / POI + ตารางการแสดง + FAQ + เบอร์ฉุกเฉิน** · TL · 25/12/26 – 29/12/26 · 3 วัน · ต่อจาก 1.8.4 · อ้างอิง E6, #27
   - หมุดต้องอ้างโซนที่มีจริงก่อนเผยแพร่, หมวด: จุดถ่ายรูป ร้านอาหาร ห้องน้ำ รถราง ปฐมพยาบาล
-- [ ] **1.8.6 หน้าตรวจคำแปลที่ขาด** · TL · 29/12/26 – 30/12/26 · 2 วัน · ต่อจาก 1.8.5 · อ้างอิง E6
+- [ ] **1.8.6 หน้าตรวจคำแปลที่ขาด** · TL · 30/12/26 – 04/01/27 · 2 วัน · ต่อจาก 1.8.5 · อ้างอิง E6
   - สรุปฟิลด์ที่ยังไม่แปลแยกภาษาและชนิดเนื้อหา กดไปหน้าแก้ได้
 
 ### 1.9 Notification service
@@ -389,7 +391,7 @@
   - ตรวจบั๊กที่แก้จากรอบ 1
 - [ ] **1.16.10 แก้บั๊กจาก UAT** · ALL · 28/01/27 – 15/02/27 · 13 วัน · อ้างอิง W13–W15
   - ปิดบั๊ก Critical / High ก่อน 12 ก.พ.
-- [ ] **1.16.11 ข้อมูลตัวอย่าง + สคริปต์สาธิต (demo)** · TL · 04/01/27 – 07/01/27 · 4 วัน · อ้างอิง Demo
+- [ ] **1.16.11 ข้อมูลตัวอย่าง + สคริปต์สาธิต (demo)** · TL · 05/01/27 – 08/01/27 · 4 วัน · ต่อจาก 1.8.6 · อ้างอิง Demo
   - สคริปต์ seed ที่รันใน Docker: บัตร / ราคา / รอบการแสดง, เนื้อหา 7 ภาษา, สมาชิก ไทย / ต่างชาติ, บริษัททัวร์ + ไกด์, ออเดอร์ตัวอย่าง · เขียนสคริปต์สาธิตทีละขั้น (สมัครด้วย invite → ซื้อบัตร → จ่ายใน mockext → สแกนประตู offline → Dashboard) · `make seed` รีเซ็ตกลับสถานะเริ่มต้นได้
 
 ### 1.17 Launch และ Hypercare

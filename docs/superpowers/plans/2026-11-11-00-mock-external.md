@@ -37,7 +37,7 @@ services/mockext/main.go           ประกอบ handler ทุกตัว
 services/mockext/store.go          Store ใน memory (ring buffer ต่อหมวด)
 services/mockext/console.go        GET /  หน้า Mock Console (html/template, refresh ทุก 3 วิ)
 services/mockext/turnstile.go      POST /turnstile/v0/siteverify
-services/mockext/sms.go            POST /sms/send
+services/mockext/sms.go            POST /sms/send, GET /sms/messages?to=
 services/mockext/oauth.go          OIDC: LINE / Google / Apple · OAuth: WeChat
 services/mockext/kbank.go          PG: payments, hosted checkout, webhook, inquiry, refund
 services/mockext/push.go           POST /push/fcm, /push/hms
@@ -79,10 +79,11 @@ deploy/compose.yaml                (แก้) เพิ่ม mockext + mailpit
 - Produces:
   - `POST /turnstile/v0/siteverify` (form `secret`, `response`, `remoteip`) คืน `{"success":true}` ทุก token ยกเว้น `response == "mock-fail"` ซึ่งคืน `{"success":false,"error-codes":["invalid-input-response"]}` และ `response == "mock-timeout"` ซึ่งหน่วง 5 วิ (รูปแบบตอบเหมือน Cloudflare จริง)
   - `POST /sms/send` JSON `{to, text}` ได้ `202 {"messageId"}` · `to` ที่ขึ้นต้นด้วย `+999` ได้ `400 {"error":"undeliverable"}` ใช้ทดสอบ fallback ไป Email OTP
+  - `GET /sms/messages?to=<e164>` คืน `200 {"items":[{"messageId","to","text","at"}]}` (ใหม่สุดก่อน, ไม่พบได้ `items` ว่าง) ให้ k6 / e2e อ่าน OTP ได้โดยไม่ต้อง parse หน้า Console (Plan 16 Task 9)
   - ฝั่งเว็บ / แอปใช้ widget จำลอง: เมื่อ `NEXT_PUBLIC_TURNSTILE_MODE=mock` ให้ส่ง token `mock-ok` (มีปุ่มในหน้า dev ให้เลือก `mock-fail`)
 - Email: service ของเราส่ง SMTP ไป `mailpit:1025` แล้วดูผลที่ `http://localhost:8025` ไม่ต้องเขียนโค้ด mock
 
-- [ ] **Step 1: เขียน test ที่ fail**: ครบ 3 กรณีของ siteverify, SMS ภาษาจีน `您的验证码 123456` เก็บใน Store แล้วอ่านกลับได้ตรง, `+999…` ได้ 400
+- [ ] **Step 1: เขียน test ที่ fail**: ครบ 3 กรณีของ siteverify, SMS ภาษาจีน `您的验证码 123456` เก็บใน Store แล้วอ่านกลับได้ตรง, `+999…` ได้ 400, `TestSMSMessagesByRecipient` (ส่งไป 2 เบอร์ → `GET /sms/messages?to=+66811111111` ได้เฉพาะของเบอร์นั้น ใหม่สุดก่อน, เบอร์ที่ไม่เคยส่งได้ `items` ว่าง)
 - [ ] **Step 2: รันให้ fail**
 - [ ] **Step 3: เขียน handler**
 - [ ] **Step 4: รันให้ผ่าน**
@@ -105,8 +106,9 @@ deploy/compose.yaml                (แก้) เพิ่ม mockext + mailpit
   - `GET /oauth/wechat/sns/oauth2/access_token?appid&secret&code&grant_type=authorization_code` คืน `{access_token, openid, unionid, expires_in}` และ**ไม่มีอีเมลหรือเบอร์**
   - ผู้ใช้คนเดียวกันได้ `openid` ต่างกันตาม `appid` แต่ `unionid` เหมือนกัน (เพื่อทดสอบการผูกบัญชีด้วย UnionID)
 - code ใช้ได้ครั้งเดียว อายุ 60 วินาที
+- URL ที่เบราว์เซอร์ต้องเปิด (`authorization_endpoint` ใน openid-configuration, หน้า qrconnect / authorize ของ WeChat) และ `iss` สร้างจาก env `MOCKEXT_PUBLIC_URL` (contracts §2, ค่าเริ่ม `http://localhost:8090`) ส่วน `token_endpoint` / `jwks_uri` ที่ server เรียกใช้ `http://mockext:8090` ได้
 
-- [ ] **Step 1: เขียน test ที่ fail**: ทำ flow เต็มด้วย `httptest` → id_token ตรวจด้วย JWKS ผ่าน, `code_verifier` ผิดได้ `400 invalid_grant`, ใช้ code ซ้ำได้ `400 invalid_grant`, WeChat 2 appid ได้ openid ต่างกัน unionid เดียวกัน และ response ไม่มี key `email`
+- [ ] **Step 1: เขียน test ที่ fail**: openid-configuration ที่ตั้ง `MOCKEXT_PUBLIC_URL=http://mockext:8090` ได้ `authorization_endpoint` ขึ้นต้นด้วยค่านั้น, ทำ flow เต็มด้วย `httptest` → id_token ตรวจด้วย JWKS ผ่าน, `code_verifier` ผิดได้ `400 invalid_grant`, ใช้ code ซ้ำได้ `400 invalid_grant`, WeChat 2 appid ได้ openid ต่างกัน unionid เดียวกัน และ response ไม่มี key `email`
 - [ ] **Step 2: รันให้ fail**
 - [ ] **Step 3: เขียน handler**
 - [ ] **Step 4: รันให้ผ่าน**
@@ -119,7 +121,7 @@ deploy/compose.yaml                (แก้) เพิ่ม mockext + mailpit
 - Test: `services/mockext/kbank_test.go`
 
 **Interfaces (contract ที่ Commerce ใช้ เมื่อได้สเปก KBank จริงให้เขียน adapter แปลงเข้า contract นี้):**
-- `POST /pg/payments` header `Authorization: Bearer <KBANK_API_KEY>` body `{ref, amount, currency:"THB", method: card|promptpay|alipayplus|wechatpay|unionpay, returnUrl, webhookUrl}` คืน `201 {paymentId, status:"pending", paymentUrl, promptpayPayload?}` (amount เป็นสตางค์ แบบ int)
+- `POST /pg/payments` header `Authorization: Bearer <KBANK_API_KEY>` body `{ref, amount, currency:"THB", method: card|promptpay|alipayplus|wechatpay|unionpay, returnUrl, webhookUrl}` คืน `201 {paymentId, status:"pending", paymentUrl, promptpayPayload?}` (amount เป็นสตางค์ แบบ int) โดย `paymentUrl` = `${MOCKEXT_PUBLIC_URL}/pg/checkout/{paymentId}` (contracts §2)
 - `GET /pg/checkout/{paymentId}` หน้าจำลองการจ่าย มีปุ่ม: **จ่ายสำเร็จ** · **ล้มเหลว** · **ยกเลิก** · **จ่ายสำเร็จแต่ไม่ส่ง webhook** · **ยอดไม่ตรง (จ่ายขาด 1 บาท)** กดแล้วเปลี่ยนสถานะ ส่ง webhook (ยกเว้นกรณีไม่ส่ง) และ redirect ไป `returnUrl?ref=…`
 - Webhook: `POST {webhookUrl}` body `{eventId, paymentId, ref, status: paid|failed|cancelled, amount, paidAt}` header `X-Mock-Signature: hex(HMAC-SHA256(KBANK_WEBHOOK_SECRET, rawBody))` ถ้าได้ non-2xx ให้ retry 3 ครั้งห่างกัน 2, 4, 8 วิ
 - `POST /pg/payments/{paymentId}/webhook:resend` (ปุ่มใน Console) ส่ง webhook เดิมซ้ำด้วย `eventId` เดิม
@@ -136,6 +138,7 @@ func TestPaidWithoutWebhookInquiryShowsPaid(t *testing.T)
 func TestAmountMismatch(t *testing.T)                 // inquiry amount = เดิม − 100 สตางค์
 func TestInquiryUnknownRef404(t *testing.T)
 func TestRefundExceedsPaid422(t *testing.T)
+func TestPaymentURLUsesPublicURL(t *testing.T)       // MOCKEXT_PUBLIC_URL=http://mockext:8090 → paymentUrl == "http://mockext:8090/pg/checkout/<id>"
 ```
 
 - [ ] **Step 2: รันให้ fail**
@@ -166,6 +169,7 @@ func TestRefundExceedsPaid422(t *testing.T)
 
 | Service | env | ค่าใน demo |
 |---|---|---|
+| mockext | `MOCKEXT_PUBLIC_URL` | `http://localhost:8090` (ใน e2e container `http://mockext:8090`, demo host `https://mock.<domain>`) |
 | identity | `TURNSTILE_VERIFY_URL` | `http://mockext:8090/turnstile/v0/siteverify` |
 | identity | `OIDC_LINE_ISSUER`, `OIDC_GOOGLE_ISSUER`, `OIDC_APPLE_ISSUER` | `http://localhost:8090/oauth/{p}` |
 | identity | `WECHAT_BASE_URL` | `http://localhost:8090/oauth/wechat` |
