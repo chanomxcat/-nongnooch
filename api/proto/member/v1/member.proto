@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package nongnooch.member.v1;
+
+option go_package = "nongnooch/platform/gen/go/member/v1;memberv1";
+
+service MemberService {
+  rpc GetMemberByContact(GetMemberByContactRequest) returns (Member);
+  rpc GetContactPrefs(GetContactPrefsRequest) returns (ContactPrefs);
+  rpc GetCompanion(GetCompanionRequest) returns (Holder);
+}
+
+message GetMemberByContactRequest { string contact = 1; }
+
+message Member {
+  string member_id = 1;
+  string lang = 2;
+  string nationality = 3;
+  bool thai_verified = 4;
+  string name = 5;
+  string id_last4 = 6;
+}
+
+message GetContactPrefsRequest { string member_id = 1; }
+
+message ContactPrefs {
+  string lang = 1;
+  bool marketing_consent = 2;
+  string phone = 3;
+  string email = 4;
+}
+
+message GetCompanionRequest {
+  string member_id = 1;
+  string companion_id = 2;
+}
+
+message Holder {
+  string name = 1;
+  string nationality = 2;
+  string id_last4 = 3;
+  bool thai_verified = 4;
+}

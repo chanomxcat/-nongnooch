@@ -8,7 +8,7 @@ RUN      ?=
 REGISTRY ?= nongnooch
 TAG      ?= dev
 
-.PHONY: up down logs test test-int tidy build
+.PHONY: up down logs test test-int tidy build gen
 
 up:
 	$(COMPOSE) up -d --wait
@@ -27,6 +27,9 @@ test-int:
 
 tidy:
 	$(COMPOSE) run --rm --no-deps gotest go mod tidy
+
+gen:
+	$(COMPOSE) run --rm --no-deps gotest sh deploy/gen-proto.sh
 
 build:
 	docker build -f deploy/Dockerfile.go --build-arg SVC=$(SVC) -t $(REGISTRY)/$(SVC):$(TAG) .

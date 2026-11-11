@@ -10,7 +10,7 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
-	"fmt"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -97,7 +97,9 @@ func (t *TokenIssuer) access(ctx context.Context, c Contact) (string, error) {
 	if t.Members != nil {
 		var err error
 		if mid, err = t.Members.GetMemberIDByContact(ctx, c.Value); err != nil {
-			return "", fmt.Errorf("member lookup: %w", err)
+			// Login must not fail because member is down; the client can refresh later to get mid.
+			slog.WarnContext(ctx, "member_lookup_failed", "err", err)
+			mid = ""
 		}
 	}
 	lang := c.Lang

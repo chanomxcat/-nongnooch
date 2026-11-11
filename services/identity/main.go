@@ -84,7 +84,15 @@ func run(ctx context.Context, cfg config.Base) error {
 	}
 	go (&outbox.Relay{DB: d, JS: js}).Run(ctx)
 
-	var members MemberLookup = noMember{} // Task 5 swaps in the member gRPC client
+	var members MemberLookup = noMember{}
+	if addr := os.Getenv("MEMBER_GRPC_ADDR"); addr != "" {
+		l, cc, err := NewGRPCMemberLookup(addr)
+		if err != nil {
+			return err
+		}
+		defer cc.Close()
+		members = l
+	}
 	api := &API{
 		OTP: &OTPService{DB: d, Pepper: []byte(os.Getenv("OTP_PEPPER")), Verifier: TurnstileVerifier{
 			URL: os.Getenv("TURNSTILE_VERIFY_URL"), Secret: os.Getenv("TURNSTILE_SECRET"),

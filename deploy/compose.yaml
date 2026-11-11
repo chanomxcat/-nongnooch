@@ -66,6 +66,7 @@ services:
       TURNSTILE_VERIFY_URL: http://mockext:8090/turnstile/v0/siteverify
       TURNSTILE_SECRET: demo-turnstile-secret
       OTP_PEPPER: demo-otp-pepper-change-me
+      MEMBER_GRPC_ADDR: member:9090
       # DEMO ONLY Ed25519 key (public repo, not a secret). Real envs inject via secret manager.
       JWT_ED25519_KEY: |
         -----BEGIN PRIVATE KEY-----
@@ -75,6 +76,27 @@ services:
       mariadb: {condition: service_healthy}
       nats: {condition: service_healthy}
       mockext: {condition: service_healthy}
+    mem_limit: 96m
+
+  member:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.go
+      args: {SVC: member}
+    image: nongnooch/member:dev
+    environment:
+      DB_DSN: member:member@tcp(mariadb:3306)/member?parseTime=true
+      NATS_URL: nats://nats:4222
+      DEMO_MODE: "true"
+      # DEMO ONLY keys (public repo, not secrets). Real envs inject via secret manager.
+      MEMBER_ID_ENC_KEY: ZGVtby1tZW1iZXItaWQtZW5jLWtleS0zMmJ5dGVzISE=
+      MEMBER_ID_ENC_KID: "1"
+      MEMBER_ID_HMAC_KEY: ZGVtby1tZW1iZXItaWQtaG1hYy1rZXktMzJieXRlcyEh
+      POINTS_WELCOME: "100"
+      POINTS_INVITE: "50"
+    depends_on:
+      mariadb: {condition: service_healthy}
+      nats: {condition: service_healthy}
     mem_limit: 96m
 
   gateway:
