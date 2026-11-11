@@ -6,23 +6,24 @@ import { TicketCard } from '@/components/account/TicketCard';
 import { ErrorBox } from '@/components/auth/ErrorBox';
 import { Icon } from '@/components/ui/Icon';
 import { useErrorText, useI18n } from '@/components/providers/Providers';
-import { ApiError, commerce, newKey, ticket, type Order, type Ticket } from '@/lib/api/client';
+import { ApiError, commerce, ticket, type Order, type Ticket } from '@/lib/api/client';
 import { formatTHB } from '@/lib/format';
+import { advanceAttempt, classify, currentAttempt, pollDelay, retryKey, ticketsForOrder, type View } from './resultState';
 import { clearPersisted } from './state';
 import s from '@/components/account/account.module.css';
 
-const POLL_MS = 2000;
-const MAX_MS = 60_000;
-/** The KBank webhook lands within a second or two; still unpaid after this means the payment did not go through. */
-const PENDING_GIVE_UP_MS = 12_000;
+const session = () => {
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
+};
 
-type View = 'checking' | 'issuing' | 'success' | 'slow' | 'failed' | 'expired' | 'error';
-
-const isPaid = (o: Order) => ['confirmed', 'paid', 'completed'].includes(o.status) || o.paymentStatus === 'paid';
-const isFailed = (o: Order) => ['failed', 'cancelled'].includes(o.paymentStatus) || o.status === 'payment_failed';
-const isExpired = (o: Order) => ['expired', 'cancelled'].includes(o.status);
-
-/** Return page from mockext: poll the order, then the tickets, every 2 s for up to 60 s (Plan 13 Task 6). */
+/**
+ * Return page from mockext: poll the order (2 s, then 4 s), then this order's tickets. A slow webhook is
+ * never treated as a failure; payment retry is offered only when commerce reports the payment failed.
+ */
 export function OrderResult({ orderId }: { orderId: string }) {
   const { t, locale } = useI18n();
   const errText = useErrorText();
@@ -37,35 +38,21 @@ export function OrderResult({ orderId }: { orderId: string }) {
     let live = true;
     let timer: ReturnType<typeof setTimeout>;
     const tick = async () => {
+      const elapsed = Date.now() - started.current;
       try {
         const o = await commerce.order(orderId);
         if (!live) return;
         setOrder(o);
-        if (isPaid(o)) {
-          const all = await ticket.mine().catch(() => [] as Ticket[]);
+        let mine: Ticket[] = [];
+        if (o.status === 'confirmed' || o.status === 'paid' || o.paymentStatus === 'paid') {
+          mine = ticketsForOrder(await ticket.mine().catch(() => [] as Ticket[]), orderId);
           if (!live) return;
-          const mine = all.filter((tk) =>
-            tk.orderId || tk.orderNo ? tk.orderId === orderId || (!!o.orderNo && tk.orderNo === o.orderNo) : !!o.visitDate && tk.visitDate === o.visitDate,
-          );
           setTickets(mine);
-          const complete = mine.length > 0 && (!o.ticketCount || mine.length >= o.ticketCount);
-          if (complete) {
-            clearPersisted();
-            setView('success');
-            return;
-          }
-          setView('issuing');
-        } else if (isFailed(o)) {
-          setView('failed');
-          return;
-        } else if (isExpired(o)) {
-          setView('expired');
-          return;
-        } else if (Date.now() - started.current > PENDING_GIVE_UP_MS) {
-          // commerce keeps a failed / cancelled payment as a pending order until the hold expires
-          setView('failed');
-          return;
         }
+        const next = classify(o, mine, elapsed);
+        setView(next.view);
+        if (next.view === 'success') clearPersisted();
+        if (next.done) return;
       } catch (e) {
         if (!live) return;
         const code = (e as ApiError).code;
@@ -75,11 +62,7 @@ export function OrderResult({ orderId }: { orderId: string }) {
           return;
         }
       }
-      if (Date.now() - started.current > MAX_MS) {
-        setView((v) => (v === 'issuing' ? 'slow' : v === 'checking' ? 'slow' : v));
-        return;
-      }
-      timer = setTimeout(tick, POLL_MS);
+      timer = setTimeout(tick, pollDelay(elapsed));
     };
     void tick();
     return () => {
@@ -89,15 +72,35 @@ export function OrderResult({ orderId }: { orderId: string }) {
   }, [orderId]);
 
   async function retry() {
+    if (retrying) return;
     setRetrying(true);
+    setError(null);
+    const store = session();
     try {
-      const url = await commerce.pay(orderId, 'card', `${window.location.origin}/${locale}/checkout/result/${orderId}`, newKey());
+      const url = await commerce.pay(
+        orderId,
+        'card',
+        `${window.location.origin}/${locale}/checkout/result/${orderId}`,
+        retryKey(orderId, currentAttempt(orderId, store)),
+      );
+      advanceAttempt(orderId, store);
       window.location.assign(url);
     } catch (e) {
       setError((e as ApiError).code);
       setRetrying(false);
     }
   }
+
+  const title: Record<View, string> = {
+    checking: t('result.checking'),
+    confirming: t('result.confirming'),
+    issuing: t('result.issuing'),
+    slow: t('result.issuing'),
+    success: t('result.success'),
+    failed: t('result.failed'),
+    expired: t('result.expired'),
+    error: errText(error),
+  };
 
   return (
     <section className={s.page}>
@@ -114,22 +117,9 @@ export function OrderResult({ orderId }: { orderId: string }) {
           ) : (
             <div className="nn-spinner" />
           )}
-          <h1 className={s.title}>
-            {view === 'success'
-              ? t('result.success')
-              : view === 'issuing'
-                ? t('result.issuing')
-                : view === 'slow'
-                  ? t('result.issuing')
-                  : view === 'failed'
-                    ? t('result.failed')
-                    : view === 'expired'
-                      ? t('result.expired')
-                      : view === 'error'
-                        ? errText(error)
-                        : t('result.checking')}
-          </h1>
+          <h1 className={s.title}>{title[view]}</h1>
           {view === 'success' && <p className={s.lead}>{t('result.successLead')}</p>}
+          {view === 'confirming' && <p className={s.lead}>{t('result.confirmingLead')}</p>}
           {view === 'slow' && <p className={s.lead}>{t('result.issuingLong')}</p>}
           {view === 'failed' && <p className={s.lead}>{t('result.failedLead')}</p>}
           {order?.orderNo && (

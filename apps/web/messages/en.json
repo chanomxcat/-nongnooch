@@ -270,7 +270,9 @@
     "priceForeign": "Foreigner price"
   },
   "result": {
-    "checking": "Confirming your payment…",
+    "checking": "Checking your payment…",
+    "confirming": "Confirming your payment…",
+    "confirmingLead": "The bank has not confirmed yet. Please keep this page open and do not pay again.",
     "success": "Payment successful!",
     "successLead": "Your e-tickets are ready. Show each QR code at the gate.",
     "issuing": "Issuing your e-tickets…",

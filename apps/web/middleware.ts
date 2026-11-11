@@ -21,7 +21,7 @@ export function middleware(req: NextRequest) {
   let invite: string | null = null;
   if (seg[2] === 'r' && seg[3]) {
     // /<l>/r/{inviteCode} → remember the code, continue to registration
-    invite = normalizeInvite(decodeURIComponent(seg[3]));
+    invite = normalizeInvite(safeDecode(seg[3]));
     const url = req.nextUrl.clone();
     url.pathname = `/${first}/register`;
     url.search = '';
@@ -34,6 +34,15 @@ export function middleware(req: NextRequest) {
     res.cookies.set(INVITE_COOKIE, invite, { path: '/', maxAge: 30 * 24 * 3600, sameSite: 'lax', httpOnly: false });
   }
   return withDevice(req, res);
+}
+
+/** Malformed percent-encoding (e.g. /r/%E0) must not throw a 500. */
+function safeDecode(v: string): string | null {
+  try {
+    return decodeURIComponent(v);
+  } catch {
+    return null;
+  }
 }
 
 function withDevice(req: NextRequest, res: NextResponse) {

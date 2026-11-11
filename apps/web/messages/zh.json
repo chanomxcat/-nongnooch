@@ -270,7 +270,9 @@
     "priceForeign": "外国游客价格"
   },
   "result": {
-    "checking": "正在确认付款…",
+    "checking": "正在检查付款…",
+    "confirming": "正在确认付款…",
+    "confirmingLead": "银行尚未确认，请保持此页面打开，不要重复付款。",
     "success": "付款成功！",
     "successLead": "您的电子门票已就绪，请在入口出示每张二维码。",
     "issuing": "正在出票…",

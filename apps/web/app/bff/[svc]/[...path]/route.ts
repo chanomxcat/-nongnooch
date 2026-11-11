@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { AT, RT, setSessionCookies, type Tokens } from '@/lib/session/cookies';
+import { upstreamPath } from '@/lib/session/bffPath';
 import { csrfFail } from '@/lib/session/csrf';
 import { decodeClaims, isFresh } from '@/lib/session/jwt';
 import { refreshOnce } from '@/lib/session/refresh';
@@ -7,20 +8,19 @@ import { baseHeaders, gatewayUrl } from '@/lib/session/upstream';
 
 export const dynamic = 'force-dynamic';
 
-/** Services the browser may reach through the BFF. Identity has its own /bff/auth/* routes. */
-const ALLOWED = new Set(['member', 'commerce', 'ticket', 'content', 'notify']);
 const PASS_HEADERS = ['content-type', 'idempotency-key', 'x-queue-token', 'x-queue-ticket', 'x-order-token'];
 
 type Ctx = { params: { svc: string; path: string[] } };
 
 async function handle(req: NextRequest, { params }: Ctx) {
-  if (!ALLOWED.has(params.svc) || params.path.some((s) => s.toLowerCase() === 'internal')) {
-    return NextResponse.json({ error: 'not_found' }, { status: 404 });
+  const target = upstreamPath(params.svc, params.path ?? [], gatewayUrl());
+  if (!target.ok) {
+    return NextResponse.json({ error: target.status === 404 ? 'not_found' : 'bad_request' }, { status: target.status });
   }
   const bad = csrfFail(req);
   if (bad) return bad;
 
-  const url = `${gatewayUrl()}/api/${params.svc}/${params.path.map(encodeURIComponent).join('/')}${req.nextUrl.search}`;
+  const url = `${gatewayUrl()}${target.path}${req.nextUrl.search}`;
   const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : await req.arrayBuffer();
 
   let access = req.cookies.get(AT)?.value ?? null;
