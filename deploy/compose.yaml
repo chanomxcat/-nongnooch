@@ -119,6 +119,23 @@ services:
       mockext: {condition: service_healthy}
     mem_limit: 96m
 
+  ticket:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.go
+      args: {SVC: ticket}
+    image: nongnooch/ticket:dev
+    environment:
+      DB_DSN: ticket:ticket@tcp(mariadb:3306)/ticket?parseTime=true
+      NATS_URL: nats://nats:4222
+      DEMO_MODE: "true"
+      # DEMO ONLY Ed25519 seed (public repo, not a secret). Real envs inject via secret manager.
+      TICKET_SIGNING_KEY: ZGVtby10aWNrZXQtc2lnbmluZy1zZWVkLTMyYnl0ZSE=
+    depends_on:
+      mariadb: {condition: service_healthy}
+      nats: {condition: service_healthy}
+    mem_limit: 96m
+
   gateway:
     build:
       context: .

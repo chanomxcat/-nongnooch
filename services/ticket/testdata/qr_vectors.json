@@ -1,0 +1,47 @@
+{
+  "publicKeys": [
+    "KOgydwmXGJP-Q87_94Dk2qqNELGl77N7gCOZ_IrMnXg"
+  ],
+  "cases": [
+    {
+      "name": "valid day ticket",
+      "qr": "NN1.eyJ0IjoiMDE5MmYzYTAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwiayI6ImRheSIsImQiOiIyMDI3LTAzLTAxIiwiaCI6IjA3MDgifQ.fNA2NwkutFYgZBWwvwII7-CvWccVlBfwvb9XFVlYiiWQ7WM2qdgl-JG3B0J8vRup9lqQFAuQl50tMviu7OBwAA",
+      "expect": "valid"
+    },
+    {
+      "name": "valid annual ticket (d null)",
+      "qr": "NN1.eyJ0IjoiMDE5MmYzYTAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAyIiwiayI6ImFubnVhbCIsImQiOm51bGwsImgiOiI1Njc4In0.5GkrWSRjhGJQU_iHLhBVUq-x6dMiCnGwzgFQfUL8fK6OkDF1RGU1zDo5hwOxjji6dazZ14Gt4OL9k1yaHR_eCA",
+      "expect": "valid"
+    },
+    {
+      "name": "signed by an unknown key",
+      "qr": "NN1.eyJ0IjoiMDE5MmYzYTAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwiayI6ImRheSIsImQiOiIyMDI3LTAzLTAxIiwiaCI6IjA3MDgifQ.RLXvMP-cEO87sC_p7LNONCDum4xExJ8XIcyE8pkHRGvT5hWqRapvJEMM2-1B1dlhMbmljH6TVKN5-9fZyQeuCQ",
+      "expect": "invalid"
+    },
+    {
+      "name": "payload tampered after signing",
+      "qr": "NN1.eyJ0IjoiMDE5MmYzYTAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwiayI6ImRheSIsImQiOiIyMDI3LTAzLTAxIiwiaCI6Ijk5OTkifQ.fNA2NwkutFYgZBWwvwII7-CvWccVlBfwvb9XFVlYiiWQ7WM2qdgl-JG3B0J8vRup9lqQFAuQl50tMviu7OBwAA",
+      "expect": "invalid"
+    },
+    {
+      "name": "truncated signature",
+      "qr": "NN1.eyJ0IjoiMDE5MmYzYTAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwiayI6ImRheSIsImQiOiIyMDI3LTAzLTAxIiwiaCI6IjA3MDgifQ.fNA2NwkutFYgZBWwvwII7-CvWccVlBfwvb9XFVlYiiWQ7WM2qdgl-JG3B0J8vRup9lqQFAuQl50tMviu7O",
+      "expect": "invalid"
+    },
+    {
+      "name": "wrong prefix",
+      "qr": "NN2.eyJ0IjoiMDE5MmYzYTAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwiayI6ImRheSIsImQiOiIyMDI3LTAzLTAxIiwiaCI6IjA3MDgifQ.fNA2NwkutFYgZBWwvwII7-CvWccVlBfwvb9XFVlYiiWQ7WM2qdgl-JG3B0J8vRup9lqQFAuQl50tMviu7OBwAA",
+      "expect": "invalid"
+    },
+    {
+      "name": "missing signature",
+      "qr": "NN1.eyJ0IjoiMDE5MmYzYTAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwiayI6ImRheSIsImQiOiIyMDI3LTAzLTAxIiwiaCI6IjA3MDgifQ",
+      "expect": "invalid"
+    },
+    {
+      "name": "garbage",
+      "qr": "hello",
+      "expect": "invalid"
+    }
+  ]
+}
