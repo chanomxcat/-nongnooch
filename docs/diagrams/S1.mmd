@@ -1,0 +1,47 @@
+sequenceDiagram
+  autonumber
+  actor T as นักท่องเที่ยว
+  participant FE as Next.js / Flutter
+  participant CF as Cloudflare Turnstile
+  participant ID as Identity
+  participant MP as Member & Point
+  participant AG as Agent
+  participant NB as NATS JetStream
+  participant NT as Notification
+  participant G as Agent App (ไกด์)
+
+  T->>FE: เปิดลิงก์ / QR ของไกด์ (?invite=CODE)
+  FE->>FE: เก็บ invite code + ภาษา (1 ใน 7)
+  T->>FE: กรอกเบอร์โทร
+  FE->>CF: Turnstile challenge
+  CF-->>FE: token
+  FE->>ID: POST /auth/otp {phone, lang, turnstileToken}
+  ID->>CF: verify token
+  ID->>ID: rate limit · บันทึก OTP (hash) · outbox otp.requested
+  ID-->>FE: 202 ส่งแล้ว
+  ID-)NB: otp.requested
+  NB-)NT: otp.requested
+  NT->>NT: ส่ง SMS ตามภาษา (สำรอง: Email OTP)
+  T->>FE: กรอก OTP + ยอมรับ PDPA
+  FE->>ID: POST /auth/verify {otp}
+  ID-->>FE: JWT (verified phone)
+  FE->>MP: POST /members {consents, inviteCode, lang} ผ่าน Gateway
+  MP->>MP: ตรวจ 1 เบอร์ / อีเมล = 1 บัญชี
+  alt มีบัญชีอยู่แล้ว
+    MP-->>FE: ใช้บัญชีเดิม (ไม่ให้พ้อยซ้ำ)
+  else บัญชีใหม่
+    opt มี inviteCode
+      MP->>AG: gRPC ValidateInvite(code)
+      AG-->>MP: guideId · ใช้ได้ / ไม่ได้
+    end
+    MP->>MP: BEGIN · Member · Consent · PointLedger(Welcome, Invite)<br>outbox member.registered · COMMIT
+    MP-->>FE: บัญชี + ยอดพ้อย
+    MP-)NB: member.registered {memberId, guideId}
+    NB-)AG: member.registered
+    AG->>AG: Referral + ธงความผิดปกติ · outbox referral.created
+    AG-)NB: referral.created
+    NB-)MP: referral.created
+    MP->>MP: PointLedger(ไกด์, สถานะ=รอตรวจ) idempotent ด้วย referralId
+    NB-)NT: referral.created
+    NT->>G: Push มีผู้สมัครด้วยโค้ดของคุณ (จำนวนเท่านั้น)
+  end

@@ -1,0 +1,25 @@
+flowchart TD
+  subgraph earn[ได้พ้อย]
+    sp([ชำระเงินสำเร็จ]) --> calc[ทุก 100 บาทที่จ่ายจริง = 1 พ้อย] --> le[PointLedger: +พ้อย]
+    rf([คืนเงิน]) --> rev[PointLedger: หักพ้อยที่ได้คืน]
+    ret([สแกนเข้าครั้งที่ 2 ขึ้นไป]) --> promo["คูปอง / พ้อยพิเศษ กลับมาเที่ยว<br>ส่ง Push / อีเมล เฉพาะผู้ยินยอม"]
+    bd([Job รายวัน: สมาชิกที่เกิดเดือนนี้]) --> bdt["ออกสิทธิ์ตั๋วฟรีวันเกิด<br>[รอกติกา]"]
+  end
+  subgraph use[ใช้พ้อย]
+    who{ใครใช้?}
+    who -->|ไกด์| gchk{พ้อยสถานะ ผ่าน<br>พอแลก?}
+    gchk -->|ใช่| gfree["แลกตั๋วฟรี<br>ออก Ticket ราคา 0"]
+    gchk -->|ไม่| gno([แจ้งยอดที่แลกได้])
+    who -->|สมาชิก| mchk{ไม่เกินเพดาน<br>ยังไม่หมดอายุ?}
+    mchk -->|ใช่| disc[[S8 ใช้พ้อยเป็นส่วนลดตอน Checkout]]
+    mchk -->|ไม่| mno([ใช้ได้บางส่วน / ใช้ไม่ได้])
+  end
+  rule["มูลค่าพ้อย · อายุ · เพดาน<br>ผ่าน F5 อนุมัติก่อนเปิดแลก"] -.- who
+  class calc,le,rev,promo,gfree,disc p2
+  class bdt assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

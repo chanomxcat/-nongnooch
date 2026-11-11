@@ -1,0 +1,29 @@
+flowchart LR
+  subgraph users[ผู้ใช้]
+    tourist@{ icon: "lucide:user", form: "circle", label: "นักท่องเที่ยว<br>ไทย · ต่างชาติ · จีน", pos: "b" }
+    agent@{ icon: "lucide:users", form: "circle", label: "บริษัททัวร์ / ไกด์", pos: "b" }
+    staff@{ icon: "lucide:user-cog", form: "circle", label: "เจ้าหน้าที่นงนุช<br>Editor · Approver · Finance · Gate", pos: "b" }
+    exec@{ icon: "lucide:briefcase", form: "circle", label: "ผู้บริหาร", pos: "b" }
+  end
+
+  sys@{ icon: "lucide:server", form: "square", label: "ระบบดิจิทัลสวนนงนุช<br>Website · Mobile App · Agent · หลังบ้าน<br>7 ภาษา: TH EN ZH JA KO DE FR<br>ข้อมูลชุดเดียว · อยู่ในนามนงนุช", pos: "b" }
+
+  subgraph ext[ระบบภายนอก]
+    kbank@{ icon: "lucide:credit-card", form: "square", label: "KBank Payment Gateway<br>บัตร · PromptPay · Alipay+ / WeChat Pay<br>[ถ้า Gateway รองรับ]", pos: "b" }
+    msg@{ icon: "lucide:mail", form: "square", label: "Email · SMS OTP (+86)", pos: "b" }
+    push@{ icon: "lucide:bell", form: "square", label: "FCM + Huawei Push Kit + Web Push<br>แสดงนอกแอปแม้ปิดอยู่", pos: "b" }
+    social@{ icon: "lucide:log-in", form: "square", label: "LINE · WeChat · Google · Apple<br>เฟส 2: FB · Kakao · WhatsApp", pos: "b" }
+    legacy@{ icon: "lucide:building-2", form: "square", label: "ระบบเดิมนงนุช<br>ขายบัตร · ประตู · POS · บัญชี · โรงแรม<br>[สมมติฐาน]", pos: "b" }
+    trip@{ icon: "lucide:external-link", form: "square", label: "Trip.com · Partner · ขนส่งพัสดุ (เฟส 4)", pos: "b" }
+  end
+
+  tourist -->|สมัคร · ซื้อบัตร · ดูพ้อย| sys
+  agent -->|Invite code / QR · ยอดผู้สมัคร| sys
+  staff -->|เนื้อหา · ราคา · อนุมัติ · สแกนประตู| sys
+  exec -->|Dashboard · รายงาน| sys
+  sys <-->|ชำระเงิน · Webhook · คืนเงิน| kbank
+  sys -->|OTP · e-Ticket · ข่าวสาร| msg
+  sys -->|แจ้งเตือนมือถือ · เบราว์เซอร์| push
+  sys <-->|OAuth / OIDC| social
+  sys <-.->|Integration Spec| legacy
+  sys -.->|ลิงก์ที่พัก · สินค้า Partner| trip

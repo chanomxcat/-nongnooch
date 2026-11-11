@@ -1,0 +1,25 @@
+sequenceDiagram
+  autonumber
+  actor T as สมาชิก
+  participant App as Tourist App
+  participant POS as POS ร้านค้า [สมมติฐาน]
+  participant CO as Commerce (In-park pay)
+  participant KB as KBank PG
+  participant NB as NATS JetStream
+  participant MP as Member & Point
+
+  POS->>CO: สร้างบิล {shopId, amount, billRef} [สมมติฐาน: POS ออก QR บิล]
+  CO-->>POS: QR บิล
+  T->>App: สแกน QR บิล
+  App->>CO: GET /bills/{id}
+  CO-->>App: ชื่อร้าน · ยอด
+  T->>App: ยืนยันจ่าย (เลือกใช้พ้อยได้ ตาม S8)
+  App->>CO: POST /bills/{id}/pay
+  CO->>KB: ชำระ (PromptPay / บัตรที่บันทึกไว้)
+  KB->>CO: Webhook paid
+  CO->>CO: Payment · Bill=paid · outbox bill.paid
+  CO->>POS: แจ้งบิลชำระแล้ว
+  CO-->>App: ใบเสร็จ
+  CO-)NB: bill.paid
+  NB-)MP: bill.paid
+  MP->>MP: PointLedger(+1 พ้อยต่อ 100 บาท)

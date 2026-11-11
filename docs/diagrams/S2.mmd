@@ -1,0 +1,28 @@
+sequenceDiagram
+  autonumber
+  actor T as นักท่องเที่ยว
+  participant FE as Next.js / Flutter
+  participant IdP as LINE / WeChat / Google / Apple
+  participant API as Identity service
+  participant DB as MariaDB (schema identity)
+
+  T->>FE: เลือก Login ด้วย LINE / WeChat / Google / Apple
+  FE->>IdP: OAuth 2.0 / OIDC (PKCE)<br>WeChat: เว็บสแกน QR · ในแอป WeChat ใช้ Official Account · แอปใช้ Mobile SDK
+  IdP-->>FE: authorization code
+  FE->>API: POST /auth/social {provider, code}
+  API->>IdP: แลก code เป็น id_token · ตรวจลายเซ็น
+  IdP-->>API: sub · email (ถ้ามี) · WeChat ให้ UnionID ไม่มีอีเมล / เบอร์
+  API->>DB: หา SocialIdentity(provider, sub / UnionID) [สมมติฐาน: ตารางใหม่]
+  alt เคยผูกแล้ว
+    API-->>FE: session
+  else อีเมลตรงกับบัญชีที่มีอยู่
+    API-->>FE: ขอยืนยัน OTP อีเมลก่อนผูกบัญชี
+    T->>FE: กรอก OTP
+    FE->>API: POST /auth/social/link {otp}
+    API->>DB: ผูก SocialIdentity กับบัญชีเดิม
+    API-->>FE: session
+  else ผู้ใช้ใหม่
+    API-->>FE: ขอเบอร์โทร / อีเมล + OTP
+    Note over FE,API: ต้องยืนยันตัวตนก่อนได้พ้อย ต่อด้วย S1 ตั้งแต่ขั้นส่ง OTP แล้วกรอกเลขบัตร / พาสปอร์ต (F1)
+  end
+  Note over FE,IdP: Build HMS (Huawei) ไม่มี Google Sign-In ใช้ LINE / WeChat / Apple / OTP แทน<br>ปุ่ม WeChat ซ่อนได้จาก Admin ถ้าบัญชี Open Platform ยังไม่ผ่าน

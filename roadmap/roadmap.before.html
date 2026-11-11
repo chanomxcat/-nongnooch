@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nong Nooch Digital Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@400..700&family=Noto+Serif:wght@400..700&display=swap">
+<style>
+:root{
+  --forest:#17302A; --forest-2:#22403A; --green:#2F5D50;
+  --cream:#F5F1E6; --card:#FBF9F3; --line:#DCD5C2; --muted-bg:#ECE7D8;
+  --orchid:#A8336A; --orchid-tint:#F3DCE6; --gold:#D9A441; --gold-ink:#8A6215;
+  --ink:#3E4A45; --ink-soft:#6B756F; --on-dark:#C9D6CF; --on-dark-soft:#8FA59C;
+  --serif:'Noto Serif Thai','Noto Serif',Georgia,serif;
+  --sans:'IBM Plex Sans Thai',Tahoma,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0E1E1A;font-family:var(--sans);color:var(--ink);overflow:hidden}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1920px;height:1080px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px;background:var(--cream);color:var(--ink);opacity:0;visibility:hidden;transition:opacity .35s ease;overflow:hidden}
+.slide.active{opacity:1;visibility:visible}
+.slide.dark{background:var(--forest);color:var(--on-dark)}
+.slide.accent{background:var(--orchid);color:var(--cream)}
+.head{display:flex;flex-direction:column;gap:12px}
+.eyebrow{font-size:24px;font-weight:600;color:var(--orchid)}
+.dark .eyebrow{color:var(--gold)} .accent .eyebrow{color:var(--cream)}
+h1,h2,h3.serif{font-family:var(--serif);font-weight:600;color:var(--forest)}
+h2{font-size:72px;line-height:1.2}
+.dark h2,.accent h2,.dark h1{color:var(--cream)}
+h3{font-size:32px;font-weight:600;line-height:1.3;color:var(--forest)}
+h3.big{font-size:44px;line-height:1.2}
+p,li{font-size:24px;line-height:1.5}
+ul{padding-left:28px;line-height:1.6}
+.statement{font-family:var(--serif);font-size:44px;line-height:1.4;color:var(--forest);max-width:1500px}
+.row{display:flex;gap:32px}
+.row>*{flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:16px}
+.card.top-orchid::before,.card.top-gold::before,.card.top-green::before{content:"";display:block;width:56px;height:6px;border-radius:3px}
+.card.top-orchid::before{background:var(--orchid)} .card.top-gold::before{background:var(--gold)} .card.top-green::before{background:var(--green)}
+.card.hot{background:var(--orchid);border-color:var(--orchid);color:var(--cream)}
+.card.hot h3,.card.hot .tag{color:var(--cream)}
+.card.muted{background:var(--muted-bg);border-color:var(--muted-bg)}
+.dark .card{background:var(--forest-2);border-color:var(--forest-2);color:var(--on-dark)}
+.dark .card h3{color:var(--cream)}
+.dark .card.hot{background:var(--orchid);color:var(--cream)}
+.tag{font-size:24px;font-weight:600;color:var(--ink-soft)}
+.tag.orchid{color:var(--orchid)} .tag.gold{color:var(--gold-ink)} .tag.green{color:var(--green)}
+.dark .tag{color:var(--gold)}
+.icon{width:48px;height:48px;color:var(--orchid)}
+.spacer{flex:1}
+.note{color:var(--ink-soft)}
+.dark .note{color:var(--on-dark)}
+.footer{position:absolute;left:128px;right:128px;bottom:64px;display:flex;justify-content:space-between;font-size:24px;color:var(--ink-soft)}
+.dark .footer{color:var(--on-dark-soft)} .accent .footer{color:#F0D2DF}
+.band{display:flex;align-items:center;gap:24px;background:var(--forest);color:var(--cream);border-radius:16px;padding:28px 40px}
+.band b{color:var(--gold);white-space:nowrap}
+/* cover */
+.cover{justify-content:space-between;padding:128px}
+.cover h1{font-size:120px;line-height:1.1}
+.cover .sub{font-size:44px;color:var(--on-dark);line-height:1.3}
+.blob{position:absolute;border-radius:50%}
+/* checks */
+.check{display:flex;gap:16px;align-items:flex-start}
+.check svg{flex:none;width:32px;height:32px;color:var(--orchid);margin-top:2px}
+/* table */
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);font-size:24px}
+th,td{padding:16px 24px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+th{background:var(--forest);color:var(--cream);font-weight:600}
+th.gold{color:var(--gold)}
+.accent table{background:transparent;border:none;color:var(--cream)}
+.accent th{background:transparent;color:var(--cream);border-bottom:2px solid rgba(245,241,230,.6)}
+.accent td{border-bottom:1px solid rgba(245,241,230,.3)}
+.decide th,.decide td{padding:12px 24px;font-size:26px}
+.accent td.when{font-weight:600;white-space:nowrap}
+/* journey */
+.journey{display:flex;gap:16px;align-items:stretch}
+.journey .card{flex:1;padding:32px}
+.arrow{flex:none;align-self:center;width:40px;color:var(--orchid)}
+/* gantt */
+.gantt{display:grid;grid-template-columns:440px repeat(10,1fr);row-gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 32px}
+.gantt .wk{font-weight:600;color:var(--ink-soft)}
+.gantt .wk.xmas{color:var(--orchid)}
+.bar{height:36px;border-radius:8px}
+.bar.wv{background:var(--green)} .bar.nn{background:var(--gold)} .bar.jt{background:var(--orchid)}
+.legend{display:flex;gap:40px;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:12px;font-size:24px}
+.legend i{display:inline-block;width:32px;height:20px;border-radius:4px}
+/* kpi */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.kpi{background:var(--forest-2);border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:12px}
+.kpi .num{font-family:var(--serif);font-size:72px;font-weight:600;color:var(--gold);line-height:1.1}
+.kpi .lbl{font-size:24px;color:var(--on-dark)}
+/* governance */
+.gov{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.gov .card{padding:36px;gap:12px}
+/* next steps */
+.steps{display:flex;gap:32px}
+.step{flex:1;border-top:4px solid var(--gold);padding-top:28px;display:flex;flex-direction:column;gap:12px}
+.step .when{font-size:24px;font-weight:600;color:var(--gold)}
+.step h3{color:var(--cream)}
+/* chrome */
+#bar{position:fixed;left:0;bottom:0;width:100%;height:4px;background:var(--orchid);transform-origin:left center;transform:scaleX(0);transition:transform .3s ease;z-index:5}
+#nav{position:fixed;right:16px;bottom:14px;display:flex;gap:8px;align-items:center;z-index:5;font:500 14px var(--sans);color:#C9D6CF}
+#nav button{background:rgba(255,255,255,.08);color:#F5F1E6;border:1px solid rgba(255,255,255,.18);border-radius:8px;width:36px;height:32px;font-size:16px;cursor:pointer}
+#nav button:hover{background:rgba(255,255,255,.18)}
+#nav button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body{overflow:visible;background:none}
+  #viewport{position:static;display:block}
+  #stage{transform:none!important;width:auto;height:auto}
+  .slide{position:relative;opacity:1;visibility:visible;page-break-after:always;break-after:page}
+  #bar,#nav{display:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></g></symbol>
+  <symbol id="i-flower" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="2.5"/><path d="M12 6.5c0-3 3-3 3 0M14.5 9c3 0 3 3 0 3M12 11.5c0 3-3 3-3 0M9.5 9c-3 0-3-3 0-3M12 12v9M12 17c-2-2-5-2-5-2M12 19c2-2 5-2 5-2"/></g></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3.3-6 6.5-6s6 2 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5 2 5.5 5.3"/></g></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5" stroke-linecap="round"/></g></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 7h18v3a2 2 0 000 4v3H3v-3a2 2 0 000-4zM14 7v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="0" stroke-linejoin="round"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M17 20h4v-3"/></g></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-8-4.6-8-10.2A4.3 4.3 0 0112 7a4.3 4.3 0 018 2.8C20 15.4 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 40 24"><path d="M2 12h32M26 5l8 7-8 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></g></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9l9-5 9 5M5 9v9M10 9v9M14 9v9M19 9v9M3 20h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></g></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></g></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6zM8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div id="viewport"><div id="stage">
+
+<!-- 1 COVER -->
+<section class="slide dark cover" data-title="ปก">
+  <div class="blob" style="left:1260px;top:96px;width:560px;height:560px;background:var(--orchid);opacity:.22"></div>
+  <div class="blob" style="left:1500px;top:460px;width:300px;height:300px;background:var(--gold);opacity:.18"></div>
+  <p class="eyebrow" style="letter-spacing:.05em;position:relative">WISDOM VAST × NONG NOOCH WORLD PATTAYA</p>
+  <div style="display:flex;flex-direction:column;gap:24px;position:relative">
+    <h1>Digital Roadmap</h1>
+    <p class="sub">แผนพัฒนา Website · Mobile Application · CMS</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;position:relative">
+    <p style="font-size:32px;font-weight:600;color:var(--cream)">เปิดตัว 25 ธันวาคม 2026 · บัตรผ่านประตูรายวัน และบัตรรายปี</p>
+    <p>นำเสนอต่อผู้บริหาร นงนุช เวิลด์ และ Wisdom Vast · [วันที่นำเสนอ]</p>
+  </div>
+</section>
+
+<!-- 2 GOALS -->
+<section class="slide">
+  <div class="head"><p class="eyebrow">เป้าหมาย</p><h2>เป้าหมายของความร่วมมือ</h2></div>
+  <p class="statement">ให้ทุกการมาเยือนนงนุช เริ่มต้นได้ตั้งแต่บนมือถือ — ซื้อบัตรง่าย เที่ยวสนุกขึ้น และอยากกลับมาอีก</p>
+  <div class="spacer"></div>
+  <div class="row">
+    <div class="card"><svg class="icon"><use href="#i-globe"/></svg><h3>ขายผ่านดิจิทัลมากขึ้น</h3><p>เพิ่มสัดส่วนการขายบัตร อาหาร และเครื่องดื่ม ผ่าน Website และ App</p></div>
+    <div class="card"><svg class="icon"><use href="#i-flower"/></svg><h3>ประสบการณ์ผู้เข้าชม</h3><p>แผนที่ ตารางการแสดง และข้อมูลพืชพรรณ ในมือถือเครื่องเดียว</p></div>
+    <div class="card"><svg class="icon"><use href="#i-bolt"/></svg><h3>รายได้ส่วนเพิ่ม</h3><p>Add-on อาหาร การแสดง และการอัปเกรดเป็นบัตรรายปี</p></div>
+    <div class="card"><svg class="icon"><use href="#i-users"/></svg><h3>Sponsor และ Partner</h3><p>ช่องทางรายได้ใหม่ ที่นงนุชอนุมัติทุกรายการก่อนเผยแพร่</p></div>
+  </div>
+</section>
+
+<!-- 3 PLATFORM -->
+<section class="slide" style="gap:40px">
+  <div class="head"><p class="eyebrow">ภาพรวมแพลตฟอร์ม</p><h2>หนึ่งแพลตฟอร์ม สามช่องทาง</h2></div>
+  <div class="row">
+    <div class="card top-orchid"><h3 class="serif big">Website</h3><p class="tag orchid">หน้าร้านหลัก และการตลาด</p>
+      <ul><li>ขายบัตรรายวัน และบัตรรายปี</li><li>Add-on อาหาร และการแสดง</li><li>รองรับ SEO ภาษาไทย / อังกฤษ</li><li>หน้าแคมเปญ และโปรโมชั่น</li></ul></div>
+    <div class="card top-gold"><h3 class="serif big">Mobile App / PWA</h3><p class="tag gold">ผู้ช่วยระหว่างเที่ยว</p>
+      <ul><li>e-Ticket QR เข้าประตู</li><li>บัตรสมาชิกรายปีแบบดิจิทัล</li><li>แผนที่ ตารางการแสดง ข้อมูลพืชพรรณ</li><li>แจ้งเตือน และ LINE OA</li></ul></div>
+    <div class="card top-green"><h3 class="serif big">CMS / หลังบ้าน</h3><p class="tag green">ทีมนงนุชควบคุมได้เอง</p>
+      <ul><li>จัดการเนื้อหา ราคา โปรโมชั่น</li><li>Workflow อนุมัติก่อนเผยแพร่</li><li>Dashboard ยอดขายแบบ real-time</li><li>รายงานประจำเดือน</li></ul></div>
+  </div>
+  <div class="band"><b>เชื่อมต่อกับ</b><p>ระบบขายบัตร / ประตูเดิม · Payment Gateway (เงินเข้าบัญชีนงนุชโดยตรง) · LINE OA · POS / บัญชี / โรงแรม ตามความจำเป็น</p></div>
+</section>
+
+<!-- 4 ROADMAP -->
+<section class="slide">
+  <div class="head"><p class="eyebrow">ROADMAP</p><h2>5 เฟส จากวันเปิดตัวสู่ Ecosystem</h2></div>
+  <div class="row" style="gap:24px">
+    <div class="card" style="padding:32px"><p class="tag">เฟส 0 · พ.ย. 2026</p><h3 class="serif">วางรากฐาน</h3><ul><li>เปิดบัญชีระบบในนามนงนุช</li><li>ออกแบบ UX/UI</li><li>เชื่อมระบบบัตรและประตู</li></ul></div>
+    <div class="card hot" style="padding:32px"><p class="tag">เฟส 1 · 25 ธ.ค. 2026</p><h3 class="serif">เปิดขายบัตรออนไลน์</h3><ul><li>Website + PWA</li><li>บัตรรายวัน / รายปี</li><li>CMS + Dashboard</li></ul></div>
+    <div class="card" style="padding:32px"><p class="tag">เฟส 2 · Q1 2027</p><h3 class="serif">Native App และสมาชิก</h3><ul><li>App Store / Google Play</li><li>ระบบสมาชิกบัตรรายปี</li><li>แผนที่ + พืชพรรณ</li></ul></div>
+    <div class="card" style="padding:32px"><p class="tag">เฟส 3 · Q2–Q3 2027</p><h3 class="serif">Engagement และ Sponsor</h3><ul><li>Mission / Reward</li><li>Sponsored Campaign</li><li>แนะนำสินค้าตามความสนใจ</li></ul></div>
+    <div class="card" style="padding:32px"><p class="tag">เฟส 4 · Q4 2027 →</p><h3 class="serif">Ecosystem</h3><ul><li>สินค้า / บริการ Partner</li><li>โรงแรม จัดเลี้ยง Event</li><li>ภาษาเพิ่มเติม</li></ul></div>
+  </div>
+  <p>เฟส 1 เน้นสิ่งที่ <b>ต้องพร้อมขายในวันคริสต์มาส</b> ส่วนเฟส 2–4 ทบทวนลำดับความสำคัญร่วมกันทุกไตรมาส</p>
+</section>
+
+<!-- 5 PHASE 1 -->
+<section class="slide" style="gap:40px">
+  <div class="head"><p class="eyebrow">เฟส 1 · CHRISTMAS LAUNCH</p><h2>สิ่งที่พร้อมใช้ในวันที่ 25 ธันวาคม</h2></div>
+  <div class="row">
+    <div class="card top-orchid" style="flex:3;gap:20px"><h3>พร้อมเปิดตัว</h3>
+      <div class="check"><svg><use href="#i-check"/></svg><p>Website ใหม่ พร้อมระบบขายบัตรออนไลน์ (ไทย / อังกฤษ)</p></div>
+      <div class="check"><svg><use href="#i-check"/></svg><p>PWA ติดตั้งบนมือถือได้ทันที โดยไม่ต้องรอ App Store</p></div>
+      <div class="check"><svg><use href="#i-check"/></svg><p>บัตรรายวัน และบัตรรายปี พร้อม e-Ticket QR สแกนเข้าประตู</p></div>
+      <div class="check"><svg><use href="#i-check"/></svg><p>Add-on อาหาร เครื่องดื่ม และการแสดง ระหว่างซื้อบัตร</p></div>
+      <div class="check"><svg><use href="#i-check"/></svg><p>ชำระเงินผ่าน Payment Gateway เงินเข้าบัญชีนงนุชโดยตรง</p></div>
+      <div class="check"><svg><use href="#i-check"/></svg><p>CMS พร้อม Workflow อนุมัติราคาและโปรโมชั่น</p></div>
+      <div class="check"><svg><use href="#i-check"/></svg><p>Dashboard ยอดขาย ที่ผู้บริหารนงนุชเปิดดูได้ตลอดเวลา</p></div>
+    </div>
+    <div class="card muted" style="flex:2;gap:20px"><h3>ตามมาในเฟสถัดไป</h3>
+      <ul><li>Native App บน App Store / Google Play</li><li>ระบบสมาชิกเต็มรูปแบบ สะสมแต้ม สิทธิพิเศษ</li><li>แผนที่นำทาง และข้อมูลพืชพรรณเชิงลึก</li><li>Mission, Reward และ Sponsor</li><li>สินค้าและบริการของ Partner</li><li>จองโรงแรม จัดเลี้ยง สัมมนา</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 6 TICKETS -->
+<section class="slide" style="gap:40px">
+  <div class="head"><p class="eyebrow">ผลิตภัณฑ์บัตร</p><h2>บัตรรายวัน และบัตรรายปี</h2></div>
+  <table>
+    <tr><th style="width:22%">หัวข้อ</th><th style="width:36%">บัตรรายวัน</th><th class="gold" style="width:42%">บัตรรายปี</th></tr>
+    <tr><td><b>ราคา</b></td><td>[฿__] ผู้ใหญ่ / [฿__] เด็ก</td><td>[฿__] ต่อคน / [฿__] แพ็กเกจครอบครัว</td></tr>
+    <tr><td><b>การเข้าประตู</b></td><td>QR e-Ticket ใช้ได้ 1 ครั้ง ในวันที่เลือก</td><td>QR ประจำตัว + รูปถ่ายผู้ถือบัตร</td></tr>
+    <tr><td><b>อายุบัตร</b></td><td>วันที่เลือกไว้</td><td>365 วัน นับจากวันเปิดใช้</td></tr>
+    <tr><td><b>ยืนยันตัวตน</b></td><td>ไม่ต้อง</td><td>บัญชีสมาชิก + รูปถ่าย ป้องกันการใช้บัตรร่วมกัน</td></tr>
+    <tr><td><b>สิทธิประโยชน์</b></td><td>เลือก Add-on ได้ตอนซื้อ</td><td>[ส่วนลดอาหาร __%] · [สิทธิ์เข้างานพิเศษ]</td></tr>
+    <tr><td><b>ต่อยอด</b></td><td>อัปเกรดเป็นบัตรรายปีได้ ภายใน [__ วัน] (ข้อเสนอ)</td><td>ต่ออายุออนไลน์ + แจ้งเตือนก่อนหมดอายุ</td></tr>
+  </table>
+  <p class="note">ราคา สิทธิประโยชน์ และกติกาทั้งหมด รอการยืนยันจากนงนุช เวิลด์ ก่อนนำเข้าระบบ</p>
+</section>
+
+<!-- 7 JOURNEY -->
+<section class="slide">
+  <div class="head"><p class="eyebrow">CUSTOMER JOURNEY</p><h2>เส้นทางของผู้มาเยือน</h2></div>
+  <div class="journey">
+    <div class="card"><svg class="icon"><use href="#i-search"/></svg><h3 class="serif">1 ค้นพบ</h3><p>Website, SEO, Social และ LINE OA</p><div class="spacer"></div><p class="tag orchid">เฟส 1</p></div>
+    <svg class="arrow" viewBox="0 0 40 24" height="24"><use href="#i-arrow"/></svg>
+    <div class="card"><svg class="icon"><use href="#i-ticket"/></svg><h3 class="serif">2 ซื้อ</h3><p>เลือกบัตร + Add-on แล้วชำระเงินออนไลน์</p><div class="spacer"></div><p class="tag orchid">เฟส 1</p></div>
+    <svg class="arrow" viewBox="0 0 40 24" height="24"><use href="#i-arrow"/></svg>
+    <div class="card"><svg class="icon"><use href="#i-qr"/></svg><h3 class="serif">3 มาถึง</h3><p>สแกน QR ที่ประตู ไม่ต้องต่อคิวซื้อบัตร</p><div class="spacer"></div><p class="tag orchid">เฟส 1</p></div>
+    <svg class="arrow" viewBox="0 0 40 24" height="24"><use href="#i-arrow"/></svg>
+    <div class="card"><svg class="icon"><use href="#i-map"/></svg><h3 class="serif">4 เที่ยว</h3><p>ตารางการแสดง สั่งอาหาร แผนที่ และพืชพรรณ</p><div class="spacer"></div><p class="tag gold">เฟส 1–2</p></div>
+    <svg class="arrow" viewBox="0 0 40 24" height="24"><use href="#i-arrow"/></svg>
+    <div class="card"><svg class="icon"><use href="#i-heart"/></svg><h3 class="serif">5 กลับมาอีก</h3><p>อัปเกรดเป็นบัตรรายปี ต่ออายุ และแจ้งเตือนกิจกรรมใหม่</p><div class="spacer"></div><p class="tag gold">เฟส 1–2</p></div>
+  </div>
+  <p>ทุกขั้นตอนเก็บข้อมูลไว้ใน Dashboard ของนงนุช เพื่อวัดผลและปรับแคมเปญได้ทันที</p>
+</section>
+
+<!-- 8 GANTT -->
+<section class="slide" style="gap:32px">
+  <div class="head"><p class="eyebrow">แผน 50 วัน</p><h2>จาก Kick-off สู่ Go-Live 25 ธันวาคม</h2></div>
+  <div class="gantt">
+    <p style="font-weight:600;color:var(--forest)">งาน (ผู้รับผิดชอบ)</p>
+    <p class="wk">5 พ.ย.</p><p class="wk">12 พ.ย.</p><p class="wk">19 พ.ย.</p><p class="wk">26 พ.ย.</p><p class="wk">3 ธ.ค.</p><p class="wk">10 ธ.ค.</p><p class="wk">17 ธ.ค.</p><p class="wk xmas">24 ธ.ค.</p><p class="wk">31 ธ.ค.</p><p class="wk">7 ม.ค.</p>
+
+    <p>Kick-off + เปิดบัญชีในนามนงนุช (ร่วม)</p><div class="bar jt" style="grid-column:span 2"></div><div style="grid-column:span 8"></div>
+    <p>ออกแบบ UX/UI + อนุมัติดีไซน์ (WV)</p><div class="bar wv" style="grid-column:span 3"></div><div style="grid-column:span 7"></div>
+    <p>พัฒนา + เชื่อมต่อระบบ (WV)</p><div style="grid-column:span 1"></div><div class="bar wv" style="grid-column:span 4"></div><div style="grid-column:span 5"></div>
+    <p>ส่งราคา เนื้อหา รูปภาพ (นงนุช)</p><div style="grid-column:span 2"></div><div class="bar nn" style="grid-column:span 3"></div><div style="grid-column:span 5"></div>
+    <p>UAT ตรวจรับระบบ (นงนุช)</p><div style="grid-column:span 4"></div><div class="bar nn" style="grid-column:span 2"></div><div style="grid-column:span 4"></div>
+    <p>อบรมพนักงาน + Soft launch (ร่วม)</p><div style="grid-column:span 6"></div><div class="bar jt" style="grid-column:span 1"></div><div style="grid-column:span 3"></div>
+    <p>แคมเปญ Pre-sale (นงนุช)</p><div style="grid-column:span 6"></div><div class="bar nn" style="grid-column:span 2"></div><div style="grid-column:span 2"></div>
+    <p style="font-weight:600;color:var(--orchid)">Go-Live 25 ธ.ค. (ร่วม)</p><div style="grid-column:span 7"></div><div class="bar jt" style="grid-column:span 1;border-radius:18px"></div><div style="grid-column:span 2"></div>
+    <p>Hypercare ช่วงปีใหม่ (WV)</p><div style="grid-column:span 7"></div><div class="bar wv" style="grid-column:span 3"></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--green)"></i>Wisdom Vast</span>
+    <span><i style="background:var(--gold)"></i>นงนุช เวิลด์</span>
+    <span><i style="background:var(--orchid)"></i>ทำร่วมกัน</span>
+    <div class="spacer"></div>
+    <span style="font-weight:600;color:var(--forest)">Code freeze 18 ธ.ค.</span>
+  </div>
+</section>
+
+<!-- 9 MARKETING -->
+<section class="slide dark">
+  <div class="head"><p class="eyebrow">แคมเปญเปิดตัว (ข้อเสนอ)</p><h2>คริสต์มาสถึงปีใหม่ ช่วงพีคของการขาย</h2></div>
+  <div class="row" style="gap:24px">
+    <div class="card" style="padding:36px"><p class="tag">ต้น ธ.ค.</p><h3 class="serif">Teaser</h3><p>“เร็ว ๆ นี้ ซื้อบัตรนงนุชออนไลน์” ผ่าน Social, LINE OA และ Website เดิม</p></div>
+    <div class="card" style="padding:36px"><p class="tag">18–24 ธ.ค.</p><h3 class="serif">Pre-sale</h3><p>ซื้อล่วงหน้าออนไลน์ ราคาพิเศษ [__%] สำหรับวันที่ 25 ธ.ค.–1 ม.ค.</p></div>
+    <div class="card hot" style="padding:36px"><p class="tag">25 ธ.ค.–1 ม.ค.</p><h3 class="serif">บัตรรายปี ของขวัญปีใหม่</h3><p>แพ็กเกจครอบครัว [฿__] ซื้อเป็นของขวัญ ส่งให้คนที่รักได้</p></div>
+    <div class="card" style="padding:36px"><p class="tag">ตลอดช่วงเปิดตัว</p><h3 class="serif">หน้างาน</h3><p>QR / Signage ที่ประตู เคาน์เตอร์ และร้านอาหาร พร้อมพนักงานแนะนำการใช้งาน</p></div>
+  </div>
+  <div class="spacer"></div>
+  <p class="note">งบการตลาดเป็นดุลยพินิจของนงนุช · WV ช่วยวางแผนแคมเปญ ทำหน้า Landing และวัดผลผ่าน Dashboard · ราคาและโปรโมชั่นทุกรายการ นงนุชอนุมัติก่อนเผยแพร่</p>
+</section>
+
+<!-- 10 FUTURE -->
+<section class="slide" style="gap:40px">
+  <div class="head"><p class="eyebrow">หลังเปิดตัว · 2027 เป็นต้นไป</p><h2>ต่อยอดจากฐานผู้ใช้ สู่รายได้ใหม่</h2></div>
+  <div class="row">
+    <div class="card top-gold"><p class="tag gold">เฟส 2 · ม.ค.–มี.ค. 2027</p><h3 class="serif big">Native App และสมาชิก</h3>
+      <ul><li>App iOS / Android ในนามนงนุช</li><li>Digital Pass บัตรรายปี</li><li>แผนที่นำทาง + ตารางการแสดง</li><li>สแกน QR ที่ป้ายต้นไม้ ดูข้อมูลพืชพรรณ</li><li>Push notification + LINE OA</li></ul></div>
+    <div class="card top-orchid"><p class="tag orchid">เฟส 3 · เม.ย.–ก.ย. 2027</p><h3 class="serif big">Engagement และ Sponsor</h3>
+      <ul><li>Garden Mission เก็บแต้ม</li><li>Reward และสิทธิพิเศษสมาชิก</li><li>Sponsored Campaign ที่นงนุชอนุมัติ</li><li>แนะนำ Add-on ตามความสนใจ</li><li>รายงานเชิงลึกสำหรับฝ่ายการตลาด</li></ul></div>
+    <div class="card top-green"><p class="tag green">เฟส 4 · ต.ค. 2027 →</p><h3 class="serif big">Ecosystem</h3>
+      <ul><li>สินค้าและบริการ Partner ที่นงนุชอนุมัติ</li><li>จองโรงแรม จัดเลี้ยง สัมมนา Event</li><li>ภาษาเพิ่มเติม เช่น จีน และรัสเซีย</li><li>ทบทวนแผนร่วมกันทุกปี</li></ul></div>
+  </div>
+</section>
+
+<!-- 11 GOVERNANCE -->
+<section class="slide" style="gap:40px">
+  <div class="head"><p class="eyebrow">มาตรฐานการทำงานร่วมกัน</p><h2>โปร่งใส ปลอดภัย และนงนุชเป็นเจ้าของ</h2></div>
+  <div class="gov">
+    <div class="card"><svg class="icon"><use href="#i-clock"/></svg><h3>SLA</h3><p>Uptime ไม่ต่ำกว่า 99.5% ต่อเดือน · ปัญหาวิกฤต ตอบสนอง 1 ชม. แก้ไข 4 ชม.</p></div>
+    <div class="card"><svg class="icon"><use href="#i-bank"/></svg><h3>เงินเข้านงนุชโดยตรง</h3><p>ทุกการชำระเงินเข้าบัญชี Merchant ของนงนุช WV ไม่รับเงินแทน</p></div>
+    <div class="card"><svg class="icon"><use href="#i-key"/></svg><h3>นงนุชเป็นเจ้าของ</h3><p>App Store, Domain, Cloud, LINE OA และข้อมูลลูกค้าทั้งหมด อยู่ในนามนงนุช</p></div>
+    <div class="card"><svg class="icon"><use href="#i-lock"/></svg><h3>PDPA และความปลอดภัย</h3><p>ทำ DPA · ไม่เก็บข้อมูลบัตรเครดิต (ผ่าน Gateway มาตรฐาน PCI DSS) · แจ้งเหตุภายใน 24 ชม.</p></div>
+    <div class="card"><svg class="icon"><use href="#i-chart"/></svg><h3>รายงานโปร่งใส</h3><p>Dashboard เปิดดูได้ตลอดเวลา · รายงานรายเดือน ภายใน 7 วันทำการ</p></div>
+    <div class="card"><svg class="icon"><use href="#i-shield"/></svg><h3>อนุมัติก่อนเผยแพร่</h3><p>ราคา โปรโมชั่น และโฆษณา ผ่าน Workflow อนุมัติของนงนุชใน CMS</p></div>
+  </div>
+</section>
+
+<!-- 12 KPI -->
+<section class="slide dark">
+  <div class="head"><p class="eyebrow">ตัวชี้วัดความสำเร็จ</p><h2>เราจะวัดผลร่วมกันอย่างไร</h2></div>
+  <div class="kpis">
+    <div class="kpi"><p class="num">[__%]</p><p class="lbl">สัดส่วนยอดขายบัตร ผ่านช่องทางดิจิทัล ภายใน [__ เดือน]</p></div>
+    <div class="kpi"><p class="num">[__]</p><p class="lbl">สมาชิกบัตรรายปี ภายในสิ้นปี 2027</p></div>
+    <div class="kpi"><p class="num">[__%]</p><p class="lbl">ออเดอร์ที่ซื้อ Add-on อาหาร / การแสดง</p></div>
+    <div class="kpi"><p class="num">[__]</p><p class="lbl">ผู้ใช้งาน PWA / App ต่อเดือน</p></div>
+    <div class="kpi"><p class="num">[__%]</p><p class="lbl">Conversion rate ของหน้าซื้อบัตร</p></div>
+    <div class="kpi"><p class="num">99.5%</p><p class="lbl">Uptime ขั้นต่ำต่อเดือน ตาม SLA</p></div>
+  </div>
+  <p class="note">ตัวเลขเป้าหมาย กำหนดร่วมกันหลังได้ข้อมูลยอดขายปัจจุบันของนงนุช</p>
+</section>
+
+<!-- 13 DECISIONS -->
+<section class="slide accent" style="gap:36px">
+  <div class="head"><p class="eyebrow">สิ่งที่ต้องตัดสินใจร่วมกัน</p><h2>8 เรื่องที่ต้องได้คำตอบ เพื่อให้ทัน 25 ธ.ค.</h2></div>
+  <table class="decide" style="font-size:26px">
+    <tr><th style="width:76%">เรื่อง</th><th style="width:24%">ภายใน</th></tr>
+    <tr><td>1. แต่งตั้งผู้ประสานงาน และผู้อนุมัติฝั่งนงนุช</td><td class="when">สัปดาห์นี้</td></tr>
+    <tr><td>2. เปิดบัญชี Payment Gateway / Merchant ในนามนงนุช</td><td class="when">13 พ.ย.</td></tr>
+    <tr><td>3. บัญชี Apple Developer (D-U-N-S) และ Google Play ในนามนงนุช</td><td class="when">13 พ.ย.</td></tr>
+    <tr><td>4. สิทธิ์เชื่อมต่อระบบขายบัตร และระบบประตูเดิม</td><td class="when">13 พ.ย.</td></tr>
+    <tr><td>5. ยืนยันราคา และกติกาบัตรรายวัน / รายปี</td><td class="when">20 พ.ย.</td></tr>
+    <tr><td>6. อนุมัติงบค่า Cloud, SMS และ Payment fee (Approved Budget)</td><td class="when">20 พ.ย.</td></tr>
+    <tr><td>7. ส่งเนื้อหา รูปภาพ ข้อมูลอาหาร และการแสดง</td><td class="when">27 พ.ย.</td></tr>
+    <tr><td>8. กำหนดวันลงนามสัญญาธุรกิจ (Definitive Agreement) ก่อน Go-Live</td><td class="when">[__ ธ.ค.]</td></tr>
+  </table>
+</section>
+
+<!-- 14 NEXT -->
+<section class="slide dark">
+  <div class="head"><p class="eyebrow">ขั้นตอนถัดไป</p><h2>เริ่มได้ทันทีหลังการประชุมนี้</h2></div>
+  <div class="steps">
+    <div class="step"><p class="when">วันนี้</p><h3>อนุมัติ Roadmap และขอบเขตเฟส 1</h3><p>ยืนยันว่าเปิดตัว 25 ธ.ค. ด้วย Website + PWA</p></div>
+    <div class="step"><p class="when">สัปดาห์นี้</p><h3>Kick-off Workshop ร่วมกัน</h3><p>แต่งตั้งทีมทั้งสองฝ่าย และนัดประชุมติดตามงานทุกสัปดาห์</p></div>
+    <div class="step"><p class="when">ภายใน 13 พ.ย.</p><h3>เปิดบัญชี และเข้าถึงระบบเดิม</h3><p>Payment Gateway, Developer Account และระบบขายบัตร / ประตู</p></div>
+  </div>
+  <div class="spacer"></div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end">
+    <h1 style="font-size:96px">ขอบคุณ</h1>
+    <p style="text-align:right">[ชื่อ Product Owner] · Wisdom Vast<br>[อีเมล] · [เบอร์โทร]</p>
+  </div>
+</section>
+
+</div></div>
+
+<div id="bar"></div>
+<div id="nav"><button id="prev" aria-label="สไลด์ก่อนหน้า">‹</button><span id="count">1 / 14</span><button id="next" aria-label="สไลด์ถัดไป">›</button><button id="fs" aria-label="เต็มจอ">⛶</button></div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var stage=document.getElementById('stage');
+  var total=slides.length, cur=0;
+  slides.forEach(function(s,i){
+    if(i===0) return;
+    var f=document.createElement('div'); f.className='footer';
+    f.innerHTML='<span>Nong Nooch World × Wisdom Vast · Digital Roadmap</span><span>'+(i+1)+'</span>';
+    s.appendChild(f);
+  });
+  function fit(){
+    var k=Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    stage.style.transform='scale('+k+')';
+  }
+  function go(n){
+    cur=Math.max(0,Math.min(total-1,n));
+    slides.forEach(function(s,i){s.classList.toggle('active',i===cur);});
+    document.getElementById('count').textContent=(cur+1)+' / '+total;
+    document.getElementById('bar').style.transform='scaleX('+((cur+1)/total)+')';
+    if(location.hash!=='#'+(cur+1)) history.replaceState(null,'','#'+(cur+1));
+  }
+  document.addEventListener('keydown',function(e){
+    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();go(cur+1);}
+    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();go(cur-1);}
+    else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(total-1);}
+    else if(e.key==='f'){toggleFs();}
+  });
+  var sx=null;
+  document.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1));sx=null;});
+  document.getElementById('prev').onclick=function(){go(cur-1);};
+  document.getElementById('next').onclick=function(){go(cur+1);};
+  function toggleFs(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();} else {document.exitFullscreen();} }
+  document.getElementById('fs').onclick=toggleFs;
+  window.addEventListener('resize',fit);
+  fit();
+  var h=parseInt((location.hash||'').slice(1),10);
+  go(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>

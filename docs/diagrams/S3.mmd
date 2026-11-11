@@ -1,0 +1,40 @@
+sequenceDiagram
+  autonumber
+  actor T as นักท่องเที่ยว
+  participant FE as Next.js / Flutter
+  participant CO as Commerce
+  participant KB as KBank PG
+  participant NB as NATS JetStream
+  participant TG as Ticket & Gate
+  participant MP as Member & Point
+  participant NT as Notification
+
+  T->>FE: กดชำระเงิน
+  FE->>CO: POST /orders/{id}/payments
+  CO->>CO: ตรวจโควตายังจองอยู่ · Payment(pending)
+  CO->>KB: สร้างรายการชำระ (amount, ref=orderId)
+  KB-->>CO: paymentUrl / PromptPay QR
+  CO-->>FE: redirect / แสดง QR
+  T->>KB: ชำระเงิน
+  KB->>CO: Webhook (signed)
+  CO->>CO: ตรวจลายเซ็น Webhook
+  alt eventId เคยประมวลผลแล้ว
+    CO-->>KB: 200 OK (idempotent)
+  else ครั้งแรก
+    CO->>CO: BEGIN · Payment=paid · Order=confirmed · ตัดโควตาจริง<br>outbox order.paid · COMMIT
+    CO-->>KB: 200 OK
+    CO-)NB: order.paid {orderId, items, memberId, lang}
+    NB-)TG: order.paid
+    TG->>TG: ออก Ticket รายใบ: Unique ticket ID + ผู้ใช้บัตร + QR Ed25519<br>idempotent ด้วย orderId · outbox ticket.issued
+    TG-)NB: ticket.issued
+    NB-)NT: ticket.issued
+    NT-)T: อีเมล e-Ticket + Push ในภาษาของผู้ซื้อ
+    NB-)MP: order.paid
+    MP->>MP: ผูกบัตรกับประวัติสมาชิก (เฟส 2: +พ้อย)
+  end
+  FE->>CO: poll สถานะออเดอร์
+  CO->>TG: gRPC GetTickets(orderId)
+  TG-->>CO: tickets หรือ ยังออกไม่เสร็จ
+  CO-->>FE: confirmed + tickets
+  Note over CO,TG: Saga แบบ choreography: ออกบัตรล้มเหลว JetStream redeliver จนสำเร็จ ไม่ refund อัตโนมัติ<br>เกินจำนวนครั้งที่กำหนด → dead-letter + แจ้ง on-call
+  Note over CO,KB: ถ้า Webhook ไม่มา Commerce กระทบยอดรายชั่วโมงเก็บตก (S4)

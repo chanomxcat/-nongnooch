@@ -1,0 +1,24 @@
+flowchart TD
+  subgraph ev[QR event และ Voucher]
+    e1([สมาชิกสแกน QR ที่ทางเข้า event]) --> e2{ลงทะเบียน event แล้ว<br>และสิทธิ์ยังเหลือ?}
+    e2 -->|ยัง| e3[ลงทะเบียนผ่าน App<br>จากปฏิทินกิจกรรม] --> e2
+    e2 -->|ใช่| e4[ออก Voucher อาหาร / กิจกรรมฟรี]
+    e4 --> e5["ร้านสแกน Voucher<br>ใช้ Gate Scanner app [สมมติฐาน]"] --> e6{ยังไม่ใช้<br>ไม่หมดอายุ?}
+    e6 -->|ใช่| e7([ใช้สิทธิ์ · ตัด Voucher])
+    e6 -->|ไม่| e8([ปฏิเสธ])
+  end
+  subgraph ms[ล่าสมบัติ Explorer Passport และ Reward]
+    m1([เริ่มภารกิจตามฤดูกาลใน App]) --> m2[สแกนป้าย QR ตามจุดจริง · ชมการแสดง] --> geo{อยู่ในรัศมีของจุด<br>Geofencing?}
+    geo -->|ไม่| gx([ไม่นับ · กันโกง])
+    geo -->|ใช่| m3{ครบเงื่อนไข?}
+    m3 -->|ยัง| m2
+    m3 -->|ครบ| m4["PointLedger: แต้มภารกิจ<br>Badge · Leaderboard · Tier"] --> m5["แลก Reward รหัสใช้ครั้งเดียว<br>1 รางวัล / บัญชี / ภารกิจ<br>ของหมด → คูปองชดเชย [รอยืนยัน]"]
+  end
+  class e3,e4,e7,m2,geo,m4,m5 p3
+  class e5 assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

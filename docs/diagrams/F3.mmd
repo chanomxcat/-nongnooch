@@ -1,0 +1,30 @@
+flowchart TD
+  start([เปิดหน้าซื้อบัตร]) --> wr{Waiting room<br>เปิดอยู่?}
+  wr -->|ใช่| q[[S6 รับบัตรคิว รอจนถึงคิว]] --> sel
+  wr -->|ไม่| sel["เลือกบัตร · วันเข้าชม · จำนวน<br>ราคาไทยเฉพาะบัญชีที่ยืนยันเลขบัตรประชาชน"]
+  sel --> holder["ระบุผู้ใช้บัตรรายใบ: ชื่อ + เลขบัตร / พาสปอร์ต<br>เลือกจากรายชื่อผู้ติดตามที่บันทึกไว้ได้<br>ราคาไทย / ต่างชาติคิดรายใบ"]
+  holder --> up["Upsell: บัตรห้องอาหาร · บัตรชมการแสดง<br>เลือกรอบ เห็นที่นั่งคงเหลือ"]
+  up --> inv{โควตาวันนั้นและ<br>ที่นั่งรอบการแสดงพอไหม?}
+  inv -->|ไม่พอ| full[แจ้งเต็ม เสนอวันอื่น] --> sel
+  inv -->|พอ| hold[จองโควตาชั่วคราว 15 นาที]
+  hold --> login{Login อยู่?}
+  login -->|ใช่| bind[ผูกออเดอร์กับบัญชี]
+  login -->|ไม่| offer{สมัครสมาชิก<br>รับ Welcome point?}
+  offer -->|สมัคร| reg[[F1 สมัครสมาชิก]] --> bind
+  offer -->|Guest| annual{มีบัตรรายปี<br>ในตะกร้า?}
+  annual -->|มี| reg
+  annual -->|ไม่มี| guest["กรอกอีเมล / เบอร์<br>ซื้อได้เฉพาะราคาต่างชาติ [รอยืนยัน #31]<br>ผูกเข้าบัญชีภายหลังได้"]
+  bind & guest --> pay[[S3 ชำระเงิน KBank]]
+  pay --> res{ผลชำระ}
+  res -->|สำเร็จ| ok(["ออก e-Ticket รายใบ QR มีรหัสเฉพาะ<br>ภายใน 30 วิ · อีเมล + Push + หน้าบัตรของฉัน"])
+  ok -.-> tr[[F11 ส่งบัตรให้เพื่อน]]
+  res -->|ล้มเหลว / ยกเลิก| retry[ลองใหม่ภายในเวลาจอง] --> pay
+  hold -. หมด 15 นาที .-> release([ปล่อยโควตาคืน])
+  class sel,holder,up,hold,bind,guest,ok p1
+  class guest assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

@@ -1,0 +1,11 @@
+{
+  "name": "nongnooch-system-design",
+  "private": true,
+  "scripts": {
+    "diagrams": "node build-diagrams.mjs"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.153",
+    "@mermaid-js/mermaid-cli": "12.2.0"
+  }
+}

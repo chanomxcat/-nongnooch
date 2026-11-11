@@ -1,0 +1,23 @@
+flowchart TD
+  start([เปิดหน้าซื้อบัตร]) --> wr{Waiting room<br>เปิดอยู่?}
+  wr -- ใช่ --> q[รับบัตรคิวลงลายเซ็น<br>รอจนถึงคิว] --> sel
+  wr -- ไม่ --> sel[เลือกบัตร · ไทย/ต่างชาติ · วันเข้าชม · จำนวน<br>+ ห้องอาหาร / Add-on]
+  sel --> inv{โควตาวันนั้น<br>พอไหม?}
+  inv -- ไม่พอ --> full[แจ้งเต็ม เสนอวันอื่น] --> sel
+  inv -- พอ --> hold[จองโควตาชั่วคราว 15 นาที]
+  hold --> login{Login อยู่?}
+  login -- ใช่ --> bind[ผูกออเดอร์กับบัญชี]
+  login -- ไม่ --> offer{สมัครสมาชิก<br>รับ Welcome point?}
+  offer -- สมัคร --> reg[[F1 สมัครสมาชิก]] --> bind
+  offer -- Guest --> guest[กรอกอีเมล / เบอร์]
+  bind & guest --> annual{มีบัตรรายปี?}
+  annual -- มี และเป็น Guest --> reg
+  annual -- ไม่มี / Login แล้ว --> pay[[S3 ชำระเงิน KBank]]
+  pay --> res{ผลชำระ}
+  res -- สำเร็จ --> ok([ออก e-Ticket ≤ 30 วิ<br>อีเมล + บัตรของฉัน])
+  res -- ล้มเหลว / ยกเลิก --> retry[ลองใหม่ภายในเวลาจอง]
+  retry --> pay
+  hold -. หมด 15 นาที .-> release([ปล่อยโควตาคืน])
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3
+  class sel,hold,bind,guest,ok p1

@@ -1,0 +1,31 @@
+sequenceDiagram
+  autonumber
+  actor S as เจ้าหน้าที่ประตู
+  participant GS as Gate Scanner (Web App)
+  participant LS as ที่เก็บในเครื่อง (IndexedDB)
+  participant TG as Ticket & Gate
+  participant NB as NATS JetStream
+  participant LG as ระบบประตูเดิม [สมมติฐาน]
+
+  Note over GS,TG: ก่อนเปิดประตู และ refresh เป็นระยะ
+  GS->>TG: GET /gate/snapshot?date=today
+  TG-->>GS: public key · บัตรของวันนี้ · รายการบัตรยกเลิก / คืนเงิน / ส่งต่อ
+  GS->>LS: เก็บ snapshot
+  S->>GS: สแกน QR
+  GS->>GS: ตรวจลายเซ็น Ed25519 ในเครื่อง · อ่าน Unique ticket ID
+  alt ออนไลน์
+    GS->>TG: POST /gate/scans {ticketId, gateId, ts}
+    TG->>TG: UPDATE Ticket=used แบบ atomic · GateScan · outbox ticket.scanned
+    TG-->>GS: ผ่าน / ใช้แล้ว / ยกเลิก (+ รูปผู้ถือบัตรรายปี)
+    GS-->>S: แสดงผล (ไม่เกิน 1 วินาที)
+  else ออฟไลน์
+    GS->>LS: ตรวจกับ snapshot + บัตรที่สแกนในเครื่องนี้
+    GS->>LS: เก็บ scan {ticketId, gateId, ts} ลงคิว
+    GS-->>S: แสดงผลทันทีจากข้อมูลในเครื่อง
+    Note right of GS: มือถือลูกค้าไม่ต้องอัปเดตอะไร<br>กันซ้ำข้ามประตูได้ถ้าเครื่องแชร์รายการผ่าน LAN [สมมติฐาน Q3]
+    GS->>TG: เน็ตกลับมา: POST /gate/scans:batch
+    TG->>TG: บันทึก GateScan · ติดธงถ้าใช้ซ้ำ · outbox ticket.scanned
+  end
+  TG-)NB: ticket.scanned
+  Note over NB: consumer: Member & Point (ประวัติเข้าชม) · Report · Engagement (เฟส 3)
+  TG->>LG: ส่งยอดเข้าประตู / สถานะบัตร ตาม Integration Spec

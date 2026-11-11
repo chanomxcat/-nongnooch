@@ -1,0 +1,22 @@
+flowchart TD
+  subgraph pt[สินค้า Partner และของฝากนงนุช]
+    p1([Partner เสนอสินค้า / บริการ]) --> p2[[F5 อนุมัติ]] --> p3[ขายใน App / เว็บ]
+    p3 --> cart["ตะกร้า จองสต็อก 15 นาที<br>สต็อกจริงจาก ERP / POS"] --> p4[[S10 สั่งซื้อ + บันทึกส่วนแบ่ง]] --> p5{รับสินค้าอย่างไร}
+    p5 -->|รับที่ร้านในสวน 2 จุด| p6["Pick-up QR อายุ 7 วัน<br>พนักงานยืนยันส่งมอบใน POS [สมมติฐาน]"]
+    p5 -->|ส่งถึงบ้าน| p7["Shipment: 50 บาท ฟรีเมื่อครบ 1,000<br>Tracking จาก Kerry / Flash / ไปรษณีย์<br>Webhook สถานะ → Push [รอยืนยัน]"]
+    p4 --> p8([สรุปส่วนแบ่งรายเดือน ส่งฝ่ายบัญชี])
+  end
+  subgraph ht[โรงแรม · จัดเลี้ยง · สัมมนา · Event]
+    h1([ลูกค้าเลือกบริการ]) --> h2{ประเภท}
+    h2 -->|ห้องพัก| h3["เช็คห้องว่างกับระบบโรงแรม<br>[สมมติฐาน] · เฟส 1 ใช้ลิงก์ Trip.com"]
+    h3 --> h4[[S3 จอง + ชำระเงิน]]
+    h2 -->|งานเลี้ยง · สัมมนา · MICE| h5[ส่งฟอร์มขอใบเสนอราคา] --> h6[ทีม MICE ตอบกลับ] --> h7([ยืนยัน + มัดจำออนไลน์])
+  end
+  class p3,cart,p8,h5,h6,h7 p4
+  class p6,p7,h3 assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

@@ -1,0 +1,19 @@
+flowchart TD
+  e([Editor / ผู้ดูแลราคา แก้ไข]) --> kind{ชนิดการเปลี่ยนแปลง}
+  kind -->|เนื้อหา · รูป · ตารางการแสดง 7 ภาษา<br>ภาษาที่ยังไม่แปล แสดง EN แทน · สมมติฐาน| draft
+  kind -->|ราคา · โปรโมชัน · โค้ดส่วนลด · กติกาพ้อย| draft
+  kind -->|อนุมัติ / ระงับ Agent| draft
+  draft[สถานะ: ร่าง<br>Preview ได้] --> submit[ส่งขออนุมัติ<br>ApprovalRequest] --> wait[รออนุมัติ]
+  wait --> ap{Approver ตรวจ}
+  ap -->|ตีกลับ + เหตุผล| draft
+  ap -->|อนุมัติ| pub(["มีผล: เว็บ · App · Checkout<br>ล้าง cache Cloudflare"])
+  four["Approver ต้องเป็นคนละคนกับผู้แก้<br>[สมมติฐาน]"] -.- ap
+  draft & submit & ap & pub -.-> audit[(AuditLog<br>ใคร · เมื่อไร · ก่อน / หลัง)]
+  class draft,submit,wait,pub p1
+  class four assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

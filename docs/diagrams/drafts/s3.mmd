@@ -1,0 +1,32 @@
+sequenceDiagram
+  autonumber
+  actor T as นักท่องเที่ยว
+  participant FE as Next.js / Flutter
+  participant API as Go API<br>(Order · Payment · Ticket)
+  participant DB as MariaDB
+  participant KB as KBank PG
+  participant JW as Job Worker
+  participant N as Email / Push
+
+  T->>FE: กดชำระเงิน
+  FE->>API: POST /orders/{id}/payments
+  API->>DB: ตรวจโควตายังจองอยู่ · สร้าง Payment(pending)
+  API->>KB: สร้างรายการชำระ (amount, ref=orderId)
+  KB-->>API: paymentUrl / PromptPay QR
+  API-->>FE: redirect / แสดง QR
+  T->>KB: ชำระเงิน
+  KB->>API: Webhook (signed)
+  API->>API: ตรวจลายเซ็น Webhook
+  alt eventId เคยประมวลผลแล้ว
+    API-->>KB: 200 OK (idempotent ไม่ทำซ้ำ)
+  else ครั้งแรก
+    API->>DB: BEGIN · Payment=paid · Order=confirmed<br>สร้าง Ticket (QR ลงลายเซ็น Ed25519) · ตัดโควตาจริง · COMMIT
+    API->>DB: INSERT Job(send_ticket)
+    API-->>KB: 200 OK
+  end
+  JW->>DB: SELECT … FOR UPDATE SKIP LOCKED
+  JW->>N: ส่งอีเมล e-Ticket + Push
+  FE->>API: poll สถานะออเดอร์
+  API-->>FE: confirmed + tickets
+  FE-->>T: แสดงบัตรของฉัน
+  Note over API,KB: Webhook ไม่มา → Job กระทบยอดรายชั่วโมง (S4)

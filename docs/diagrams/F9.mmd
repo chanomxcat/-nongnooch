@@ -1,0 +1,17 @@
+flowchart TD
+  s1(["Sponsor ส่งแคมเปญผ่านทีมการตลาดนงนุช<br>ไม่มี self-service [สมมติฐาน]"]) --> s2["เจ้าหน้าที่สร้างแคมเปญใน CMS<br>ข้อความ 7 ภาษา · ช่วงเวลา · ตำแหน่ง · กลุ่มเป้าหมาย"]
+  s2 --> s3[[F5 Workflow อนุมัติ]] --> s4{อนุมัติ?}
+  s4 -->|ตีกลับ| s2
+  s4 -->|อนุมัติ| s5["แสดงใน App / Website<br>Push เฉพาะผู้ยินยอมรับข่าวสาร"]
+  s5 --> s6[เก็บ impression · click · การใช้สิทธิ์]
+  s6 --> s7(["รายงานผลให้ Sponsor<br>ข้อมูลรวม ไม่มีข้อมูลส่วนบุคคล"])
+  s5 --> s8{หมดช่วงเวลา?}
+  s8 -->|ใช่| s9([ปิดแคมเปญอัตโนมัติ])
+  class s2,s5,s6,s7,s9 p3
+  class s1 assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

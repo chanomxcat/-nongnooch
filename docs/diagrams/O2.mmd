@@ -1,0 +1,65 @@
+flowchart TB
+  subgraph U[ผู้ใช้]
+    tourist@{ icon: "lucide:user", form: "circle", label: "นักท่องเที่ยว", pos: "b" }
+    agent@{ icon: "lucide:users", form: "circle", label: "บริษัททัวร์ / ไกด์", pos: "b" }
+    staff@{ icon: "lucide:user-cog", form: "circle", label: "เจ้าหน้าที่นงนุช", pos: "b" }
+  end
+
+  subgraph C[Client]
+    web@{ icon: "lucide:globe", form: "square", label: "Website + หน้า Agent<br>Next.js · SSR · 7 ภาษา", pos: "b" }
+    app@{ icon: "lucide:smartphone", form: "square", label: "Tourist App · Agent App<br>Flutter · GMS / HMS · 7 ภาษา", pos: "b" }
+    admin@{ icon: "lucide:layout-dashboard", form: "square", label: "Admin / CMS / Dashboard<br>Next.js", pos: "b" }
+    gate@{ icon: "lucide:scan-line", form: "square", label: "Gate Scanner<br>Web App · Offline Ed25519<br>อ่าน Unique ticket ID · ค้นหาบัตร", pos: "b" }
+  end
+
+  cf@{ icon: "lucide:shield", form: "square", label: "Cloudflare<br>CDN · WAF · Rate limit · Turnstile", pos: "b" }
+  gw@{ icon: "lucide:network", form: "square", label: "API Gateway<br>JWT · Routing · Rate limit · OpenAPI รวม<br>[สมมติฐาน: Go / Traefik / Kong]", pos: "b" }
+
+  subgraph SVC[Microservices · Go · gRPC ภายใน]
+    subgraph P1[เฟส 1]
+      direction LR
+      identity[Identity<br>OTP · LINE · WeChat · Google · Apple · JWT]:::p1
+      member[Member & Point<br>Member · เลขบัตร / พาสปอร์ต เข้ารหัส<br>Consent · PointLedger]:::p1
+      agentS[Agent<br>Company · Guide · Invite · Referral]:::p1
+      commerce[Commerce<br>Catalog · ที่นั่งการแสดง · Order<br>Payment · Refund · Waiting room]:::p1
+      ticket[Ticket & Gate<br>Ticket · TicketHolder · Transfer<br>AnnualPass · GateScan]:::p1
+      content[Content<br>CMS 7 ภาษา · Zone / POI · FAQ<br>ตรวจคำแปล · Approval · Audit]:::p1
+      notifyS[Notification<br>Email · SMS · Push นอกแอป<br>Web Push · Device]:::p1
+      report[Report<br>Read model · Dashboard]:::p1
+    end
+    subgraph PX[เฟส 2–4]
+      direction LR
+      p2[เฟส 2: Redemption<br>ยกเลิก / เลื่อนวันเอง]:::p2
+      engage[เฟส 3: Engagement<br>ล่าสมบัติ · Badge · Tier · Voucher<br>Event · Sponsor · Review]:::p3
+      partner[เฟส 4: Partner + ของฝาก<br>Partner · Hotel / MICE · Shipment<br>In-park pay · นำทาง · Audio Guide]:::p4
+    end
+  end
+
+  nats@{ icon: "lucide:radio-tower", form: "square", label: "NATS JetStream<br>Event bus · Outbox ต่อ service", pos: "b" }
+  db@{ icon: "lucide:database", form: "square", label: "MariaDB cluster<br>1 schema ต่อ service · ห้าม join ข้าม schema", pos: "b" }
+  obj@{ icon: "lucide:hard-drive", form: "square", label: "Object Storage<br>รูป · เอกสาร Agent", pos: "b" }
+  otel@{ icon: "lucide:activity", form: "square", label: "OpenTelemetry<br>Trace · Log · Metric", pos: "b" }
+
+  subgraph X[บริการภายนอก]
+    kbank@{ icon: "lucide:credit-card", form: "square", label: "KBank PG<br>บัตร · PromptPay · Alipay+ / WeChat Pay", pos: "b" }
+    mail@{ icon: "lucide:mail", form: "square", label: "Email", pos: "b" }
+    sms@{ icon: "lucide:message-square", form: "square", label: "SMS OTP (+86)", pos: "b" }
+    push@{ icon: "lucide:bell", form: "square", label: "FCM + Huawei Push Kit + Web Push", pos: "b" }
+    legacy@{ icon: "lucide:building-2", form: "square", label: "ระบบเดิมนงนุช<br>ขายบัตร · ประตู · POS · บัญชี<br>[สมมติฐาน]", pos: "b" }
+  end
+
+  tourist --> web & app
+  agent --> web & app
+  staff --> admin & gate
+  web & app & admin & gate --> cf --> gw --> SVC
+  SVC <-->|publish / consume| nats
+  SVC --> db & obj
+  SVC -.-> otel
+  commerce <--> kbank
+  notifyS --> mail & sms & push
+  ticket -. Integration Spec .-> legacy
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea

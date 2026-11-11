@@ -1,0 +1,37 @@
+sequenceDiagram
+  autonumber
+  participant App as Flutter App (GMS / HMS / iOS) · เบราว์เซอร์
+  participant NT as Notification
+  participant SRC as Service ต้นทาง (Ticket · Agent · Content · Engagement)
+  participant NB as NATS JetStream
+  participant MP as Member & Point
+  participant FCM as FCM (APNs / Android GMS)
+  participant HPK as Huawei Push Kit
+  participant WP as Web Push (VAPID)
+  participant BK as Email / SMS / LINE [สมมติฐาน: LINE ต้องมี OA]
+
+  App->>NT: ลงทะเบียนเครื่อง {token, platform: ios | gms | hms | web, lang}
+  NT->>NT: บันทึก Device (schema notify)
+  SRC-)NB: domain event เช่น ticket.issued
+  NB-)NT: domain event
+  NT->>MP: gRPC GetContactPrefs(memberId)
+  MP-->>NT: consent · ภาษา (1 ใน 7)
+  alt ข้อความการตลาด และผู้ใช้ไม่ยินยอม
+    NT->>NT: ข้าม
+  else ส่งได้
+    NT->>NT: เลือก template ตามภาษา ไม่มีใช้ EN [สมมติฐาน]
+    loop ทุก Device ของสมาชิก
+      alt ios / gms
+        NT->>FCM: send
+      else hms
+        NT->>HPK: send
+      else web
+        NT->>WP: send (ผู้ใช้เว็บที่ไม่มีแอป · iOS 16.4+ ต้องเพิ่มลงหน้าจอโฮม)
+      end
+    end
+    Note over App,WP: แสดงที่หน้าจอล็อก / ศูนย์แจ้งเตือนแม้แอปหรือเบราว์เซอร์ปิด · แตะแล้วเปิดหน้าที่เกี่ยวข้อง (Deep link)
+    opt เรื่องสำคัญ (e-Ticket, การยืนยัน)
+      NT->>BK: ส่งซ้ำอีกช่องทาง
+    end
+    NT->>NT: ลบ token ที่ใช้ไม่ได้แล้ว
+  end

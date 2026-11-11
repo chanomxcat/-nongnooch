@@ -1,0 +1,36 @@
+sequenceDiagram
+  autonumber
+  actor T as สมาชิก
+  participant FE as Next.js / Flutter
+  participant CO as Commerce
+  participant MP as Member & Point
+  participant NB as NATS JetStream
+  participant KB as KBank PG
+
+  T->>FE: เลือกใช้พ้อย X
+  FE->>CO: POST /orders/{id}/points {x}
+  CO->>MP: gRPC HoldPoints(memberId, x, orderId)
+  MP->>MP: SELECT ยอดพ้อย FOR UPDATE · ตรวจเพดาน / อายุพ้อย
+  alt พ้อยพอ
+    MP->>MP: PointLedger(hold −X, อ้างอิง orderId)
+    MP-->>CO: holdId
+    CO-->>FE: ยอดชำระใหม่
+  else พ้อยไม่พอ
+    MP-->>CO: ใช้ได้สูงสุด Y
+    CO-->>FE: ใช้ได้สูงสุด Y พ้อย
+  end
+  T->>FE: ชำระเงิน
+  Note over FE,KB: ขั้นตอนชำระเงินตาม S3
+  alt ชำระสำเร็จ
+    CO-)NB: order.paid {holdId, paidAmount}
+    NB-)MP: order.paid
+    MP->>MP: hold → used · PointLedger(+1 พ้อยต่อ 100 บาทที่จ่ายจริง) idempotent ด้วย orderId
+  else หมดเวลา / ล้มเหลว
+    CO-)NB: order.expired {holdId}
+    NB-)MP: order.expired
+    MP->>MP: ยกเลิก hold คืนพ้อย (compensation)
+  end
+  opt คืนเงินภายหลัง (S4)
+    NB-)MP: order.refunded
+    MP->>MP: PointLedger(−พ้อยที่ได้จากออเดอร์)<br>PointLedger(+พ้อยที่ใช้ไป คืนให้) [สมมติฐาน]
+  end

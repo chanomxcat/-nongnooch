@@ -1,0 +1,1403 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nong Nooch Digital Roadmap</title>
+<meta name="description" content="แผนพัฒนา Website, Mobile Application และ CMS ของนงนุช เวิลด์ พัทยา เปิดตัว 1 กุมภาพันธ์ 2027 พร้อมระบบสมาชิกและ Agent">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Prompt:wght@500;600;700&display=swap">
+<style>
+/* Hallmark · shape: kept (14-slide briefing deck, road infographic on 4 and 7) · genre: playful · theme: brand · redesign: full
+ * paper: oklch(0.96 0.02 90) · accent: oklch(0.47 0.15 355) · display: Prompt · body: IBM Plex Sans Thai · hero: Split cover, text panel on the left, the garden full height on the right · nav: kept (slide controls) · footer: kept (script-built running foot) · signature: the winding road through the five phases, each stop pressable, the trail drawing up to the phase picked
+ * axes: light/geometric-sans/chromatic-orchid · posture: split · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: P (placement), road labels are absolutely placed on a fixed 1920x1080 stage and checked by screenshot */
+/* Hallmark · answered F15 · each slide is its own composition at deck scale; gaps are 48 or 96 between columns, 64 on the phase-1 split */
+:root{
+  --forest:#17302A; --forest-2:#22403A; --green:#2F5D50;
+  --leaf:#3F6B2A; --leaf-bright:#8DB255; --leaf-tint:#E4ECD6; --leaf-wash:#EEF3E4;
+  --paper:#F5F1E6; --cream:#F5F1E6; --card:#FBF9F3; --line:#DCD5C2;
+  --orchid:#A8336A; --orchid-tint:#F3DCE6; --gold:#D9A441; --gold-ink:#8A6215;
+  --ink:#33403A; --ink-soft:#5C6860; --on-dark:#C9D6CF; --on-dark-soft:#93A99F; --on-accent-soft:#F7E2EB;
+  --line-dark:#36564C; --line-accent:#C4628F;
+  --void:#0E1E1A; --chrome:#1F3A33; --chrome-hover:#2C4E45; --chrome-active:#355E53;
+  --display:'Prompt','IBM Plex Sans Thai',Tahoma,sans-serif;
+  --sans:'IBM Plex Sans Thai',Tahoma,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip;background:var(--void);font-family:var(--sans);color:var(--on-dark)}
+.js,.js body{height:100%;overflow:clip}
+.js #viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1920px;position:relative;transform-origin:center center;flex:none}
+.js #stage{height:1080px}
+.slide{position:relative;isolation:isolate;width:1920px;height:1080px;padding:112px 128px 152px;display:flex;flex-direction:column;gap:48px;background:var(--paper);color:var(--ink);overflow:hidden;--dot:var(--forest)}
+.js .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
+.js .slide.active{opacity:1;visibility:visible}
+.slide.dark{background:var(--forest);color:var(--on-dark);--dot:var(--gold)}
+.slide.accent{background:var(--orchid);color:var(--cream)}
+.slide.leaf{background:var(--leaf-wash)}
+button{font:inherit;color:inherit;background:none;border:0}
+
+h1,h2,h3{font-family:var(--display);font-weight:600;color:var(--forest);overflow-wrap:break-word;min-width:0;text-wrap:balance}
+h1,h2{font-weight:700}
+h2{font-size:64px;line-height:1.2}
+h3{font-size:30px;line-height:1.3}
+.dark h1,.dark h2,.dark h3,.accent h2{color:var(--cream)}
+p,li{font-size:26px;line-height:1.55;text-wrap:pretty}
+.head{display:flex;flex-direction:column;gap:12px}
+.lead{font-size:28px;color:var(--leaf)}
+.dark .lead{color:var(--gold)}
+.note{color:var(--ink-soft)}
+.dark .note{color:var(--on-dark-soft)}
+.spacer{flex:1}
+ul.dash{padding-left:28px}
+.num{font-variant-numeric:tabular-nums}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* decoration, after the reference: a sun, hatching, halftone dots, a ring */
+.deco-1::before{content:"";position:absolute;z-index:-1;width:360px;height:360px;border-radius:50%;background:var(--gold);opacity:.5;top:-170px;right:-80px}
+.deco-1::after{content:"";position:absolute;z-index:-1;width:320px;height:150px;top:0;right:300px;background:repeating-linear-gradient(135deg,var(--dot) 0 2px,transparent 2px 20px);opacity:.28}
+.deco-2::before{content:"";position:absolute;z-index:-1;width:460px;height:460px;border-radius:50%;right:-160px;bottom:-200px;background:radial-gradient(var(--dot) 2px,transparent 2.6px) 0 0/18px 18px;opacity:.28}
+.deco-2::after{content:"";position:absolute;z-index:-1;width:240px;height:240px;border-radius:50%;border:30px solid var(--leaf-bright);opacity:.55;right:300px;bottom:-150px}
+.deco-3::before{content:"";position:absolute;z-index:-1;width:300px;height:300px;border-radius:50%;background:var(--leaf-bright);opacity:.45;right:-150px;top:420px}
+.deco-3::after{content:"";position:absolute;z-index:-1;width:380px;height:300px;right:-40px;top:-40px;border-radius:50%;background:radial-gradient(var(--dot) 2px,transparent 2.6px) 0 0/18px 18px;opacity:.25}
+
+/* round icon badges */
+.badge{flex:none;width:88px;height:88px;border-radius:50%;display:grid;place-items:center}
+.badge svg{width:44px;height:44px;color:var(--forest)}
+.badge.sm{width:64px;height:64px} .badge.sm svg{width:32px;height:32px}
+.b-orchid{background:var(--orchid)} .b-orchid svg{color:var(--cream)}
+.b-gold{background:var(--gold)} .b-leaf{background:var(--leaf-bright)} .b-tint{background:var(--orchid-tint)} .b-green{background:var(--leaf-tint)}
+
+/* running foot, built by the script */
+.footer{position:absolute;left:128px;right:128px;bottom:56px;display:flex;justify-content:space-between;font-size:22px;color:var(--ink-soft)}
+.dark .footer{color:var(--on-dark-soft)} .accent .footer{color:var(--on-accent-soft)}
+.photo-left .footer{left:728px}
+
+/* photo slots */
+[data-slot]{position:relative;overflow:hidden;background:var(--leaf-tint)}
+[data-slot]>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+[data-slot]>.slot-hint{position:absolute;left:32px;bottom:32px;font-size:20px;color:var(--leaf)}
+[data-slot]:has(>img)>.slot-hint{display:none}
+
+/* 1 cover */
+.cover{padding:0;display:grid;grid-template-columns:880px minmax(0,1fr);gap:0}
+.cover-text{position:relative;isolation:isolate;padding:112px 96px 96px 128px;display:flex;flex-direction:column;justify-content:space-between}
+.cover-text::before{content:"";position:absolute;z-index:-1;width:300px;height:300px;border-radius:50%;background:var(--gold);opacity:.22;right:-60px;top:-110px}
+.cover-text::after{content:"";position:absolute;z-index:-1;width:220px;height:220px;border-radius:50%;border:28px solid var(--leaf-bright);opacity:.35;right:-90px;bottom:-90px}
+.cover h1{font-size:128px;line-height:1.05;color:var(--cream)}
+.cover .sub{font-size:36px;line-height:1.35;color:var(--on-dark);margin-top:24px}
+.launch{display:flex;flex-direction:column;gap:4px}
+.launch .date{font-family:var(--display);font-size:56px;font-weight:600;line-height:1.2;color:var(--gold)}
+.launch .what{font-size:30px;color:var(--cream)}
+.byline{font-size:22px;color:var(--on-dark-soft);line-height:1.5}
+
+/* 2 goals */
+.goals{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:96px;flex:1}
+.goals .statement{font-family:var(--display);font-weight:500;font-size:36px;line-height:1.5;color:var(--leaf);margin-top:56px}
+.ruled{list-style:none;display:flex;flex-direction:column}
+.ruled>li{display:flex;gap:28px;align-items:center;padding:20px 0}
+.ruled>li>div{display:flex;flex-direction:column;gap:4px}
+
+/* 3 platform */
+.channels{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.channels>li{background:var(--card);border-radius:20px;padding:56px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.channels h3{font-size:38px;line-height:1.2}
+.channels .tag{font-size:24px;font-weight:600}
+.core{border:2px solid var(--forest);border-radius:16px;padding:20px 32px;text-align:center;font-family:var(--display);font-size:30px;font-weight:600;color:var(--forest)}
+.core small{display:block;font-family:var(--sans);font-size:24px;font-weight:400;color:var(--ink-soft);margin-top:4px}
+.tag.orchid{color:var(--orchid)} .tag.gold{color:var(--gold-ink)} .tag.leaf{color:var(--leaf)}
+.channels ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 48px;align-content:center}
+.connect{display:grid;grid-template-columns:auto repeat(4,minmax(0,1fr));gap:0;background:var(--forest);color:var(--cream);border-radius:16px;padding:28px 16px}
+.connect>*{padding:0 24px;font-size:24px;line-height:1.45}
+.connect>*+*{border-left:1px solid var(--line-dark)}
+.connect b{color:var(--gold);font-size:24px;white-space:nowrap}
+
+/* road infographic (slide 4) */
+.road{position:absolute;inset:0;width:1920px;height:1080px;z-index:-1}
+.road path{fill:none}
+.road .edge{stroke:var(--green);stroke-width:132}
+.road .base{stroke:var(--forest);stroke-width:108}
+.road .lane{stroke:var(--cream);stroke-width:5;stroke-dasharray:28 24}
+.road .trail{stroke:var(--orchid);stroke-width:16;stroke-linecap:round;stroke-dasharray:1000;stroke-dashoffset:1000;transition:stroke-dashoffset .7s ease}
+.road-head{max-width:1200px}
+.stop{position:absolute;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;border:8px solid var(--paper);display:grid;place-items:center;cursor:pointer;transition:transform .2s ease,filter .2s ease}
+.stop svg{width:52px;height:52px;color:var(--forest)}
+.stop.b-orchid svg{color:var(--cream)}
+.stop:hover{transform:scale(1.06)}
+.stop:active{transform:scale(.97)}
+.stop.on{transform:scale(1.14)}
+.stop:focus-visible{outline:4px solid var(--orchid);outline-offset:4px;transition:none}
+.pl{position:absolute;top:700px;width:310px;padding:16px 20px;border-radius:16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:opacity .2s ease,background-color .2s ease}
+.pl .meta{display:flex;gap:12px;font-size:20px;font-weight:600;color:var(--ink-soft)}
+.pl .meta b{color:var(--leaf)}
+.pl.hot .meta b{color:var(--orchid)}
+.pl h3{font-size:28px;line-height:1.25}
+.pl ul{padding-left:24px;margin-top:4px}
+.pl li{font-size:21px;line-height:1.5}
+.pl.on{background:var(--card)}
+[data-active] .pl:not(.on){opacity:.4}
+[data-active] .stop:not(.on){filter:grayscale(.85) opacity(.9)}
+
+/* 5 phase 1 */
+.ship{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:64px;flex:1}
+.checks{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.check{display:flex;gap:16px;align-items:center}
+.check .tick{flex:none;width:40px;height:40px;border-radius:50%;background:var(--leaf-bright);display:grid;place-items:center}
+.check svg{width:24px;height:24px;color:var(--forest)}
+.later{background:var(--leaf-tint);border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:20px}
+
+/* 6 tickets */
+table{width:100%;border-collapse:collapse;font-size:26px;font-variant-numeric:tabular-nums}
+th,td{padding:12px 28px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+th{font-family:var(--display);font-weight:600;color:var(--forest);border-bottom:2px solid var(--forest);font-size:26px}
+.tickets td:first-child{font-weight:600;color:var(--forest)}
+.tickets .yr{background:var(--leaf-tint)}
+.tickets th.yr{color:var(--gold-ink);border-radius:16px 16px 0 0}
+.accent table{color:var(--cream)}
+.accent th{color:var(--cream);border-bottom:2px solid var(--cream)}
+.accent td{border-bottom:1px solid var(--line-accent)}
+.decide th,.decide td{padding:12px 20px;font-size:24px}
+.accent td.when{font-weight:600;white-space:nowrap}
+
+/* 7 journey, a road running down through the five steps */
+.journey-slide{padding:0;display:grid;grid-template-columns:600px minmax(0,1fr)}
+.journey-body{padding:112px 128px 152px 96px;display:flex;flex-direction:column;gap:32px}
+.path{list-style:none;display:flex;flex-direction:column;position:relative;isolation:isolate}
+.path::before{content:"";position:absolute;z-index:-1;left:44px;top:8px;bottom:8px;width:48px;margin-left:-24px;border-radius:24px;background:var(--forest);box-shadow:0 0 0 6px var(--green)}
+.path::after{content:"";position:absolute;z-index:-1;left:44px;top:20px;bottom:20px;width:4px;margin-left:-2px;background:repeating-linear-gradient(180deg,var(--cream) 0 18px,transparent 18px 34px)}
+.path>li{display:grid;grid-template-columns:88px minmax(0,1fr) 140px;gap:28px;align-items:center;padding:12px 0;cursor:pointer}
+.path>li>*{transition:opacity .2s ease}
+.path .badge{border:6px solid var(--paper);cursor:pointer;transition:transform .2s ease}
+.path .badge:hover{transform:scale(1.06)}
+.path .badge:active{transform:scale(.97)}
+.path .badge:focus-visible{outline:4px solid var(--orchid);outline-offset:3px;transition:none}
+.path li.on .badge{transform:scale(1.12)}
+.path h3{font-size:32px}
+.path .ph{font-size:22px;font-weight:600;color:var(--orchid);text-align:right}
+.path .ph.later-ph{color:var(--gold-ink)}
+[data-active] .path>li:not(.on)>:not(.badge){opacity:.4}
+[data-active] .path>li:not(.on) .badge{filter:grayscale(.85)}
+
+/* 8 gantt */
+.gantt{display:grid;grid-template-columns:440px repeat(10,minmax(0,1fr));row-gap:12px;align-items:center;background:var(--card);border-radius:16px;padding:28px 32px}
+.gantt p{font-size:23px}
+.gantt .wk{font-weight:600;color:var(--ink-soft)}
+.gantt .wk.hot{color:var(--orchid)}
+.gantt.w17{grid-template-columns:400px repeat(17,minmax(0,1fr))}
+.gantt.w17 .wk{font-size:17px;text-align:center}
+.gantt .colhead{font-weight:600;color:var(--forest)}
+.gantt .golive{font-weight:600;color:var(--orchid)}
+.bar{height:32px;border-radius:16px;transition:opacity .2s ease}
+.bar.wv{background:var(--green)} .bar.nn{background:var(--gold)} .bar.jt{background:var(--orchid)}
+.gantt[data-f="wv"] .bar:not(.wv),.gantt[data-f="nn"] .bar:not(.nn),.gantt[data-f="jt"] .bar:not(.jt){opacity:.15}
+.legend{display:flex;gap:16px;align-items:center}
+.lg{display:inline-flex;align-items:center;gap:12px;font-size:24px;padding:8px 20px;border-radius:999px;border:2px solid var(--line);cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+.lg:hover{border-color:var(--forest)}
+.lg:active{transform:scale(.97)}
+.lg[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:var(--cream)}
+.lg:focus-visible{outline:3px solid var(--orchid);outline-offset:3px}
+.lg i{display:inline-block;width:20px;height:20px;border-radius:50%}
+.lg i.wv{background:var(--green)} .lg i.nn{background:var(--gold)} .lg i.jt{background:var(--orchid)}
+.legend .freeze{font-weight:600;color:var(--forest);font-size:24px}
+
+/* 9 campaign, a lane across the top with a stop per period */
+.season{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr);gap:0;position:relative;padding-top:88px}
+.season::before{content:"";position:absolute;left:-128px;right:-128px;top:22px;height:44px;background:var(--green)}
+.season::after{content:"";position:absolute;left:-128px;right:-128px;top:42px;height:4px;background:repeating-linear-gradient(90deg,var(--cream) 0 24px,transparent 24px 44px)}
+.season>div{position:relative;padding:8px 36px 32px;display:flex;flex-direction:column;gap:12px}
+.season>div::before{content:"";position:absolute;top:-88px;left:36px;width:64px;height:64px;border-radius:50%;background:var(--gold);border:8px solid var(--forest);z-index:1}
+.season>div+div{border-left:1px solid var(--line-dark)}
+.season>div:first-child{padding-left:0}
+.season>div:first-child::before{left:0}
+.season .when{font-family:var(--display);font-size:32px;font-weight:600;color:var(--gold);line-height:1.25}
+.season .peak{background:var(--orchid);color:var(--cream);border-radius:16px;padding:32px 36px;border-left:none}
+.season .peak::before{background:var(--orchid);top:-88px}
+.season .peak .when{color:var(--cream)}
+.season .peak+div{border-left:none}
+.note-list{list-style:none;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--line-dark);padding-top:24px}
+.note-list li{font-size:24px;color:var(--on-dark-soft)}
+
+/* 10 future */
+.later-phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;flex:1}
+.later-phases>div{padding:0 48px;display:flex;flex-direction:column;gap:12px}
+.later-phases>div:first-child{padding-left:0}
+.later-phases>div+div{border-left:1px solid var(--line)}
+.later-phases .n{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:64px;font-weight:700;line-height:1;color:var(--forest);margin-bottom:8px}
+.later-phases h3{font-size:38px;line-height:1.2}
+.later-phases .when{font-size:24px;font-weight:600}
+.later-phases ul{margin-top:8px}
+
+/* 11 governance */
+.terms{display:flex;flex-direction:column}
+.terms>div{display:grid;grid-template-columns:480px minmax(0,1fr);gap:48px;border-top:1px solid var(--line);padding:12px 0;align-items:center}
+.terms .who{display:flex;gap:24px;align-items:center}
+.terms h3{font-size:28px}
+
+/* 12 kpi */
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:96px}
+.kpi{display:grid;grid-template-columns:280px minmax(0,1fr);gap:32px;align-items:center;border-top:1px solid var(--line-dark);padding:20px 0}
+.kpi .num{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:64px;font-weight:700;color:var(--gold);line-height:1.1}
+.kpi .num.tbd{font-variant-numeric:tabular-nums;font-size:44px;font-weight:600;color:var(--on-dark-soft)}
+.kpi .lbl{color:var(--on-dark)}
+
+/* 14 next */
+.next-slide{padding:0;display:grid;grid-template-columns:minmax(0,1fr) 640px}
+.next-body{padding:112px 96px 152px 128px;display:flex;flex-direction:column;gap:40px}
+.steps{list-style:none;display:flex;flex-direction:column}
+.steps>li{display:grid;grid-template-columns:64px 200px minmax(0,1fr);gap:24px;align-items:center;border-top:1px solid var(--line-dark);padding:16px 0}
+.steps .n{width:56px;height:56px;border-radius:50%;background:var(--gold);color:var(--forest);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:28px}
+.steps .when{font-size:26px;font-weight:600;color:var(--gold)}
+.thanks{display:flex;justify-content:space-between;align-items:flex-end;gap:48px}
+.thanks h1{font-size:96px;line-height:1}
+.contact{text-align:right;color:var(--on-dark)}
+.credits{position:absolute;left:128px;right:768px;bottom:40px;font-size:16px;line-height:1.5;color:var(--on-dark-soft)}
+.credits a{color:inherit}
+.credits a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.next-slide .footer{display:none}
+
+/* added slides */
+.tbl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:12px 16px;font-size:22px;line-height:1.4}
+.tbl.tight td{padding-top:7px;padding-bottom:7px}
+.tbl.sm.tight td{padding-top:5px;padding-bottom:5px}
+.tbl.sm th,.tbl.sm td{padding:8px 12px;font-size:20px}
+.tbl tr.key td{font-weight:600;color:var(--forest)}
+.tbl td.c,.tbl th.c{text-align:center}
+.tbl td.a{background:var(--orchid-tint);font-weight:700;color:var(--orchid)}
+.dark .tbl th{color:var(--cream);border-bottom-color:var(--cream)}
+.dark .tbl td{border-bottom-color:var(--line-dark)}
+.split{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:64px;flex:1;min-height:0}
+.split.even{grid-template-columns:repeat(2,minmax(0,1fr))}
+.split.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
+.block{display:flex;flex-direction:column;gap:12px;min-width:0}
+.block h3{font-size:26px}
+.block li,.block p{font-size:22px;line-height:1.5}
+.block .dash{padding-left:28px;display:flex;flex-direction:column;gap:4px}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px}
+.principles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 64px}
+.principles>div{display:grid;grid-template-columns:64px minmax(0,1fr);gap:24px;align-items:start;border-top:1px solid var(--line);padding-top:20px}
+.pn{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:26px;background:var(--gold);color:var(--forest)}
+.principles h3{font-size:26px}
+.principles p{font-size:23px;margin-top:4px}
+.tabs{display:grid;grid-template-columns:380px minmax(0,1fr);gap:48px;flex:1;min-height:0}
+.tablist{display:flex;flex-direction:column;gap:8px}
+.tab{display:flex;gap:16px;align-items:center;text-align:left;padding:5px 16px;border-radius:12px;font-size:22px;cursor:pointer;border:2px solid transparent;transition:background-color .15s ease,border-color .15s ease}
+.tab b{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--leaf-tint);font-family:var(--display);font-size:17px;color:var(--forest)}
+.tab:hover{border-color:var(--line)}
+.tab:active{transform:scale(.98)}
+.tab[aria-selected="true"]{background:var(--forest);color:var(--cream)}
+.tab[aria-selected="true"] b{background:var(--gold)}
+.tab:focus-visible{outline:3px solid var(--orchid);outline-offset:2px}
+.panel{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel h3{font-size:30px}
+.js .panel:not(.on){display:none}
+.arch{display:flex;flex-direction:column;align-items:center;gap:8px}
+.arch .row{display:flex;gap:16px;justify-content:center;width:100%}
+.arch .row>.node{flex:1}
+.arch .row.two>.node{flex:0 1 560px}
+.arch .wide{width:900px}
+.node{background:var(--card);border:2px solid var(--forest);border-radius:12px;padding:12px 16px;text-align:center;font-size:22px;line-height:1.35}
+.node small{display:block;font-size:18px;color:var(--ink-soft)}
+.node.main{background:var(--forest);color:var(--cream)}
+.node.main small{color:var(--on-dark)}
+.node.edge{background:var(--gold);border-color:var(--gold)}
+.node.ext{background:var(--leaf-tint);border-color:var(--leaf)}
+.arch .down{width:4px;height:16px;background:var(--forest)}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:12px}
+.checklist label{display:flex;gap:16px;align-items:flex-start;font-size:23px;line-height:1.45;cursor:pointer}
+.checklist input{flex:none;width:26px;height:26px;margin-top:4px;accent-color:var(--leaf);cursor:pointer}
+.checklist input:focus-visible{outline:3px solid var(--orchid);outline-offset:2px}
+.checklist input:checked+span{color:var(--ink-soft);text-decoration:line-through}
+.lv{display:inline-block;padding:2px 12px;border-radius:999px;font-size:18px;font-weight:600;white-space:nowrap}
+.lv.hi{background:var(--orchid);color:var(--cream)} .lv.mid{background:var(--gold);color:var(--forest)} .lv.lo{background:var(--leaf-tint);color:var(--forest)}
+.risks tr{transition:opacity .2s ease}
+.risks[data-f="hi"] tr[data-k]:not([data-k="hi"]),.risks[data-f="mid"] tr[data-k]:not([data-k="mid"]),.risks[data-f="lo"] tr[data-k]:not([data-k="lo"]){opacity:.25}
+.kpi .src{display:block;font-size:20px;color:var(--on-dark-soft);margin-top:2px}
+
+.feat{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.fnode{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:4px;transition:opacity .2s ease}
+.fnode.start{border-color:var(--forest)}
+.fnode b{font-size:22px;line-height:1.3;color:var(--forest)}
+.fnode small{font-size:18px;line-height:1.4;color:var(--ink-soft)}
+.fnode .lv{align-self:flex-start;margin-top:auto}
+.lv.p1{background:var(--orchid);color:var(--cream)} .lv.p2{background:var(--gold);color:var(--forest)} .lv.p3{background:var(--leaf-bright);color:var(--forest)} .lv.tbd{background:var(--line);color:var(--forest)}
+.feat[data-f="p1"] .fnode:not([data-k="p1"]),.feat[data-f="p2"] .fnode:not([data-k="p2"]),.feat[data-f="p3"] .fnode:not([data-k="p3"]),.feat[data-f="tbd"] .fnode:not([data-k="tbd"]){opacity:.2}
+.lg i.p1{background:var(--orchid)} .lg i.p2{background:var(--gold)} .lg i.p3{background:var(--leaf-bright)} .lg i.tbd{background:var(--line)}
+.chain{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+.chain .node{flex:1;display:flex;flex-direction:column;justify-content:center}
+.chain .to{align-self:center;width:24px;height:4px;background:var(--forest);flex:none}
+.rules{background:var(--leaf-tint);border-radius:16px;padding:28px 32px}
+.rules h3{color:var(--forest)}
+/* member + invite + points flow: two lanes meet at the sign-up hub, then split */
+.flow{display:grid;grid-template-columns:240px minmax(0,1fr) 36px minmax(0,1fr) 36px minmax(0,1.3fr) 36px minmax(0,1fr) 36px minmax(0,1fr);row-gap:32px;align-items:center}
+.flow .node{height:100%;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:16px}
+.flow .node small{font-size:19px}
+.flow .who h3{font-size:26px}
+.flow .hub{grid-column:6;grid-row:1 / span 2}
+.flow .to{position:relative;height:4px;margin-right:10px;background:var(--forest)}
+.flow .to::after{content:"";position:absolute;right:-10px;top:-7px;border-style:solid;border-width:9px 0 9px 12px;border-color:transparent transparent transparent var(--forest)}
+.flow .who{display:flex;gap:16px;align-items:center}
+.dark .node{color:var(--ink)}
+.dark .node small{color:var(--ink-soft)}
+.dark .node.main{background:var(--orchid);border-color:var(--orchid);color:var(--cream)}
+
+.proto{display:grid;grid-template-columns:520px minmax(0,1fr);gap:56px;flex:1;min-height:0}
+.shot{height:680px;overflow-y:auto;border-radius:16px;border:2px solid var(--line);background:var(--card);scrollbar-color:var(--leaf) var(--card)}
+.shot img{display:block;width:100%;height:auto}
+.shot:focus-visible{outline:3px solid var(--orchid);outline-offset:3px}
+.btn-link{display:inline-flex;align-items:center;gap:12px;align-self:flex-start;padding:12px 24px;border-radius:999px;background:var(--forest);color:var(--cream);font-size:20px;font-weight:600;text-decoration:none;transition:background-color .15s ease}
+.btn-link:hover{background:var(--green)}
+.btn-link:active{transform:scale(.98)}
+.btn-link:focus-visible{outline:3px solid var(--orchid);outline-offset:3px}
+.hint{font-size:19px;color:var(--ink-soft)}
+
+/* chrome */
+#bar{position:fixed;left:0;bottom:0;width:100%;height:4px;background:var(--orchid);transform-origin:left center;transform:scaleX(0);transition:transform .3s ease;z-index:5}
+#nav{position:fixed;right:16px;bottom:14px;display:flex;gap:8px;align-items:center;z-index:5;font:500 14px var(--sans);color:var(--on-dark)}
+#nav button{display:inline-flex;align-items:center;justify-content:center;background:var(--chrome);color:var(--cream);border:1px solid var(--line-dark);border-radius:8px;min-width:36px;height:32px;padding:0 8px;font-size:16px;cursor:pointer;transition:background-color .15s ease,transform .1s ease}
+#nav button:hover{background:var(--chrome-hover)}
+#nav button:active{background:var(--chrome-active);transform:scale(.96)}
+#nav button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;transition:none}
+html:not(.js) #bar,html:not(.js) #nav{display:none}
+button:disabled{background:var(--muted-fill,var(--line));color:var(--ink-soft);cursor:not-allowed}
+
+@media (prefers-reduced-motion: reduce){
+  .js .slide,#bar,#nav button,.road .trail,.btn-link,.tab,.risks tr,.fnode,.stop,.pl,.path>li>*,.path .badge,.bar,.lg{transition:none}
+}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body,.js,.js body{height:auto;overflow:visible;background:none}
+  .js #viewport{position:static;display:block}
+  #stage,.js #stage{transform:none!important;height:auto}
+  .slide,.js .slide{position:relative;opacity:1;visibility:visible;page-break-after:always;break-after:page}
+  #bar,#nav{display:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></g></symbol>
+  <symbol id="i-flower" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="2.5"/><path d="M12 6.5c0-3 3-3 3 0M14.5 9c3 0 3 3 0 3M12 11.5c0 3-3 3-3 0M9.5 9c-3 0-3-3 0-3M12 12v9M12 17c-2-2-5-2-5-2M12 19c2-2 5-2 5-2"/></g></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-4 3.3-6 6.5-6s6 2 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c3 .2 5 2 5.5 5.3"/></g></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5" stroke-linecap="round"/></g></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 7h18v3a2 2 0 000 4v3H3v-3a2 2 0 000-4zM14 7v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-qr" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M17 20h4v-3"/></g></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-8-4.6-8-10.2A4.3 4.3 0 0112 7a4.3 4.3 0 018 2.8C20 15.4 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></g></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9l9-5 9 5M5 9v9M10 9v9M14 9v9M19 9v9M3 20h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></g></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></g></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6zM8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+</svg>
+<div id="viewport"><div id="stage">
+
+<!-- 1 COVER -->
+<section class="slide dark cover" data-title="ปก">
+  <div class="cover-text">
+    <div>
+      <h1>Digital Roadmap</h1>
+      <p class="sub">แผนพัฒนา Website, Mobile Application และ CMS</p>
+    </div>
+    <p class="byline">Wisdom Vast × Nong Nooch World Pattaya</p>
+  </div>
+  <div data-slot="cover" data-alt="ป่าเฟิร์นและน้ำตก">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Beech_Forest_%28AU%29%2C_Great_Otway_National_Park%2C_Beauchamp_Falls_--_2019_--_1271.jpg/1280px-Beech_Forest_%28AU%29%2C_Great_Otway_National_Park%2C_Beauchamp_Falls_--_2019_--_1271.jpg" srcset="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Beech_Forest_%28AU%29%2C_Great_Otway_National_Park%2C_Beauchamp_Falls_--_2019_--_1271.jpg/1280px-Beech_Forest_%28AU%29%2C_Great_Otway_National_Park%2C_Beauchamp_Falls_--_2019_--_1271.jpg 1280w, https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Beech_Forest_%28AU%29%2C_Great_Otway_National_Park%2C_Beauchamp_Falls_--_2019_--_1271.jpg/1920px-Beech_Forest_%28AU%29%2C_Great_Otway_National_Park%2C_Beauchamp_Falls_--_2019_--_1271.jpg 1920w" sizes="55vw" alt="ป่าเฟิร์นเขียวชอุ่ม มีน้ำตกไหลผ่านโขดหิน">
+    <p class="slot-hint">รูปสวนนงนุช 1040 × 1080</p>
+  </div>
+</section>
+
+<!-- 2 GOALS -->
+<section class="slide deco-2">
+  <div class="goals">
+    <div>
+      <h2>เป้าหมายหลัก:<br>การกลับมาเที่ยวซ้ำ</h2>
+      <p class="statement" style="margin-top:40px">รวบรวมข้อมูลนักท่องเที่ยวผ่านการสมัครสมาชิกกับสวนนงนุช สมาชิกได้รับพ้อยและโปรโมชันเมื่อกลับมาใช้บริการอีก</p>
+      <div class="rules" style="margin-top:48px"><h3>ทำไมต้องมี Agent</h3><p style="margin-top:8px">นักท่องเที่ยวต่างชาติส่วนใหญ่ซื้อบัตรผ่าน Agent นงนุชจึงเข้าไม่ถึงข้อมูลของกลุ่มนี้ โครงการจึงให้ไกด์ของ Agent ชวนนักท่องเที่ยวสมัครสมาชิกด้วย Invite code และได้พ้อยตอบแทน</p></div>
+    </div>
+    <ul class="ruled">
+      <li><span class="badge b-orchid"><svg aria-hidden="true"><use href="#i-users"/></svg></span><div><h3>ฐานสมาชิกของนงนุชเอง</h3><p>นักท่องเที่ยวทุกกลุ่ม (ออนไลน์ เคาน์เตอร์ และผ่าน Agent) สมัครสมาชิกและให้ความยินยอมรับข่าวสาร</p></div></li>
+      <li><span class="badge b-leaf"><svg aria-hidden="true"><use href="#i-heart"/></svg></span><div><h3>การกลับมาเที่ยวซ้ำ</h3><p>สมาชิกสะสมพ้อยและได้โปรโมชันเมื่อกลับมา (เปิดแลกพ้อยในเฟส 2)</p></div></li>
+      <li><span class="badge b-gold"><svg aria-hidden="true"><use href="#i-qr"/></svg></span><div><h3>Agent เป็นพันธมิตรหาสมาชิก</h3><p>ไกด์ได้พ้อยเมื่อนักท่องเที่ยวสมัครด้วย Invite code ของตน</p></div></li>
+      <li><span class="badge b-green"><svg aria-hidden="true"><use href="#i-globe"/></svg></span><div><h3>ขายผ่านดิจิทัลมากขึ้น</h3><p>ขายบัตร บัตรห้องอาหาร และการแสดง ผ่าน Website และ App</p></div></li>
+      <li><span class="badge b-tint"><svg aria-hidden="true"><use href="#i-bolt"/></svg></span><div><h3>Sponsor และ Partner</h3><p>รายได้ใหม่ที่นงนุชอนุมัติทุกรายการก่อนเผยแพร่ (เฟส 3 ถึง 4)</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="slide deco-1" style="gap:40px">
+  <h2>หลักการที่ใช้ตัดสินใจตลอดโครงการ</h2>
+  <div class="principles">
+    <div><span class="pn" aria-hidden="true">1</span><div><h3>นงนุชเป็นเจ้าของทุกอย่าง</h3><p>Domain, App Store, Google Play, AppGallery, Cloudflare, Payment Merchant, Source code และข้อมูลลูกค้า ในนามนงนุช ส่วน Cloud เลือกได้ 3 รูปแบบ แต่ข้อมูลเป็นของนงนุชและย้ายออกได้เสมอ</p></div></div>
+    <div><span class="pn" aria-hidden="true">2</span><div><h3>เงินเข้านงนุชโดยตรง</h3><p>ทุกการชำระเงินเข้าบัญชี Merchant ของนงนุช WV ไม่รับเงินแทน</p></div></div>
+    <div><span class="pn" aria-hidden="true">3</span><div><h3>อนุมัติก่อนเผยแพร่</h3><p>ราคา โปรโมชั่น กติกาพ้อย และโฆษณาทุกรายการผ่าน Workflow อนุมัติใน CMS</p></div></div>
+    <div><span class="pn" aria-hidden="true">4</span><div><h3>เฟส 1 ทำเฉพาะสิ่งที่ต้องพร้อมในวันเปิดตัว</h3><p>ขายบัตร สมัครสมาชิก สะสมพ้อย และ Agent Program ฟีเจอร์อื่นย้ายไปเฟสถัดไป</p></div></div>
+    <div><span class="pn" aria-hidden="true">5</span><div><h3>ไม่บังคับโหลด App</h3><p>ทุกอย่างของเฟส 1 ทำได้บนเว็บ Mobile App เปิดพร้อมกันเป็นช่องทางเสริม เพราะนักท่องเที่ยวจีนจำนวนมากโหลด App จาก Google Play ไม่ได้</p></div></div>
+    <div><span class="pn" aria-hidden="true">6</span><div><h3>สะสมก่อน แลกทีหลัง</h3><p>เฟส 1 สะสมพ้อยได้แต่ยังแลกไม่ได้ เปิดแลกในเฟส 2 หลังตรวจข้อมูลจริงและกำหนดมูลค่าพ้อย</p></div></div>
+    <div><span class="pn" aria-hidden="true">7</span><div><h3>ข้อมูลนักท่องเที่ยวเป็นของนงนุช</h3><p>Agent และไกด์เห็นเฉพาะจำนวนผู้สมัคร ไม่เห็นข้อมูลส่วนบุคคล</p></div></div>
+    <div><span class="pn" aria-hidden="true">8</span><div><h3>ทบทวนลำดับความสำคัญก่อนเริ่มทุกเฟส</h3><p>เฟส 2 ถึง 4 ปรับได้ตามผลจริงหลังเปิดตัว</p></div></div>
+  </div>
+</section>
+
+<!-- 3 PLATFORM -->
+<section class="slide deco-1" style="gap:40px">
+  <h2>หนึ่งแพลตฟอร์ม สี่ช่องทาง</h2>
+  <ul class="channels">
+    <li><span class="badge b-orchid"><svg aria-hidden="true"><use href="#i-globe"/></svg></span><h3>Website</h3><p class="tag orchid">นักท่องเที่ยว ไม่ต้องโหลด App</p></li>
+    <li><span class="badge b-gold"><svg aria-hidden="true"><use href="#i-qr"/></svg></span><h3>Mobile App</h3><p class="tag gold">iOS / Android / AppGallery</p></li>
+    <li><span class="badge b-tint"><svg aria-hidden="true"><use href="#i-users"/></svg></span><h3>Agent</h3><p class="tag orchid">เว็บ + Agent App แยก</p></li>
+    <li><span class="badge b-leaf"><svg aria-hidden="true"><use href="#i-chart"/></svg></span><h3>CMS</h3><p class="tag leaf">ทีมนงนุชควบคุมได้เอง</p></li>
+  </ul>
+  <div class="core">แพลตฟอร์มเดียว<small>Go API ชุดเดียว, ข้อมูลสมาชิก บัตร และพ้อยอยู่ที่เดียว, นงนุชเป็นเจ้าของข้อมูล</small></div>
+  <div class="spacer"></div>
+  <div class="connect">
+    <b>เชื่อมต่อกับ</b>
+    <p>ระบบขายบัตร / ประตูเดิม</p>
+    <p>Payment Gateway (เงินเข้าบัญชีนงนุชโดยตรง)</p>
+    <p>อีเมล, SMS OTP และ Push (Firebase / Huawei)</p>
+    <p>POS / บัญชี / โรงแรม</p>
+  </div>
+</section>
+
+<!-- 4 ROADMAP: the road -->
+<section class="slide deco-1" data-pick>
+  <svg class="road" viewBox="0 0 1920 1080" aria-hidden="true">
+    <path class="edge" d="M -80 610 L 290 610 C 457 610 457 400 625 400 C 792 400 792 610 960 610 C 1127 610 1127 400 1295 400 C 1462 400 1462 610 1630 610 L 2000 610"/>
+    <path class="base" d="M -80 610 L 290 610 C 457 610 457 400 625 400 C 792 400 792 610 960 610 C 1127 610 1127 400 1295 400 C 1462 400 1462 610 1630 610 L 2000 610"/>
+    <path class="lane" d="M -80 610 L 290 610 C 457 610 457 400 625 400 C 792 400 792 610 960 610 C 1127 610 1127 400 1295 400 C 1462 400 1462 610 1630 610 L 2000 610"/>
+    <path class="trail" pathLength="1000" d="M -80 610 L 290 610 C 457 610 457 400 625 400 C 792 400 792 610 960 610 C 1127 610 1127 400 1295 400 C 1462 400 1462 610 1630 610 L 2000 610"/>
+  </svg>
+  <div class="head road-head">
+    <h2>5 เฟส จากวันเปิดตัวสู่ Ecosystem</h2>
+    <p class="note">เฟส 1 ทำเฉพาะสิ่งที่ <b>ต้องพร้อมในวันเปิดตัว 1 ก.พ. 2027</b> คือขายบัตร สมัครสมาชิก สะสมพ้อย และ Agent Program ส่วนเฟส 2 ถึง 4 ออกทุก 2 เดือน (มี.ค., พ.ค., ก.ค. 2027)</p>
+  </div>
+  <button class="stop pick b-leaf" data-i="0" style="left:290px;top:610px" aria-pressed="false"><svg aria-hidden="true"><use href="#i-key"/></svg><span class="visually-hidden">เฟส 0 วางรากฐาน</span></button>
+  <button class="stop pick b-orchid" data-i="1" style="left:625px;top:400px" aria-pressed="false"><svg aria-hidden="true"><use href="#i-users"/></svg><span class="visually-hidden">เฟส 1 เปิดตัวพร้อมระบบสมาชิกและ Agent</span></button>
+  <button class="stop pick b-gold" data-i="2" style="left:960px;top:610px" aria-pressed="false"><svg aria-hidden="true"><use href="#i-ticket"/></svg><span class="visually-hidden">เฟส 2 แลกพ้อยและสิทธิประโยชน์สมาชิก</span></button>
+  <button class="stop pick b-leaf" data-i="3" style="left:1295px;top:400px" aria-pressed="false"><svg aria-hidden="true"><use href="#i-heart"/></svg><span class="visually-hidden">เฟส 3 Engagement และ Sponsor</span></button>
+  <button class="stop pick b-gold" data-i="4" style="left:1630px;top:610px" aria-pressed="false"><svg aria-hidden="true"><use href="#i-globe"/></svg><span class="visually-hidden">เฟส 4 Ecosystem</span></button>
+  <div class="pl" data-for="0" style="left:135px"><p class="meta"><b>เฟส 0</b><span>5 ถึง 18 พ.ย. 2026</span></p><h3>วางรากฐาน</h3><ul><li>บัญชีในนามนงนุช</li><li>Apple / Google Developer</li><li>UX/UI ที่อนุมัติแล้ว</li><li>สิทธิ์เชื่อมระบบบัตรและประตู</li></ul></div>
+  <div class="pl hot" data-for="1" style="left:470px"><p class="meta"><b>เฟส 1</b><span>5 พ.ย. ถึง 1 ก.พ. 2027</span></p><h3>สมาชิกและ Agent</h3><ul><li>เว็บ และ Mobile App</li><li>ไทย / อังกฤษ / จีน</li><li>สมาชิกและพ้อยสะสม</li><li>Agent Program, ขายบัตร QR</li></ul></div>
+  <div class="pl" data-for="2" style="left:805px"><p class="meta"><b>เฟส 2</b><span>ใช้งาน มี.ค. 2027</span></p><h3>แลกพ้อยและสิทธิประโยชน์</h3><ul><li>เปิดแลกพ้อย ไกด์แลกตั๋วฟรี</li><li>โปรโมชันกลับมาเที่ยว</li><li>แผนที่ Interactive</li></ul></div>
+  <div class="pl" data-for="3" style="left:1140px"><p class="meta"><b>เฟส 3</b><span>ใช้งาน พ.ค. 2027</span></p><h3>Engagement และ Sponsor</h3><ul><li>ตั๋ว Bulk ของ Agent</li><li>QR event และปฏิทินอีเวนต์</li><li>Loyalty, Reward, Sponsor</li></ul></div>
+  <div class="pl" data-for="4" style="left:1475px"><p class="meta"><b>เฟส 4</b><span>ใช้งาน ก.ค. 2027</span></p><h3>Ecosystem</h3><ul><li>สินค้าและบริการ Partner</li><li>โรงแรม จัดเลี้ยง Event</li><li>ขยายภาษาครบตามต้นแบบ</li></ul></div>
+</section>
+
+<!-- MEMBER FLOW -->
+<section class="slide deco-1" style="gap:40px">
+  <div class="head"><h2>ไกด์ชวน นักท่องเที่ยวสมัคร ได้พ้อยทั้งคู่</h2><p class="lead">เฟส 1 นักท่องเที่ยวทำได้ครบบนเว็บ ไม่ต้องโหลด App, ไกด์ใช้เว็บหรือ Agent App</p></div>
+  <div class="flow" aria-label="ขั้นตอนสมัครสมาชิกและรับพ้อย">
+    <div class="who"><span class="badge sm b-gold"><svg aria-hidden="true"><use href="#i-users"/></svg></span><h3>ไกด์</h3></div>
+    <div class="node">บริษัท Agent สมัคร<small>ยื่นหนังสือรับรองนิติบุคคล ทีมนงนุชอนุมัติ</small></div><span class="to" aria-hidden="true"></span>
+    <div class="node edge">ไกด์สมัครใต้บริษัท<small style="color:var(--forest)">ได้ Invite code และ QR</small></div><span class="to" aria-hidden="true"></span>
+    <div class="node main hub">สมัครสมาชิก + ยืนยันตัวตน<small>OTP เบอร์โทร (ไทย / ต่างประเทศ) หรืออีเมล, LINE, Google, Apple<br>1 เบอร์ / 1 อีเมล ต่อ 1 บัญชี</small></div>
+    <span class="to" aria-hidden="true"></span><div class="node edge">ไกด์ได้ [__ พ้อย] ต่อคน<small style="color:var(--forest)">ไม่ต้องรอสแกนเข้าประตู</small></div><span class="to" aria-hidden="true"></span>
+    <div class="node ext">แลกตั๋วฟรี<small>เฟส 2 หลังตรวจพ้อยแล้ว</small></div>
+    <div class="who"><span class="badge sm b-orchid"><svg aria-hidden="true"><use href="#i-heart"/></svg></span><h3>นักท่องเที่ยว</h3></div>
+    <div class="node">สแกน QR ของไกด์<small>หรือป้าย QR ในสวน</small></div><span class="to" aria-hidden="true"></span>
+    <div class="node">เปิดหน้าสมัคร 3 ภาษา<small>Invite code กรอกให้อัตโนมัติ</small></div><span class="to" aria-hidden="true"></span>
+    <span class="to" aria-hidden="true"></span><div class="node edge">ได้พ้อยทันที<small style="color:var(--forest)">Welcome [__ พ้อย]<br>+ Invite [__ พ้อย]</small></div><span class="to" aria-hidden="true"></span>
+    <div class="node ext">กลับมาเที่ยว<small>ใช้พ้อยและโปรโมชัน เฟส 2</small></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="rules"><h3>กติกาพ้อยเฟส 1 (มติ 9 พ.ย. 2026)</h3>
+    <ul class="dash" style="display:grid;grid-template-columns:1fr 1fr;gap:4px 64px;margin-top:8px"><li>สะสมได้อย่างเดียว ยังแลกไม่ได้ เปิดแลกในเฟส 2</li><li>พ้อยของ Agent แยกรายไกด์</li><li>Invite code กรอกได้ครั้งเดียว ตอนสมัครหรือภายใน [__ วัน]</li><li>Agent และไกด์เห็นเฉพาะจำนวนผู้สมัคร ไม่เห็นข้อมูลส่วนบุคคล</li></ul>
+  </div>
+</section>
+
+<!-- AGENT PROGRAM -->
+<section class="slide deco-3" style="gap:20px">
+  <div class="head"><h2>Agent Program: ไกด์ช่วยหาสมาชิก</h2><p class="lead">เฟส 1 ใช้ได้ทั้งบนเว็บ 3 ภาษา และ Agent App แยกจาก App นักท่องเที่ยว</p></div>
+  <div class="terms">
+    <div><div class="who"><span class="badge sm b-gold"><svg aria-hidden="true"><use href="#i-bank"/></svg></span><h3>บริษัท Agent</h3></div><p>สมัครบัญชีบริษัท อัปโหลดหนังสือรับรองนิติบุคคล [และใบอนุญาตนำเที่ยว ถ้ากำหนด] รอทีมนงนุชอนุมัติ<br>เห็นผลงานไกด์ในสังกัด เพิ่มหรือระงับไกด์ได้</p></div>
+    <div><div class="who"><span class="badge sm b-orchid"><svg aria-hidden="true"><use href="#i-users"/></svg></span><h3>ไกด์</h3></div><p>สมัครใต้บริษัท ยืนยัน OTP ได้ Invite code และ QR ส่วนตัว<br>ได้พ้อยต่อผู้สมัครที่ยืนยันตัวตนสำเร็จ ไม่ต้องรอสแกนเข้าประตู</p></div>
+    <div><div class="who"><span class="badge sm b-tint"><svg aria-hidden="true"><use href="#i-lock"/></svg></span><h3>ข้อมูลเป็นของนงนุช</h3></div><p>Agent และไกด์เห็นเฉพาะจำนวนผู้สมัครและพ้อย ไม่เห็นชื่อ เบอร์ หรืออีเมล</p></div>
+    <div><div class="who"><span class="badge sm b-leaf"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><h3>กันบัญชีปลอม</h3></div><p>1 เบอร์ / อีเมล = 1 บัญชี, เพดานผู้สมัครต่อไกด์ต่อวัน [__], แจ้งเตือนรูปแบบผิดปกติ<br>พ้อยของไกด์อยู่สถานะ “รอตรวจ” จนทีมนงนุชตรวจก่อนเปิดแลกในเฟส 2</p></div>
+    <div><div class="who"><span class="badge sm b-gold"><svg aria-hidden="true"><use href="#i-key"/></svg></span><h3>ทีมนงนุช</h3></div><p>อนุมัติ ปฏิเสธ หรือระงับบริษัทและไกด์ ตัดพ้อยที่ผิดเงื่อนไข พร้อม Audit log</p></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="connect">
+    <b>เปิดตัวกับ Agent</b>
+    <p><b>ธ.ค. 2026</b><br>ฝ่ายขายแจ้งโปรแกรมกับ Agent รายหลัก</p>
+    <p><b>22 ถึง 31 ม.ค.</b><br>ลงทะเบียน อนุมัติ และอบรมไกด์</p>
+    <p><b>1 ก.พ. 2027</b><br>ไกด์เริ่มสะสมพ้อยได้จริง</p>
+    <p><b>6 ถึง 14 ก.พ.</b><br>ติดตามยอดสมัครและรายการผิดปกติรายวัน</p>
+  </div>
+</section>
+
+<!-- PHASE 0 TASKS -->
+<section class="slide" style="gap:28px">
+  <div class="head"><h2>เฟส 0: วางรากฐาน</h2><p class="lead">5 ถึง 18 พ.ย. 2026 (ทำคู่ขนานกับการเริ่มเฟส 1)</p></div>
+  <table class="tbl sm">
+    <tr><th style="width:6%">#</th><th style="width:58%">งาน</th><th style="width:20%">ผู้รับผิดชอบ</th><th style="width:16%">กำหนด</th></tr>
+    <tr><td>0.1</td><td>Kick-off Workshop, แต่งตั้งผู้ประสานงานและผู้อนุมัติฝั่งนงนุช</td><td>ร่วม</td><td>6 พ.ย.</td></tr>
+    <tr><td>0.2</td><td>เปิดบัญชี Payment Gateway / Merchant ในนามนงนุช</td><td>NN (WV ช่วยเตรียมเอกสาร)</td><td>13 พ.ย.</td></tr>
+    <tr class="key"><td>0.3</td><td>เปิดบัญชี Apple Developer (D-U-N-S), Google Play และ Huawei Developer ในนามนงนุช (เส้นทางวิกฤต) และถามเงื่อนไข AppGallery จีน</td><td>NN</td><td>13 พ.ย.</td></tr>
+    <tr><td>0.4</td><td>เปิดบัญชี Cloud, Domain / DNS, อีเมลระบบ, SMS ที่ส่ง OTP ไปเบอร์ต่างประเทศได้ (รวม +86) ในนามนงนุช</td><td>NN (WV ช่วยตั้งค่า)</td><td>13 พ.ย.</td></tr>
+    <tr><td>0.5</td><td>สำรวจระบบขายบัตรและระบบประตูเดิม: API, รูปแบบ QR / บาร์โค้ด, เครื่องสแกน</td><td>WV + IT นงนุช</td><td>13 พ.ย.</td></tr>
+    <tr><td>0.6</td><td>เก็บ Requirement: ประเภทบัตร ราคา กติกา Add-on การแสดง กติกาพ้อย และเงื่อนไข Agent</td><td>ร่วม</td><td>13 พ.ย.</td></tr>
+    <tr><td>0.7</td><td>Information Architecture, Wireframe, UX Flow การซื้อบัตร การสมัครสมาชิก และ Agent</td><td>WV</td><td>13 พ.ย.</td></tr>
+    <tr><td>0.8</td><td>UI Design (Website + Mobile App + CMS) และอนุมัติดีไซน์ เริ่มจากต้นแบบ Figma</td><td>WV ออกแบบ / NN อนุมัติ</td><td>27 พ.ย.</td></tr>
+    <tr><td>0.9</td><td>ตั้งค่า Repository, CI/CD, Staging, Production, Monitoring, Build pipeline ของ App</td><td>WV</td><td>13 พ.ย.</td></tr>
+    <tr><td>0.10</td><td>ร่าง DPA นโยบายความเป็นส่วนตัว และข้อความขอความยินยอม (PDPA) ทั้ง 3 ภาษา</td><td>ร่วม (ฝ่ายกฎหมาย NN)</td><td>27 พ.ย.</td></tr>
+    <tr class="key"><td>0.11</td><td>สรุปร่าง MOU ให้ฝ่ายกฎหมายทั้งสองฝ่ายตรวจ และลงนาม</td><td>ผู้บริหารทั้งสองฝ่าย</td><td>ร่าง 10 พ.ย. / ลงนาม 12 พ.ย.</td></tr>
+    <tr><td>0.12</td><td>ร่างเงื่อนไขโปรแกรม Agent: เอกสารที่ต้องยื่น สิทธิ์และหน้าที่ของบริษัทและไกด์ การระงับบัญชี</td><td>NN (WV ช่วยร่าง)</td><td>27 พ.ย.</td></tr>
+    <tr><td>0.13</td><td>ยื่นเปิดบัญชี WeChat Open Platform (สำหรับ WeChat Login เฟส 2)</td><td>NN</td><td>30 พ.ย.</td></tr>
+  </table>
+</section>
+
+<!-- PHASE 0 DETAIL -->
+<section class="slide deco-3" style="gap:36px">
+  <h2>เฟส 0: MOU ระบบเดิม และผลลัพธ์ที่ต้องได้</h2>
+  <div class="split three">
+    <div class="block"><h3>สิ่งที่ MOU ควรครอบคลุม (ข้อเสนอ)</h3><ul class="dash"><li>ขอบเขตเฟส 1 และวัน Go-Live 1 ก.พ. 2027 พร้อมกรอบ Roadmap เฟส 2 ถึง 4</li><li>หลักการว่าบัญชี ระบบ และข้อมูลลูกค้าทั้งหมดอยู่ในนามนงนุช และเงินเข้าบัญชีนงนุชโดยตรง</li><li>การรักษาความลับ (NDA) และการคุ้มครองข้อมูลส่วนบุคคล เพื่อให้ WV เข้าถึงระบบเดิมได้ทันทีหลังลงนาม</li><li>ผู้ประสานงาน ผู้อนุมัติ และกลไกตัดสินใจของแต่ละฝ่าย</li><li>กรอบเวลาลงนามสัญญาธุรกิจ (Definitive Agreement) ก่อน Go-Live</li><li>สถานะของงานที่ทำไปแล้วก่อนลงนาม (5 ถึง 11 พ.ย.)</li></ul></div>
+    <div class="block"><h3>คำถามจากการสำรวจระบบเดิม (งาน 0.5)</h3><ul class="dash"><li>ระบบขายบัตรเดิมมี API ให้สร้างบัตรหรือรับรายการขายจากภายนอกหรือไม่</li><li>เครื่องสแกนที่ประตูอ่าน QR รูปแบบใด อ่านแบบ Online หรือ Offline</li><li>ถ้าระบบเดิมเชื่อมไม่ได้ทัน ทางเลือกสำรองคือ <b>ระบบตรวจบัตรของเราเอง</b> บนแท็บเล็ต / มือถือที่ประตู (ความเสี่ยง R2)</li><li>การกระทบยอดกับบัญชี / POS ต้องใช้ข้อมูลรูปแบบใด</li><li>บัตรที่ Agent ซื้อในปัจจุบันออกจากระบบใด และมีข้อมูลบริษัท Agent อยู่ในระบบเดิมหรือไม่</li></ul></div>
+    <div class="block"><h3>ผลลัพธ์ที่ต้องได้</h3><ul class="dash"><li>บัญชีทั้งหมดอยู่ในนามนงนุช และ WV มีสิทธิ์เข้าถึงที่จำเป็น</li><li>เอกสาร Integration Spec ของระบบบัตร / ประตู ที่ทั้งสองฝ่ายลงนาม</li><li>ดีไซน์ที่อนุมัติแล้ว (Figma) ครอบคลุมทุกหน้าของเฟส 1 ทั้งเว็บและ App</li><li>สภาพแวดล้อม Staging พร้อมให้ทีม Dev ใช้งาน</li></ul></div>
+  </div>
+</section>
+
+<!-- 5 PHASE 1 -->
+<section class="slide deco-3" style="gap:40px">
+  <div class="head"><h2>สิ่งที่พร้อมใช้ในวันที่ 1 กุมภาพันธ์</h2><p class="lead">เฟส 1: พัฒนา 12 พ.ย. 2026 ถึง 8 ม.ค. 2027, Go-Live จันทร์ 1 ก.พ. 2027</p></div>
+  <div class="ship">
+    <div><h3>พร้อมเปิดตัว</h3>
+      <div class="checks">
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>Website + Mobile App iOS / Android (ไม่บังคับโหลด App)</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>ภาษาไทย / อังกฤษ / จีน (Simplified)</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>สมัครสมาชิกยืนยันตัวตน OTP ไทย / ต่างประเทศ พร้อมความยินยอม PDPA</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>Welcome point และ Invite point (สะสมอย่างเดียว)</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>Agent Program: บัญชีบริษัท + ไกด์, Invite code / QR, พ้อยรายไกด์, เว็บ + Agent App</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>บัตรรายวัน / รายปี ผูกบัญชีสมาชิก, e-Ticket QR สแกนเข้าประตู</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>บัตรห้องอาหาร, Add-on การแสดง, ชำระผ่าน Payment Gateway</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>CMS + Workflow อนุมัติ, Dashboard ขาย สมาชิก และ Agent</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>ตารางการแสดง, แผนที่ภาพนิ่ง, หน้าแคมเปญตรุษจีน / วาเลนไทน์</p></div>
+        <div class="check"><span class="tick"><svg aria-hidden="true"><use href="#i-check"/></svg></span><p>QR สมัครสมาชิกในสวน และหน้า Activities / ที่พัก / MICE [รอยืนยัน]</p></div>
+      </div>
+    </div>
+    <div class="later"><h3>ย้ายไปเฟสถัดไป</h3>
+      <ul class="dash"><li>แลกพ้อยทุกรูปแบบ (เฟส 2)</li><li>พ้อยจากการใช้จ่าย, ตั๋วฟรีวันเกิด, โปรโมชันกลับมาเที่ยว (เฟส 2)</li><li>Login Facebook, WeChat, Kakao, WhatsApp (เฟส 2)</li><li>แผนที่นำทาง และข้อมูลพืชพรรณ (เฟส 2)</li><li>Chatbot “Ask Nongnooch” (เฟส 2)</li><li>ซื้อตั๋ว Bulk ของ Agent (เฟส 3)</li><li>Mission, Reward และ Sponsor (เฟส 3)</li><li>Partner, โรงแรม จัดเลี้ยง สัมมนา (เฟส 4)</li><li>ภาษาอื่นนอกจากไทย / อังกฤษ / จีน (เฟส 2 ถึง 4)</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 1 DETAIL (3 columns) -->
+<section class="slide leaf deco-3" style="gap:40px">
+  <div class="head"><h2>เฟส 1: เปิดตัวพร้อมระบบสมาชิกและ Agent</h2><p class="lead">พัฒนา 12 พ.ย. 2026 ถึง 8 ม.ค. 2027, Go-Live จันทร์ 1 ก.พ. 2027</p></div>
+  <div class="later-phases">
+    <div><p class="n b-gold" style="font-size:48px">1.1</p><h3>สมาชิกและ Agent</h3><p class="when tag gold">หัวใจของเป้าหมาย: เก็บข้อมูลนักท่องเที่ยว</p>
+      <ul class="dash"><li>สมัครสมาชิก OTP ไทย / ต่างประเทศ, อีเมล, LINE, Google, Apple</li><li>ความยินยอม PDPA ตั้งแต่ตอนสมัคร</li><li>Welcome point + Invite point (สะสมอย่างเดียว)</li><li>Agent: บัญชีบริษัท (หนังสือนิติบุคคล) + บัญชีไกด์</li><li>Invite code / QR รายไกด์, พ้อยแยกรายไกด์</li><li>กันโกง: 1 เบอร์ 1 บัญชี, เพดานต่อวัน</li></ul></div>
+    <div><p class="n b-tint" style="font-size:48px">1.2</p><h3>ขายบัตรและเข้าประตู</h3><p class="when tag orchid">ซื้อได้ทั้งเว็บและ App</p>
+      <ul class="dash"><li>บัตรรายวัน / รายปี ผูกบัญชีสมาชิก</li><li>บัตรห้องอาหาร และ Add-on การแสดง</li><li>ชำระผ่าน Payment Gateway</li><li>e-Ticket QR สแกนเข้าประตู (Online / Offline)</li><li>Waiting room พัฒนาเอง รองรับวันพีค</li></ul></div>
+    <div><p class="n b-leaf" style="font-size:48px">1.3</p><h3>ช่องทางและหลังบ้าน</h3><p class="when tag leaf">ไทย / อังกฤษ / จีน (Simplified)</p>
+      <ul class="dash"><li>Website ใหม่ (ไม่บังคับโหลด App)</li><li>App นักท่องเที่ยว + Agent App บน App Store, Google Play, AppGallery</li><li>Push ผ่าน FCM + Huawei Push Kit</li><li>CMS เขียนเอง + Workflow อนุมัติ</li><li>Dashboard ขาย สมาชิก Agent แบบ real-time</li><li>ตารางการแสดง, หน้าแคมเปญตรุษจีน / วาเลนไทน์</li></ul></div>
+  </div>
+</section>
+
+<!-- PHASE 1 EPICS -->
+<section class="slide" style="gap:32px" data-tabs>
+  <div class="head"><h2>เฟส 1: Epic และ User Story</h2><p class="lead">เลือก Epic เพื่อดู Story และเกณฑ์การตรวจรับ</p></div>
+  <div class="tabs">
+    <div class="tablist" role="tablist" aria-label="Epic เฟส 1">
+      <button class="tab" role="tab" id="tab-E1" aria-controls="pn-E1" aria-selected="true"><b>E1</b>Website และ SEO</button>
+      <button class="tab" role="tab" id="tab-E2" aria-controls="pn-E2" aria-selected="false"><b>E2</b>การซื้อบัตร (Checkout)</button>
+      <button class="tab" role="tab" id="tab-E3" aria-controls="pn-E3" aria-selected="false"><b>E3</b>การชำระเงิน</button>
+      <button class="tab" role="tab" id="tab-E4" aria-controls="pn-E4" aria-selected="false"><b>E4</b>e-Ticket และการเข้าประตู</button>
+      <button class="tab" role="tab" id="tab-E5" aria-controls="pn-E5" aria-selected="false"><b>E5</b>Website และ Mobile App</button>
+      <button class="tab" role="tab" id="tab-E6" aria-controls="pn-E6" aria-selected="false"><b>E6</b>CMS และ Workflow อนุมัติ</button>
+      <button class="tab" role="tab" id="tab-E7" aria-controls="pn-E7" aria-selected="false"><b>E7</b>Dashboard และรายงาน</button>
+      <button class="tab" role="tab" id="tab-E8" aria-controls="pn-E8" aria-selected="false"><b>E8</b>ระบบหลังบ้านและการเชื่อมต่อ</button>
+      <button class="tab" role="tab" id="tab-E9" aria-controls="pn-E9" aria-selected="false"><b>E9</b>ระบบสมาชิกและพ้อย (ใหม่)</button>
+      <button class="tab" role="tab" id="tab-E10" aria-controls="pn-E10" aria-selected="false"><b>E10</b>Agent Program (ใหม่)</button>
+    </div>
+    <div class="panel on" role="tabpanel" id="pn-E1" aria-labelledby="tab-E1"><h3>E1. Website และ SEO</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>ผู้เยี่ยมชมดูข้อมูลสวน การแสดง เวลาเปิดปิด การเดินทาง ได้ทั้งไทย / อังกฤษ / จีน</td><td>สลับภาษาได้ทุกหน้า, URL แยกภาษา (/th, /en, /zh), มี hreflang</td></tr>
+    <tr><td>ค้นหาเจอจาก Google</td><td>Server-side rendering, sitemap.xml, meta / OG tags แก้ได้จาก CMS, Lighthouse SEO ≥ 90</td></tr>
+    <tr><td>เปิดเร็วบนมือถือ 4G และเครือข่ายโรมมิ่ง</td><td>LCP ≤ 2.5 วินาที บนหน้าแรก หน้าซื้อบัตร และหน้าสมัครสมาชิก, รูป WebP / AVIF อัตโนมัติ, หน้าสมัครไม่พึ่งบริการที่ถูกบล็อกในจีน</td></tr>
+    <tr><td>URL เดิมที่ Google จำไว้ไม่เสีย</td><td>ทำ 301 redirect จาก URL เว็บเดิมที่มี traffic</td></tr>
+    <tr><td>ใช้งานได้กับผู้พิการ</td><td>ผ่าน WCAG 2.1 AA ในหน้าหลัก Checkout และหน้าสมัครสมาชิก</td></tr>
+    <tr><td>ดีไซน์ตรงกับต้นแบบที่อนุมัติ</td><td>ตาม Concept ที่เลือกจาก Figma ทั้ง Desktop และ Mobile, ปิด animation เมื่อผู้ใช้ตั้งค่าลดการเคลื่อนไหว</td></tr>
+    <tr><td>ดูที่พักและสถานที่จัดงาน</td><td>ที่พัก redirect ไป Trip.com, หน้า MICE ส่งฟอร์มถึงทีม MICE ทางอีเมล [ถ้าอยู่ในเฟส 1]</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E2" aria-labelledby="tab-E2"><h3>E2. การซื้อบัตร (Checkout)</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>เลือกวันเข้าชม ประเภทบัตร และจำนวน (ผู้ใหญ่ / เด็ก)</td><td>ปฏิทินแสดงวันที่ขายได้, ราคาตรงกับที่อนุมัติใน CMS, 4 ขั้นตามต้นแบบ พร้อม Order summary</td></tr>
+    <tr><td>ราคาคนไทยและต่างชาติ (ตามต้นแบบ)</td><td>แสดงราคาตามที่เลือก, แจ้งให้แสดงบัตรประชาชนที่เคาน์เตอร์ [รอยืนยันกติกา]</td></tr>
+    <tr><td>เลือกบัตรห้องอาหาร และ Add-on การแสดง</td><td>ผูกกับวันเข้าชม, ห้องอาหารสแกน QR รับสิทธิ์ (ไม่เชื่อม POS), จำกัดจำนวนได้ (เช่น ที่นั่งการแสดง)</td></tr>
+    <tr><td>ซื้อบัตรรายปี</td><td>ต้องมีบัญชีสมาชิก, กรอกชื่อและอัปโหลดรูปผู้ถือบัตรตอนซื้อหรือภายหลัง</td></tr>
+    <tr><td>ซื้อบัตรรายปีเป็นของขวัญ</td><td>ระบุอีเมล / เบอร์ผู้รับ, ผู้รับเปิดใช้บัตรด้วยบัญชีสมาชิกของตัวเอง</td></tr>
+    <tr><td>ใช้โค้ดส่วนลด / ราคา Pre-sale</td><td>ราคาพิเศษใช้ได้เฉพาะช่วงวันที่กำหนด, เปิดปิดจาก CMS</td></tr>
+    <tr><td>ชวนสมัครสมาชิกระหว่างซื้อ</td><td>เสนอสมัครพร้อมแสดง Welcome point, ยังซื้อบัตรรายวันแบบ Guest ได้ และผูกออเดอร์เข้าบัญชีภายหลังได้</td></tr>
+    <tr><td>ไม่ขายเกินจำนวน</td><td>จองโควตาชั่วคราว 15 นาทีระหว่างชำระเงิน, ปล่อยคืนเมื่อหมดเวลา</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E3" aria-labelledby="tab-E3"><h3>E3. การชำระเงิน</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>จ่ายด้วยบัตรเครดิต / เดบิต และ PromptPay QR</td><td>เงินเข้าบัญชี Merchant ของนงนุช, ไม่เก็บเลขบัตรในระบบเรา</td></tr>
+    <tr><td>จ่ายใน Mobile App</td><td>ใช้ Payment Gateway เดียวกับเว็บ (บัตรเข้าสวนใช้นอก App จึงไม่ต้องใช้ระบบจ่ายเงินในแอปของ Apple / Google)</td></tr>
+    <tr><td>ได้รับการยืนยันทันทีหลังจ่าย</td><td>ออก e-Ticket ภายใน 30 วินาทีหลัง Webhook ยืนยัน</td></tr>
+    <tr><td>ระบบไม่ออกบัตรซ้ำ / ไม่ตกหล่น</td><td>Webhook ทำงานแบบ idempotent, มีงานกระทบยอดกับ Gateway ทุกชั่วโมง</td></tr>
+    <tr><td>เจ้าหน้าที่คืนเงินได้</td><td>คืนเงินจาก CMS (ตามสิทธิ์), บัตรที่คืนเงินแล้วสแกนไม่ผ่าน</td></tr>
+    <tr><td>ออกใบเสร็จ / ใบกำกับภาษี</td><td>ใบเสร็จอิเล็กทรอนิกส์ส่งทางอีเมล, ขอใบกำกับภาษีเต็มรูปได้ [รอยืนยันรูปแบบจากฝ่ายบัญชี]</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E4" aria-labelledby="tab-E4"><h3>E4. e-Ticket และการเข้าประตู</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>ได้รับ e-Ticket ทางอีเมล และในหน้า “บัตรของฉัน” (เว็บและ App)</td><td>เปิดดูได้แม้สัญญาณอ่อน (App เก็บบัตรไว้ในเครื่อง)</td></tr>
+    <tr><td>สแกนเข้าประตูได้เร็ว</td><td>สแกนถึงผลไม่เกิน 1 วินาที, QR ลงลายเซ็นดิจิทัล ปลอมไม่ได้</td></tr>
+    <tr><td>บัตรรายวันใช้ได้ครั้งเดียวในวันที่เลือก</td><td>สแกนซ้ำแสดง “ใช้แล้ว” พร้อมเวลาที่ใช้</td></tr>
+    <tr><td>บัตรรายปีใช้ได้ 365 วันนับจากวันเปิดใช้</td><td>หน้าจอเจ้าหน้าที่แสดงรูปผู้ถือบัตรเพื่อตรวจเทียบ</td></tr>
+    <tr><td>ประตูทำงานได้แม้เน็ตล่ม</td><td>โหมด Offline ตรวจลายเซ็น QR ในเครื่อง แล้ว sync เมื่อเน็ตกลับมา</td></tr>
+    <tr><td>บันทึกการเข้าชมของสมาชิก</td><td>ทุกการสแกนบัตรที่ผูกบัญชีบันทึกเป็นประวัติการเข้าชม เพื่อวัดการกลับมาเที่ยวซ้ำ</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E5" aria-labelledby="tab-E5"><h3>E5. Website และ Mobile App</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>ใช้งานได้โดยไม่ต้องโหลด App</td><td>สมัครสมาชิก กรอก Invite code ซื้อบัตร ดูบัตร และดูพ้อย ทำได้ครบบนเว็บ</td></tr>
+    <tr><td>โหลด Mobile App จาก App Store / Google Play / Huawei AppGallery</td><td>ฟีเจอร์เท่ากับเว็บเฟส 1, Build GMS และ HMS จากโค้ด Flutter เดียว, ผ่านการตรวจทั้งสามสโตร์ก่อน Go-Live</td></tr>
+    <tr><td>เปิด App จากลิงก์</td><td>Deep link จากอีเมล / SMS / QR ของไกด์ เปิดหน้าที่ถูกต้อง และส่ง Invite code ต่อให้อัตโนมัติ</td></tr>
+    <tr><td>ดูตารางการแสดงวันนี้</td><td>ข้อมูลจาก CMS 3 ภาษา, ไฮไลต์รอบถัดไป, App แจ้งเตือนรอบการแสดงได้ (Push)</td></tr>
+    <tr><td>ดูแผนที่สวน</td><td>แผนที่ภาพนิ่งซูมได้ พร้อมจุดสำคัญ (แผนที่นำทางเต็มรูปแบบอยู่เฟส 2)</td></tr>
+    <tr><td>รับข่าวสาร</td><td>อีเมลข่าวสาร และ Push ใน App เฉพาะผู้ให้ความยินยอม</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E6" aria-labelledby="tab-E6"><h3>E6. CMS และ Workflow อนุมัติ</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>ทีมนงนุชแก้เนื้อหา รูปภาพ ตารางการแสดง เองได้</td><td>ไม่ต้องพึ่ง Developer, มี Preview ก่อนเผยแพร่, แก้ได้ทั้ง 3 ภาษา</td></tr>
+    <tr><td>ตั้งราคา โปรโมชั่น โค้ดส่วนลด และกติกาพ้อย</td><td>ทุกการเปลี่ยนต้องผ่านผู้อนุมัติก่อนมีผล</td></tr>
+    <tr><td>Workflow อนุมัติ</td><td>สถานะ ร่าง → รออนุมัติ → อนุมัติ / ตีกลับ, บันทึกผู้อนุมัติและเวลา (Audit log)</td></tr>
+    <tr><td>กำหนดสิทธิ์ผู้ใช้</td><td>บทบาทอย่างน้อย: Admin, Editor, Approver, Finance, Gate Staff, Agent Manager, Viewer</td></tr>
+    <tr><td>จัดการคำสั่งซื้อ</td><td>ค้นหาออเดอร์, ส่งบัตรซ้ำ, คืนเงิน, แก้ข้อมูลผู้ถือบัตรรายปี</td></tr>
+    <tr><td>จัดการสมาชิก</td><td>ค้นหาสมาชิก, ดูประวัติพ้อยและการเข้าชม, ระงับบัญชี, ปรับพ้อยพร้อมเหตุผล (Audit log)</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E7" aria-labelledby="tab-E7"><h3>E7. Dashboard และรายงาน</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>ผู้บริหารเห็นยอดขายแบบ real-time</td><td>ยอดขายวันนี้ / สัปดาห์ / เดือน แยกตามประเภทบัตรและ Add-on, หน่วงไม่เกิน 1 นาที</td></tr>
+    <tr><td>เห็นการเติบโตของฐานสมาชิก</td><td>สมาชิกใหม่รายวัน แยกตามช่องทาง (ออนไลน์, QR ในสวน, Invite ของไกด์), สัญชาติ / ภาษา, อัตราความยินยอม</td></tr>
+    <tr><td>เห็นผลงานของ Agent</td><td>ผู้สมัครและพ้อยแยกรายบริษัทและรายไกด์, จัดอันดับ, รายการที่ระบบแจ้งว่าผิดปกติ</td></tr>
+    <tr><td>เห็นจำนวนคนเข้าประตู</td><td>สแกนเข้าแยกรายชั่วโมง เทียบกับบัตรที่ขาย และสัดส่วนที่เป็นสมาชิก</td></tr>
+    <tr><td>วัดผลแคมเปญ</td><td>Conversion funnel, ยอดขายตามโค้ดส่วนลด / UTM, ยอดโหลด App</td></tr>
+    <tr><td>ดึงข้อมูลไปทำบัญชี</td><td>Export CSV / Excel รายวัน สำหรับกระทบยอด</td></tr>
+    <tr><td>รายงานประจำเดือน</td><td>ส่งภายใน 7 วันทำการหลังสิ้นเดือน</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E8" aria-labelledby="tab-E8"><h3>E8. ระบบหลังบ้านและการเชื่อมต่อ</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">งาน</th><th style="width:60%">รายละเอียด</th></tr>
+    <tr><td>เชื่อมระบบขายบัตร / ประตูเดิม</td><td>ตาม Integration Spec จากเฟส 0</td></tr>
+    <tr><td>LINE Login</td><td>Login ด้วยบัญชี LINE (ใช้ LINE Login channel ไม่ต้องมี LINE OA)</td></tr>
+    <tr><td>อีเมล / SMS</td><td>อีเมลยืนยันคำสั่งซื้อ, SMS OTP เบอร์ไทยและต่างประเทศ (รวม +86) พร้อมอีเมล OTP เป็นทางสำรอง</td></tr>
+    <tr><td>Push notification</td><td>Firebase (iOS / Android) + Huawei Push Kit (Huawei ไม่มี Google services)</td></tr>
+    <tr><td>Waiting room (พัฒนาเอง)</td><td>คิวรอซื้อใน Go + หน้ารอคิว Next.js 3 ภาษา, เปิด / ปิดจาก Admin, ผ่าน Load test 3 เท่า</td></tr>
+    <tr><td>Analytics</td><td>GA4 + Server-side event สำหรับ Funnel การซื้อและการสมัคร</td></tr>
+    <tr><td>Monitoring</td><td>Uptime check, Error tracking, Crash reporting ของ App, Alert ไปยังทีม On-call</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E9" aria-labelledby="tab-E9"><h3>E9. ระบบสมาชิกและพ้อย (ใหม่)</h3>
+  <table class="tbl sm">
+    <tr><th style="width:40%">Story</th><th style="width:60%">Acceptance Criteria</th></tr>
+    <tr><td>สมัครสมาชิกได้ง่าย</td><td>OTP เบอร์โทร (ไทย / ต่างประเทศ), อีเมล OTP, LINE, Google, Apple, หน้าสมัคร 3 ภาษา, สมัครเสร็จภายใน 1 นาที</td></tr>
+    <tr><td>บัญชีต้องยืนยันตัวตน</td><td>ได้พ้อยเมื่อยืนยัน OTP เบอร์โทรหรืออีเมลสำเร็จ, 1 เบอร์ / 1 อีเมล ต่อ 1 บัญชี</td></tr>
+    <tr><td>ได้ Welcome point เมื่อสมัครสำเร็จ</td><td>[__ พ้อย] เข้าบัญชีทันทีหลังยืนยันตัวตน</td></tr>
+    <tr><td>กรอก Invite code ได้ Invite point เพิ่ม</td><td>กรอกเองหรือมาจาก QR / ลิงก์ของไกด์อัตโนมัติ, ครั้งเดียวต่อบัญชี ตอนสมัครหรือภายใน [__ วัน], ได้ [__ พ้อย]</td></tr>
+    <tr><td>ให้ความยินยอม PDPA</td><td>แยกความยินยอมรับข่าวสารการตลาด (ไม่ติ๊กไว้ล่วงหน้า), ถอนความยินยอมได้ภายหลัง</td></tr>
+    <tr><td>ดูพ้อยของฉัน</td><td>ยอดพ้อย ประวัติการได้รับ และข้อความ “เปิดแลกพ้อยเร็ว ๆ นี้”</td></tr>
+    <tr><td>พ้อยสะสมได้ แต่ยังแลกไม่ได้</td><td>ไม่มีหน้าหรือ API แลกพ้อยในเฟส 1, ทุกรายการบันทึกใน Ledger แบบแก้ย้อนหลังไม่ได้</td></tr>
+    <tr><td>ผูกบัตรกับบัญชี</td><td>บัตรที่ซื้อขณะ Login ผูกบัญชีอัตโนมัติ, บัตรที่ซื้อแบบ Guest ผูกภายหลังได้</td></tr>
+  </table></div>
+    <div class="panel" role="tabpanel" id="pn-E10" aria-labelledby="tab-E10"><h3>E10. Agent Program (ใหม่)</h3>
+  <table class="tbl sm">
+    <tr><th style="width:36%">Story</th><th style="width:64%">Acceptance Criteria</th></tr>
+    <tr><td>บริษัท Agent สมัครบัญชีบริษัท</td><td>อัปโหลดหนังสือรับรองนิติบุคคล [และใบอนุญาตนำเที่ยว ถ้ากำหนด], สถานะ “รอตรวจ” จนทีมนงนุชอนุมัติใน CMS</td></tr>
+    <tr><td>ไกด์สมัครบัญชีภายใต้บริษัท</td><td>ลิงก์เชิญของบริษัทหรือบริษัทอนุมัติคำขอ, ยืนยัน OTP, ไกด์ 1 คนสังกัดได้ [1] บริษัท</td></tr>
+    <tr><td>ไกด์ได้ Invite code และ QR ส่วนตัว</td><td>QR เปิดหน้าสมัครพร้อมโค้ด (เว็บ หรือ App ถ้าติดตั้งแล้ว), พิมพ์หรือแสดงบนมือถือได้</td></tr>
+    <tr><td>ไกด์ได้พ้อยเมื่อนักท่องเที่ยวสมัครด้วยโค้ด</td><td>[__ พ้อย] ต่อผู้สมัครที่ยืนยันตัวตนสำเร็จ ไม่ต้องรอสแกนเข้าประตู, พ้อยเข้ารายไกด์</td></tr>
+    <tr><td>บริษัทเห็นผลงานไกด์ในสังกัด</td><td>ยอดรวมและรายไกด์ เฉพาะจำนวนผู้สมัครและพ้อย, เพิ่ม / ระงับไกด์ได้</td></tr>
+    <tr><td>ไม่เห็นข้อมูลนักท่องเที่ยว</td><td>หน้า Agent แสดงเฉพาะจำนวน ไม่มีชื่อ เบอร์ หรืออีเมลของผู้สมัคร</td></tr>
+    <tr><td>ป้องกันการสร้างบัญชีปลอม</td><td>1 เบอร์ / อีเมล = 1 บัญชี, เพดานต่อไกด์ต่อวัน [__], แจ้งเตือนรูปแบบผิดปกติ, พ้อยไกด์ “รอตรวจ” จนตรวจก่อนเปิดแลกเฟส 2</td></tr>
+    <tr><td>ทีมนงนุชจัดการ Agent</td><td>อนุมัติ / ปฏิเสธ / ระงับบริษัทและไกด์, ตัดพ้อยที่ผิดเงื่อนไข (Audit log)</td></tr>
+    <tr><td>Agent ใช้ได้ทั้งเว็บและ App 3 ภาษา</td><td>ไทย / อังกฤษ / จีน ทั้งบนเว็บ และ Agent App</td></tr>
+  </table></div>
+  </div>
+</section>
+
+<!-- FIGMA SITE -->
+<section class="slide deco-3" style="gap:28px">
+  <div class="head"><h2>ต้นแบบ Website (Figma)</h2><p class="lead">Nongnooch Design 27-09-69, Desktop และ Mobile, Landing มี 2 Concept: A (Garden Editorial) และ B (Night Garden)</p></div>
+  <div class="proto">
+    <div class="shot" tabindex="0" aria-label="ภาพหน้า Landing จากต้นแบบ เลื่อนดูได้"><img src="assets/figma-landing.png" alt="หน้า Landing ของเว็บไซต์นงนุชจากต้นแบบใน Figma" width="1062" height="4000"></div>
+    <div class="block">
+      <table class="tbl sm"><tr><th style="width:30%">หน้า</th><th style="width:46%">ในต้นแบบ</th><th style="width:24%">เฟสที่เสนอ</th></tr>
+        <tr><td><b>Landing</b></td><td>Hero, ตัวเลขสวน, Activities, Promo, Gallery, News (เพิ่มจุดชวนสมัครสมาชิก)</td><td><span class="lv p1">เฟส 1</span></td></tr>
+        <tr><td><b>Buy Tickets</b></td><td>4 ขั้น + Order summary</td><td><span class="lv p1">เฟส 1</span></td></tr>
+        <tr><td><b>Activities</b></td><td>11 กิจกรรม + หน้ารายละเอียด</td><td><span class="lv p1">เฟส 1</span></td></tr>
+        <tr><td><b>Accommodations</b></td><td>ที่พัก 5 แห่ง, จองต่อผ่าน Trip.com</td><td><span class="lv p1">เฟส 1</span> <span class="lv tbd">ถ้าเนื้อหาพร้อม</span></td></tr>
+        <tr><td><b>Auditorium / MICE</b></td><td>15 สถานที่ + ฟอร์มสอบถาม</td><td><span class="lv p1">เฟส 1</span> <span class="lv tbd">ถ้าเนื้อหาพร้อม</span></td></tr>
+        <tr><td><b>Newsletter และ Footer</b></td><td>เปลี่ยนเป็นชวนสมัครสมาชิก, เพิ่มลิงก์ “สำหรับ Agent”</td><td><span class="lv p1">เฟส 1</span></td></tr>
+        <tr><td><b>Sign in / Register</b></td><td>สมัครสมาชิก Invite code พ้อย, Login อื่นเฟส 2</td><td><span class="lv p1">เฟส 1</span></td></tr>
+        <tr><td><b>Language & Currency</b></td><td>8 ภาษา 8 สกุลเงิน (เฟส 1 ไทย / อังกฤษ / จีน, THB)</td><td><span class="lv p2">เฟส 2 ถึง 4</span></td></tr>
+        <tr><td><b>Chatbot “Ask Nongnooch”</b></td><td>ปุ่มลอยมุมขวาล่าง</td><td><span class="lv p2">เฟส 2</span></td></tr>
+      </table>
+      <p class="hint">ต้นแบบยังไม่มีหน้าสมัครสมาชิก หน้าพ้อย และหน้า Agent ต้องออกแบบเพิ่มก่อน M2 (27 พ.ย.) ราคา โปรโมชัน และวันที่ในต้นแบบเป็นข้อมูลตัวอย่าง (mock) รูปภาพสร้างด้วย Figma AI</p>
+      <a class="btn-link" href="https://www.figma.com/proto/6ko8v4FAdat6fqknJMaf7Q/Nongnooch-Design-27-09-69?node-id=23-2&amp;starting-point-node-id=23%3A2&amp;page-id=5%3A4" target="_blank" rel="noopener">เปิดต้นแบบใน Figma</a>
+    </div>
+  </div>
+</section>
+
+<!-- FIGMA BUY TICKETS -->
+<section class="slide" style="gap:28px">
+  <div class="head"><h2>ขั้นตอนซื้อบัตรตามต้นแบบ</h2><p class="lead">ต้องสรุปกติกาที่ต่างกันให้จบภายใน M2 วันที่ 27 พ.ย. (เรื่องที่ต้องตัดสินใจ #17)</p></div>
+  <div class="proto">
+    <div class="shot" tabindex="0" aria-label="ภาพหน้า Buy Tickets จากต้นแบบ เลื่อนดูได้"><img src="assets/figma-buy-tickets.png" alt="หน้า Buy Tickets ของเว็บไซต์นงนุชจากต้นแบบใน Figma" width="1235" height="1440"></div>
+    <div class="block">
+      <h3>4 ขั้นในต้นแบบ</h3>
+      <ol class="dash"><li>เลือกบัตร: Day Pass หรือ Annual Pass</li><li>ผู้เข้าชม: คนไทย หรือ ต่างชาติ</li><li>เลือกวันเข้าชม</li><li>จำนวนบัตรผู้ใหญ่ / เด็ก พร้อม Order summary ด้านขวา</li></ol>
+      <h3 style="margin-top:12px">ต่างจาก Roadmap (รอยืนยัน)</h3>
+      <table class="tbl sm"><tr><th style="width:24%">หัวข้อ</th><th style="width:32%">Roadmap</th><th style="width:44%">ต้นแบบ</th></tr>
+        <tr><td><b>อายุบัตรรายวัน</b></td><td>ใช้ได้ 1 ครั้งในวันที่เลือก</td><td>5 วันนับจากวันจอง</td></tr>
+        <tr><td><b>ราคาตามสัญชาติ</b></td><td>ยังไม่ระบุ</td><td>ราคาคนไทย (แสดงบัตรประชาชน) และต่างชาติ</td></tr>
+        <tr><td><b>เกณฑ์บัตรเด็ก</b></td><td>ผู้ใหญ่ / เด็ก</td><td>เกิน 140 ซม. ผู้ใหญ่, 90 ถึง 140 ซม. เด็ก, ต่ำกว่า 90 ซม. ฟรี</td></tr>
+        <tr><td><b>การเข้าประตู</b></td><td>สแกน e-Ticket QR</td><td>เปิดอีเมลยืนยันที่เคาน์เตอร์</td></tr>
+        <tr><td><b>จำนวนภาษา</b></td><td>โครง App 7 ภาษา, เฟส 1 เปิด 3 ภาษา</td><td>8 ภาษา</td></tr>
+        <tr><td><b>แพ็กเกจ</b></td><td>บัตร + Add-on</td><td>แพ็กเกจรวม เช่น Garden & Show, Full Day + Buffet</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6 TICKETS -->
+<section class="slide deco-2" style="gap:32px">
+  <h2>บัตรรายวัน และบัตรรายปี</h2>
+  <table class="tickets">
+    <tr><th style="width:22%">หัวข้อ</th><th style="width:36%">บัตรรายวัน</th><th class="yr" style="width:42%">บัตรรายปี</th></tr>
+    <tr><td>ราคา</td><td>[฿__] ผู้ใหญ่ / [฿__] เด็ก</td><td class="yr">[฿__] ต่อคน / [฿__] แพ็กเกจครอบครัว</td></tr>
+    <tr><td>การเข้าประตู</td><td>QR e-Ticket ใช้ได้ 1 ครั้ง ในวันที่เลือก (ต้นแบบระบุ 5 วันนับจากวันจอง รอยืนยัน)</td><td class="yr">QR ประจำตัว เจ้าหน้าที่ตรวจเทียบรูปผู้ถือบัตร</td></tr>
+    <tr><td>อายุบัตร</td><td>วันที่เลือกไว้</td><td class="yr">365 วัน นับจากวันเปิดใช้</td></tr>
+    <tr><td>ผู้เข้าชม (ตามต้นแบบ)</td><td colspan="2">ราคาคนไทย / ต่างชาติ, ผู้ใหญ่สูงเกิน 140 ซม., เด็ก 90 ถึง 140 ซม., ต่ำกว่า 90 ซม. เข้าฟรี [รอยืนยันทั้งหมด]</td></tr>
+    <tr><td>บัญชีสมาชิก</td><td>ซื้อแบบ Guest ได้ ชวนสมัครพร้อมแสดง Welcome point</td><td class="yr">ต้องมีบัญชีสมาชิก, ชื่อ + รูปผู้ถือบัตร อัปโหลดตอนซื้อหรือภายหลัง</td></tr>
+    <tr><td>สิทธิประโยชน์</td><td>เลือก Add-on ได้ตอนซื้อ</td><td class="yr">[ส่วนลดอาหาร __%] และ [สิทธิ์เข้างานพิเศษ]</td></tr>
+    <tr><td>ของขวัญ</td><td></td><td class="yr">ระบุอีเมล / เบอร์ผู้รับ ผู้รับเปิดใช้ด้วยบัญชีสมาชิกของตัวเอง</td></tr>
+    <tr><td>ต่อยอด (เฟส 2)</td><td>อัปเกรดเป็นบัตรรายปี หักมูลค่าบัตรได้ภายใน [__ วัน] (รออนุมัติกติกา)</td><td class="yr">ต่ออายุออนไลน์ + แจ้งเตือนก่อนหมดอายุ 30 / 7 วัน</td></tr>
+  </table>
+  <p class="note">ราคา สิทธิประโยชน์ และกติกาทั้งหมด รอการยืนยันจากนงนุช เวิลด์ ก่อนนำเข้าระบบ</p>
+</section>
+
+<!-- 7 JOURNEY -->
+<section class="slide journey-slide photo-left" data-pick>
+  <div data-slot="journey" data-alt="ทางเดินในเรือนกระจก">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Walbrzych_Palm_House_greenhouse_interior_2019.jpg/1280px-Walbrzych_Palm_House_greenhouse_interior_2019.jpg" sizes="600px" alt="ทางเดินยาวในเรือนกระจก ขนาบด้วยแนวพุ่มไม้ใต้หลังคากระจก" style="object-position:50% 50%">
+    <p class="slot-hint">รูปทางเดินในสวน 600 × 1080</p>
+  </div>
+  <div class="journey-body">
+    <h2>เส้นทางของผู้มาเยือน</h2>
+    <ol class="path">
+      <li data-for="0"><button class="badge pick b-orchid" data-i="0" aria-pressed="false"><svg aria-hidden="true"><use href="#i-search"/></svg><span class="visually-hidden">1</span></button><div><h3>1 ค้นพบ</h3><p>Website, SEO, Social และ QR ของไกด์</p></div><p class="ph">เฟส 1</p></li>
+      <li data-for="1"><button class="badge pick b-gold" data-i="1" aria-pressed="false"><svg aria-hidden="true"><use href="#i-users"/></svg><span class="visually-hidden">2</span></button><div><h3>2 สมัครสมาชิก</h3><p>ยืนยันตัวตน ได้ Welcome point และ Invite point</p></div><p class="ph">เฟส 1</p></li>
+      <li data-for="2"><button class="badge pick b-leaf" data-i="2" aria-pressed="false"><svg aria-hidden="true"><use href="#i-qr"/></svg><span class="visually-hidden">3</span></button><div><h3>3 ซื้อและมาถึง</h3><p>ซื้อบัตร + Add-on ออนไลน์ สแกน QR ที่ประตู</p></div><p class="ph">เฟส 1</p></li>
+      <li data-for="3"><button class="badge pick b-tint" data-i="3" aria-pressed="false"><svg aria-hidden="true"><use href="#i-map"/></svg><span class="visually-hidden">4</span></button><div><h3>4 เที่ยว</h3><p>ตารางการแสดง แผนที่ และพืชพรรณ</p></div><p class="ph later-ph">เฟส 1 ถึง 2</p></li>
+      <li data-for="4"><button class="badge pick b-orchid" data-i="4" aria-pressed="false"><svg aria-hidden="true"><use href="#i-heart"/></svg><span class="visually-hidden">5</span></button><div><h3>5 กลับมาอีก</h3><p>ใช้พ้อยและโปรโมชันกลับมาเที่ยว</p></div><p class="ph later-ph">เฟส 2</p></li>
+    </ol>
+    <p>ทุกการสแกนบัตรที่ผูกบัญชีบันทึกเป็นประวัติการเข้าชม เพื่อวัดการกลับมาเที่ยวซ้ำ</p>
+  </div>
+</section>
+
+<!-- 8 GANTT -->
+<section class="slide" style="gap:32px" data-filter>
+  <h2>แผน 17 สัปดาห์ จาก Kick-off ถึงปิด Hypercare</h2>
+  <div class="gantt w17" id="gantt" data-f-target>
+    <p class="colhead">งาน (ผู้รับผิดชอบ)</p>
+    <p class="wk num">5 พ.ย.</p><p class="wk num">12 พ.ย.</p><p class="wk num">19 พ.ย.</p><p class="wk num">26 พ.ย.</p><p class="wk num">3 ธ.ค.</p><p class="wk num">10 ธ.ค.</p><p class="wk num">17 ธ.ค.</p><p class="wk num">24 ธ.ค.</p><p class="wk num">31 ธ.ค.</p><p class="wk num">7 ม.ค.</p><p class="wk num">14 ม.ค.</p><p class="wk num">21 ม.ค.</p><p class="wk hot num">28 ม.ค.</p><p class="wk num">4 ก.พ.</p><p class="wk num">11 ก.พ.</p><p class="wk num">18 ก.พ.</p><p class="wk num">25 ก.พ.</p>
+
+    <p>Kick-off + เปิดบัญชีในนามนงนุช (ร่วม)</p><div class="bar jt" style="grid-column:span 2"></div><div style="grid-column:span 15"></div>
+    <p>ลงนาม MOU 12 พ.ย. (ร่วม)</p><div style="grid-column:span 1"></div><div class="bar jt" style="grid-column:span 1"></div><div style="grid-column:span 15"></div>
+    <p>ออกแบบ UX/UI เว็บและ App (WV)</p><div class="bar wv" style="grid-column:span 4"></div><div style="grid-column:span 13"></div>
+    <p>พัฒนาเว็บ สมาชิก พ้อย Agent (WV)</p><div style="grid-column:span 1"></div><div class="bar wv" style="grid-column:span 9"></div><div style="grid-column:span 7"></div>
+    <p>Mobile App + ส่งตรวจ 15 ม.ค. (WV)</p><div style="grid-column:span 3"></div><div class="bar wv" style="grid-column:span 8"></div><div style="grid-column:span 6"></div>
+    <p>ราคา กติกา เนื้อหา 3 ภาษา (นงนุช)</p><div style="grid-column:span 1"></div><div class="bar nn" style="grid-column:span 5"></div><div style="grid-column:span 11"></div>
+    <p>ชวนและลงทะเบียน Agent / ไกด์ (นงนุช)</p><div style="grid-column:span 4"></div><div class="bar nn" style="grid-column:span 9"></div><div style="grid-column:span 4"></div>
+    <p>UAT ตรวจรับระบบ (นงนุช)</p><div style="grid-column:span 9"></div><div class="bar nn" style="grid-column:span 2"></div><div style="grid-column:span 6"></div>
+    <p>Pre-sale + ตรุษจีน / วาเลนไทน์ (นงนุช)</p><div style="grid-column:span 11"></div><div class="bar nn" style="grid-column:span 4"></div><div style="grid-column:span 2"></div>
+    <p class="golive">Go-Live 1 ก.พ. (ร่วม)</p><div style="grid-column:span 12"></div><div class="bar jt" style="grid-column:span 1"></div><div style="grid-column:span 4"></div>
+    <p>Hypercare ถึง 26 ก.พ. (WV)</p><div style="grid-column:span 12"></div><div class="bar wv" style="grid-column:span 5"></div>
+  </div>
+  <div class="legend">
+    <button class="lg" data-f="wv" aria-pressed="false"><i class="wv"></i>Wisdom Vast</button>
+    <button class="lg" data-f="nn" aria-pressed="false"><i class="nn"></i>นงนุช เวิลด์</button>
+    <button class="lg" data-f="jt" aria-pressed="false"><i class="jt"></i>ทำร่วมกัน</button>
+    <div class="spacer"></div>
+    <span class="freeze">UAT sign-off 20 ม.ค. และ Code freeze 22 ม.ค.</span>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section class="slide deco-1" style="gap:28px">
+  <h2>วันสำคัญ (Milestones)</h2>
+  <table class="tbl tight">
+    <tr><th style="width:16%">วันที่</th><th style="width:30%">Milestone</th><th style="width:54%">เกณฑ์ผ่าน</th></tr>
+    <tr><td>พฤ. 5 พ.ย.</td><td>Kick-off</td><td>อนุมัติ Roadmap และขอบเขตเฟส 1, แต่งตั้งทีมทั้งสองฝ่าย</td></tr>
+    <tr class="key"><td>พฤ. 12 พ.ย.</td><td>ลงนาม MOU</td><td>รับรองขอบเขตเฟส 1 ความเป็นเจ้าของ และการคุ้มครองข้อมูล</td></tr>
+    <tr><td>ศ. 13 พ.ย.</td><td>M1: บัญชีและสิทธิ์พร้อม</td><td>Payment Merchant, Apple / Google Developer Account, SMS ต่างประเทศ, สิทธิ์ API ระบบบัตร / ประตู</td></tr>
+    <tr><td>ศ. 27 พ.ย.</td><td>M2: ดีไซน์ ราคา และกติกาอนุมัติ</td><td>UX/UI เว็บและ App, ราคาและกติกาบัตร, กติกาพ้อยฝั่งสะสม และเงื่อนไข Agent ยืนยันแล้ว</td></tr>
+    <tr><td>ศ. 11 ธ.ค.</td><td>M3: เนื้อหาครบ</td><td>เนื้อหา รูปภาพ อาหาร การแสดง ครบ 3 ภาษา (ไทย / อังกฤษ / จีน) ใน CMS</td></tr>
+    <tr><td>ศ. 8 ม.ค. 2027</td><td>M4: Feature complete</td><td>ทุกฟีเจอร์เฟส 1 ทั้งเว็บและ App ใช้งานได้บน Staging</td></tr>
+    <tr class="key"><td>ศ. 15 ม.ค.</td><td>ส่ง App นักท่องเที่ยว + Agent App ให้ Apple / Google / Huawei ตรวจ</td><td>เผื่อเวลาแก้และส่งใหม่ 1 ถึง 2 รอบก่อน Go-Live</td></tr>
+    <tr><td>พ. 20 ม.ค.</td><td>M5: UAT sign-off</td><td>นงนุชลงนามรับระบบ ไม่มีบั๊กระดับ Critical / High ค้าง</td></tr>
+    <tr class="key"><td>ศ. 22 ม.ค.</td><td>Code freeze + Pre-sale + เปิดลงทะเบียน Agent / ไกด์</td><td>หลังวันนี้แก้เฉพาะบั๊กที่ขวางการขายหรือการสมัคร</td></tr>
+    <tr class="key"><td>จ. 1 ก.พ.</td><td>Go-Live (ยืนยันแล้ว)</td><td>เว็บและ App เปิดใช้งานจริง สมัครสมาชิก สะสมพ้อย และสแกนบัตรเข้าประตูได้</td></tr>
+    <tr><td>ส. 6 / อา. 14 ก.พ.</td><td>แคมเปญตรุษจีน / วาเลนไทน์</td><td>วิศวกรประจำหน้างาน, ติดตามยอดสมัครและ Invite รายวัน</td></tr>
+    <tr><td>ศ. 26 ก.พ.</td><td>ปิด Hypercare</td><td>ส่งมอบเข้าสู่การดูแลตาม SLA ปกติ, ยืนยันขอบเขตเฟส 2</td></tr>
+  </table>
+</section>
+
+<!-- CRITICAL PATH -->
+<section class="slide dark deco-2" style="gap:32px">
+  <div class="head"><h2>เส้นทางวิกฤต (Critical Path)</h2><p class="lead">เรื่องต่อไปนี้ถ้าเลื่อน 1 วัน วัน Go-Live จะเสี่ยงเลื่อนตาม</p></div>
+  <ol class="steps">
+    <li><span class="n" aria-hidden="true">0</span><p class="when">12 พ.ย.</p><div><h3>ลงนาม MOU</h3><p>การให้สิทธิ์ระบบเดิมและการเปิดบัญชีบางส่วนอาจต้องรอ MOU ถ้าเลื่อน M1 จะเลื่อนตาม</p></div></li>
+    <li><span class="n" aria-hidden="true">1</span><p class="when">13 พ.ย.</p><div><h3>บัญชี Apple Developer / D-U-N-S, Google Play และ Huawei</h3><p>ถ้าล่าช้า จะส่ง App ตรวจไม่ทัน 15 ม.ค.</p></div></li>
+    <li><span class="n" aria-hidden="true">2</span><p class="when">13 พ.ย.</p><div><h3>Payment Merchant และสิทธิ์ API ระบบบัตร / ประตูเดิม</h3><p>ไม่มี Merchant ทดสอบชำระเงินจริงไม่ได้, ไม่มี API ภายใน 27 พ.ย. ใช้ระบบตรวจบัตรของเราเอง (R2)</p></div></li>
+    <li><span class="n" aria-hidden="true">3</span><p class="when">27 พ.ย.</p><div><h3>ราคา กติกาบัตร กติกาพ้อยฝั่งสะสม และเงื่อนไข Agent</h3><p>โครงสร้างข้อมูลขึ้นกับเรื่องนี้</p></div></li>
+    <li><span class="n" aria-hidden="true">4</span><p class="when">15 ม.ค.</p><div><h3>ส่ง App ตรวจ (2 App × 3 สโตร์)</h3><p>ต้องเผื่อเวลาถูกตีกลับ</p></div></li>
+    <li><span class="n" aria-hidden="true">5</span><p class="when">20 ม.ค.</p><div><h3>UAT sign-off</h3><p>ต้องมีผู้อนุมัติฝั่งนงนุชว่างตรวจรับในสัปดาห์ W10 ถึง W11</p></div></li>
+  </ol>
+</section>
+
+<!-- 9 MARKETING -->
+<section class="slide dark deco-1" style="gap:40px">
+  <div class="head"><h2>เปิด 1 ก.พ. ก่อนตรุษจีนและวาเลนไทน์</h2><p class="lead">14 ก.พ. เป็นวันอาทิตย์และคนมามากที่สุด เปิดก่อน 2 สัปดาห์เพื่อแก้ปัญหาจากการใช้งานจริงก่อนวันพีค</p></div>
+  <div class="season">
+    <div><h3>ชวน Agent</h3><p class="when">ธ.ค. 2026</p><p>ทีมขายของนงนุชแจ้งโปรแกรมกับ Agent รายหลัก เก็บรายชื่อบริษัทที่สนใจ</p></div>
+    <div><h3>Pre-sale + ลงทะเบียน</h3><p class="when num">22 ถึง 31 ม.ค.</p><p>ซื้อล่วงหน้าราคาพิเศษ [__%], เปิดลงทะเบียน Agent / ไกด์ และอบรมไกด์</p></div>
+    <div class="peak"><h3>ตรุษจีน และวาเลนไทน์</h3><p class="when num">ส. 6 ก.พ. / อา. 14 ก.พ.</p><p>แคมเปญเปิดตัว วิศวกรประจำหน้างาน ติดตามยอดสมัครและ Invite รายวัน</p></div>
+    <div><h3>หน้างาน</h3><p class="when">ตั้งแต่ 1 ก.พ.</p><p>ป้าย QR สมัครสมาชิกที่ประตู เคาน์เตอร์ ร้านอาหาร และจุดการแสดง [รอยืนยัน]</p></div>
+  </div>
+  <div class="spacer"></div>
+  <ul class="note-list">
+    <li>งบการตลาดเป็นดุลยพินิจของนงนุช</li>
+    <li>WV ช่วยวางแผนแคมเปญ ทำหน้า Landing สื่ออบรมไกด์ 3 ภาษา และวัดผลผ่าน Dashboard</li>
+    <li>ราคาและโปรโมชั่นทุกรายการ นงนุชอนุมัติก่อนเผยแพร่</li>
+  </ul>
+</section>
+
+<!-- LAUNCH CHECKLIST -->
+<section class="slide deco-3" style="gap:28px">
+  <div class="head"><h2>ความพร้อมก่อน Go-Live (Launch Checklist)</h2><p class="lead">ติ๊กได้ระหว่างประชุม ค่าที่ติ๊กไม่ถูกบันทึก</p></div>
+  <div class="split even">
+    <div class="block"><h3>เทคนิค</h3><ul class="checklist"><li><label><input type="checkbox" name="tech0"><span>Load test ผ่านที่ [__] คำสั่งซื้อ / [__] การสมัครต่อนาที และ [__] ผู้ใช้พร้อมกัน (3 เท่าของยอดพีคตรุษจีน)</span></label></li><li><label><input type="checkbox" name="tech1"><span>App เผยแพร่บน App Store, Google Play, AppGallery และทดสอบ Push ทั้ง FCM / Push Kit</span></label></li><li><label><input type="checkbox" name="tech2"><span>ทดสอบชำระเงินจริงยอดเล็ก ครบทุกช่องทาง ทั้งเว็บและ App แล้วคืนเงิน</span></label></li><li><label><input type="checkbox" name="tech3"><span>ทดสอบ OTP จริงกับเบอร์ไทย จีน และประเทศหลักอื่น</span></label></li><li><label><input type="checkbox" name="tech4"><span>ทดสอบหน้าสมัครและหน้า Agent จากเครือข่ายในจีน</span></label></li><li><label><input type="checkbox" name="tech5"><span>ทดสอบสแกนที่ประตูจริงทุกช่อง ทั้ง Online และ Offline</span></label></li><li><label><input type="checkbox" name="tech6"><span>Backup อัตโนมัติ และทดสอบกู้คืนแล้ว</span></label></li><li><label><input type="checkbox" name="tech7"><span>Alert ถึงทีม On-call, รายชื่อและเบอร์ฉุกเฉินครบ</span></label></li><li><label><input type="checkbox" name="tech8"><span>SSL, Security headers, Rate limit, WAF เปิดใช้งาน</span></label></li><li><label><input type="checkbox" name="tech9"><span>DNS TTL ลดลงล่วงหน้า 48 ชม. ก่อนสลับโดเมน</span></label></li></ul></div>
+    <div class="block"><h3>ธุรกิจ</h3><ul class="checklist"><li><label><input type="checkbox" name="biz0"><span>ราคา กติกา โปรโมชั่น และกติกาพ้อยฝั่งสะสม ผ่านการอนุมัติใน CMS</span></label></li><li><label><input type="checkbox" name="biz1"><span>นโยบายความเป็นส่วนตัว เงื่อนไขการขาย นโยบายคืนเงิน และเงื่อนไขโปรแกรม Agent เผยแพร่แล้วทั้ง 3 ภาษา</span></label></li><li><label><input type="checkbox" name="biz2"><span>Agent และไกด์ได้รับอนุมัติล่วงหน้าอย่างน้อย [__] บริษัท / [__] ไกด์</span></label></li><li><label><input type="checkbox" name="biz3"><span>อบรมพนักงานประตู เคาน์เตอร์ ร้านอาหาร Call center และทีมดูแล Agent แล้ว</span></label></li><li><label><input type="checkbox" name="biz4"><span>ป้าย QR สมัครสมาชิกติดตั้งที่ประตู เคาน์เตอร์ ร้านอาหาร และจุดการแสดง</span></label></li><li><label><input type="checkbox" name="biz5"><span>แผนสำรอง: ถ้าระบบออนไลน์ล่ม ประตูตรวจบัตรอย่างไร (ดู Runbook)</span></label></li><li><label><input type="checkbox" name="biz6"><span>ลงนามสัญญาธุรกิจ (Definitive Agreement) แล้ว</span></label></li></ul></div>
+  </div>
+</section>
+
+<!-- HYPERCARE + RUNBOOK -->
+<section class="slide dark deco-1" style="gap:32px">
+  <div class="head"><h2>Hypercare และแผนสำรองวัน Go-Live</h2><p class="lead">Hypercare 1 ถึง 26 ก.พ. 2027</p></div>
+  <div class="split">
+    <div class="block"><h3>Runbook ย่อ</h3><table class="tbl">
+    <tr><th style="width:32%">เหตุการณ์</th><th style="width:68%">การรับมือ</th></tr>
+    <tr><td>Website ล่ม / คนเกินรับไหว</td><td>เปิด Waiting room (พัฒนาเอง) จาก Admin, ประตูยังสแกนบัตรที่ขายแล้วได้ (Offline)</td></tr>
+    <tr><td>App ยังไม่ผ่านการตรวจ</td><td>เปิดตัวด้วยเว็บตามกำหนด, เปลี่ยนสื่อชวนโหลด App เป็น QR เข้าเว็บ</td></tr>
+    <tr><td>Payment Gateway ล่ม</td><td>ปิดการขายออนไลน์ชั่วคราวจาก CMS, แนะนำซื้อที่เคาน์เตอร์</td></tr>
+    <tr><td>SMS OTP ส่งไม่ถึง</td><td>สลับเป็นอีเมล OTP, สลับผู้ให้บริการ SMS สำรอง</td></tr>
+    <tr><td>สแกนประตูไม่ได้</td><td>ตรวจด้วยเลขอ้างอิงบนบัตร + ค้นหาใน CMS, บันทึกเข้าภายหลัง</td></tr>
+    <tr><td>เงินตัดแต่ไม่ได้บัตร</td><td>งานกระทบยอดออกบัตรอัตโนมัติ, Call center ส่งบัตรซ้ำจาก CMS</td></tr>
+    <tr><td>พบการสมัครผิดปกติจำนวนมาก</td><td>ระงับการให้พ้อยของไกด์รายนั้นจาก CMS ทันที (การสมัครของนักท่องเที่ยวยังทำงานต่อ)</td></tr>
+  </table></div>
+    <div class="block"><h3>ระหว่าง Hypercare</h3><ul class="dash"><li>ทีม WV On-call ตลอดเวลาเปิดบริการ 1 ถึง 15 ก.พ.</li><li>วิศวกรประจำหน้างาน 1 ถึง 2 ก.พ. (เปิดตัว), 6 ถึง 7 ก.พ. (ตรุษจีน) และ 13 ถึง 14 ก.พ. (วาเลนไทน์)</li><li>ประชุมสรุปทุกเช้า 15 นาที: ยอดขาย ยอดสมัคร ยอด Invite รายการผิดปกติ</li><li>ตรวจรายการ Invite ผิดปกติทุกวันกับทีมดูแล Agent</li><li>แก้เฉพาะบั๊ก ไม่เพิ่มฟีเจอร์ใหม่</li><li>26 ก.พ. ปิด Hypercare: สรุปบทเรียน กำหนดมูลค่าพ้อย เตรียมเปิดเฟส 2 ใน มี.ค.</li></ul></div>
+  </div>
+</section>
+
+<!-- 10 FUTURE -->
+<section class="slide leaf deco-3" style="gap:40px">
+  <div class="head"><h2>ต่อยอดจากฐานสมาชิก สู่รายได้ใหม่</h2><p class="lead">ออกทุก 2 เดือนหลังเปิดตัว: มี.ค., พ.ค. และ ก.ค. 2027</p></div>
+  <div class="later-phases">
+    <div><p class="n b-gold">2</p><h3>แลกพ้อยและสิทธิประโยชน์</h3><p class="when tag gold">เฟส 2, ใช้งาน มี.ค. 2027</p>
+      <ul class="dash"><li>ไกด์แลกพ้อยเป็นตั๋วฟรี สมาชิกใช้เป็นส่วนลด</li><li>พ้อยจากการใช้จ่าย 100 บาท = 1 พ้อย</li><li>โปรโมชันกลับมาเที่ยว และตั๋วฟรีวันเกิด</li><li>Digital Pass บัตรรายปี</li><li>Login Facebook, WeChat, Kakao, WhatsApp</li><li>แผนที่ Interactive และข้อมูลพืชพรรณ</li></ul></div>
+    <div><p class="n b-tint">3</p><h3>Engagement และ Sponsor</h3><p class="when tag orchid">เฟส 3, ใช้งาน พ.ค. 2027</p>
+      <ul class="dash"><li>ซื้อตั๋วดิจิทัล Bulk ของ Agent + เจน QR</li><li>QR event รับบัตรฟรี, ปฏิทินอีเวนต์</li><li>Loyalty Program, Mission, Reward</li><li>Sponsored Campaign ที่นงนุชอนุมัติ</li><li>ซื้อของฝาก, Scan จ่ายเงินในสวน</li></ul><p class="note">พัฒนา เม.ย. ถึง พ.ค.: Bulk ของ Agent + Mission + Reward ก่อน แล้วตามด้วย Sponsor</p></div>
+    <div><p class="n b-leaf">4</p><h3>Ecosystem</h3><p class="when tag leaf">เฟส 4, ใช้งาน ก.ค. 2027</p>
+      <ul class="dash"><li>สินค้าและบริการ Partner ที่นงนุชอนุมัติ แบ่งรายได้ตามสัญญา</li><li>จองโรงแรม จัดเลี้ยง สัมมนา Event</li><li>ขยายภาษาครบตามต้นแบบ</li><li>WeChat Mini Program ตามข้อมูลจริง</li><li>ทบทวนแผนร่วมกันทุกปี</li></ul></div>
+  </div>
+</section>
+
+<!-- APP USER FLOW -->
+<section class="slide deco-1" style="gap:24px" data-filter>
+  <div class="head-row">
+    <div class="head"><h2>โครง App: เส้นทางผู้ใช้</h2><p class="lead">ร่าง v1 จัดเฟสตามมติ 9 พ.ย. 2026</p></div>
+    <div class="legend"><span class="freeze">กรองตามเฟส</span><button class="lg" data-f="p1" aria-pressed="false"><i class="p1"></i>เฟส 1</button><button class="lg" data-f="p2" aria-pressed="false"><i class="p2"></i>เฟส 2</button><button class="lg" data-f="p3" aria-pressed="false"><i class="p3"></i>เฟส 3</button><button class="lg" data-f="tbd" aria-pressed="false"><i class="tbd"></i>รอนิยาม</button></div>
+  </div>
+  <div class="feat" data-f-target>
+    <div class="fnode start" data-k="p1"><b>Register</b><small>Email, เบอร์โทร OTP (ไทย / ต่างประเทศ), Invite code</small><span class="lv p1">เฟส 1</span></div>
+    <div class="fnode start" data-k="p1"><b>Login</b><small>LINE, Google, Apple เฟส 1, Facebook, WeChat, Kakao, WhatsApp เฟส 2</small><span class="lv p1">เฟส 1</span></div>
+    <div class="fnode start" data-k="p1"><b>Welcome point</b><small>ได้พ้อยเมื่อสมัครและยืนยันตัวตน (สะสมอย่างเดียว)</small><span class="lv p1">เฟส 1</span></div>
+    <div class="fnode start" data-k="p1"><b>Invite code ผู้ใช้</b><small>กรอกโค้ดของไกด์ ได้ Invite point</small><span class="lv p1">เฟส 1</span></div>
+    <div class="fnode start" data-k="p2"><b>User profile</b><small>วันเกิด (ตั๋วฟรี), ขยายสู่ 7 ภาษา (เฟส 1 ไทย / อังกฤษ / จีน)</small><span class="lv p2">เฟส 2</span></div>
+    <div class="fnode" data-k="p1"><b>ซื้อบัตรผ่านประตู</b><small>บัตรรายวัน / รายปี ผูกบัญชีสมาชิก</small><span class="lv p1">เฟส 1</span></div>
+    <div class="fnode" data-k="p1"><b>ซื้อบัตรกิจกรรม</b><small>Add-on การแสดงเฟส 1, Starter pack [รอนิยาม]</small><span class="lv p1">เฟส 1</span></div>
+    <div class="fnode" data-k="p2"><b>ซื้อของกินอื่นๆ ในสวน</b><small>ผูก POS + อัปไซส์ด้วยพ้อย (บัตรห้องอาหารอยู่เฟส 1)</small><span class="lv p2">เฟส 2</span></div>
+    <div class="fnode" data-k="p2"><b>แผนที่ Interactive</b><small>แนะนำสถานที่, รูทการเรียนรู้, แจ้งเตือนรถ / กิจกรรม</small><span class="lv p2">เฟส 2</span></div>
+    <div class="fnode" data-k="p3"><b>สแกน QR event</b><small>ทางเข้า event รับบัตรอาหาร / กิจกรรมฟรี สแกนใช้หน้าร้าน</small><span class="lv p3">เฟส 3</span></div>
+    <div class="fnode" data-k="p3"><b>ปฏิทินงานอีเวนต์</b><small>Register งานอีเวนต์</small><span class="lv p3">เฟส 3</span></div>
+    <div class="fnode" data-k="p3"><b>Loyalty Program</b><small>railly event [รอนิยาม]</small><span class="lv p3">เฟส 3</span></div>
+    <div class="fnode" data-k="p3"><b>ซื้อของฝาก</b><small>ของฝากนงนุชผ่าน App</small><span class="lv p3">เฟส 3</span></div>
+    <div class="fnode" data-k="p3"><b>Scan จ่ายเงินในสวน</b><small>KBank Payment Gateway</small><span class="lv p3">เฟส 3</span></div>
+    <div class="fnode" data-k="tbd"><b>สแกนหางบัตรดิจิทัล</b><small>[รอนิยามขั้นตอน]</small><span class="lv tbd">รอนิยาม</span></div>
+  </div>
+  <p class="note" style="font-size:20px">แถวแรกคือขั้นเริ่มต้น สมัคร ยืนยันตัวตน และได้ Welcome point แล้วจึงใช้ฟีเจอร์อื่นได้ ฝั่ง Agent ดูสไลด์ Agent Program</p>
+</section>
+
+<!-- APP PHASE MAP -->
+<section class="slide" style="gap:16px">
+  <div class="head"><h2>โครง App: การจัดเฟส (มติ 9 พ.ย.)</h2><p class="lead">เฟส 1 คือสิ่งที่จำเป็นต่อการสมัครสมาชิกและการขายในวันเปิดตัว</p></div>
+  <table class="tbl sm">
+    <tr><th style="width:52%">ฟีเจอร์</th><th style="width:12%">เฟส</th><th style="width:36%">เหตุผล</th></tr>
+    <tr><td>Register OTP (รวมเบอร์ต่างประเทศ) และอีเมล, Login LINE / Google / Apple, ซื้อบัตร, Add-on</td><td><span class="lv p1">1</span></td><td>แกนของระบบสมาชิกและการขาย</td></tr>
+    <tr><td>Welcome point, Invite code + Invite point (สะสมอย่างเดียว)</td><td><span class="lv p1">1</span></td><td>เป้าหมายหลักของโครงการ</td></tr>
+    <tr><td>Agent Program: บัญชีบริษัท + ไกด์, Invite code / QR, นับหัว, พ้อยรายไกด์</td><td><span class="lv p1">1</span></td><td>ช่องทางเดียวที่เข้าถึงนักท่องเที่ยวต่างชาติที่ซื้อผ่าน Agent</td></tr>
+    <tr><td>ภาษาไทย / อังกฤษ / จีน และ Mobile App iOS / Android (ไม่บังคับโหลด)</td><td><span class="lv p1">1</span></td><td>นักท่องเที่ยวจีนเป็นกลุ่มหลักของ Agent และตรงกับตรุษจีน</td></tr>
+    <tr><td>แลกพ้อย, พ้อยจากการใช้จ่าย, ตั๋วฟรีวันเกิด, User profile เต็ม</td><td><span class="lv p2">2</span></td><td>ต้องกำหนดมูลค่าพ้อยและตรวจข้อมูลจริงก่อน</td></tr>
+    <tr><td>Login Facebook, WeChat, Kakao, WhatsApp</td><td><span class="lv p2">2</span></td><td>WeChat ต้องรอบัญชี WeChat Open Platform</td></tr>
+    <tr><td>แผนที่ Interactive, รูทการเรียนรู้, แจ้งเตือนรถ / กิจกรรม</td><td><span class="lv p2">2</span></td><td>ไม่จำเป็นต่อการสมัครในวันเปิดตัว</td></tr>
+    <tr><td>ซื้อของกินอื่นๆ ในสวน ผูก POS + อัปไซส์ด้วยพ้อย</td><td><span class="lv p2">2</span></td><td>ขึ้นกับการเชื่อม POS</td></tr>
+    <tr><td>ซื้อตั๋วดิจิทัลแบบ Bulk ของ Agent + เจน QR</td><td><span class="lv p3">3</span></td><td>ต้องตกลงเรื่องส่วนแบ่งก่อน</td></tr>
+    <tr><td>QR event รับบัตรฟรี และสแกนใช้หน้าร้าน</td><td><span class="lv p3">3</span></td><td>ต้องมีระบบสแกนที่ร้านค้า</td></tr>
+    <tr><td>ปฏิทินอีเวนต์ + Register, Loyalty Program, railly event, Starter pack</td><td><span class="lv p3">3</span></td><td>กลุ่ม Engagement</td></tr>
+    <tr><td>ซื้อของฝาก, Scan จ่ายเงินในสวน (KBank)</td><td><span class="lv p3">3</span></td><td>ต้องเชื่อม POS / ร้านค้าในสวนครบก่อน</td></tr>
+    <tr><td>ภาษาอื่นตามต้นแบบ (JA, KO, RU, DE, FR) และสกุลเงินอื่น</td><td><span class="lv p2">2 ถึง 4</span></td><td>ขยายตามสัดส่วนนักท่องเที่ยวจริง</td></tr>
+    <tr><td>สแกนหางบัตรดิจิทัล</td><td><span class="lv tbd">รอนิยาม</span></td><td>ต้องทราบขั้นตอนก่อนจัดเฟส</td></tr>
+  </table>
+</section>
+
+<!-- PHASE 2-4 DETAIL -->
+<section class="slide" style="gap:32px">
+  <h2>เฟส 2 ถึง 4: แผนและรายละเอียด</h2>
+  <div class="split three">
+    <div class="block"><h3>เฟส 2, พัฒนา ก.พ. ใช้งาน มี.ค. 2027</h3><table class="tbl sm">
+    <tr><th style="width:28%">เดือน</th><th style="width:72%">งาน</th></tr>
+    <tr><td>ก.พ. 2027</td><td>ทีมแยกจาก Hypercare พัฒนาแลกพ้อย, พ้อยจากการใช้จ่าย, โปรโมชันกลับมาเที่ยว, ตั๋วฟรีวันเกิด, Social login, Digital Pass, ตรวจพ้อยไกด์ย้อนหลัง</td></tr>
+    <tr><td>มี.ค. 2027</td><td>อนุมัติมูลค่าพ้อย (26 ก.พ.), UAT, ส่ง App ตรวจ, <b>เปิดใช้งานเฟส 2 และเปิดแลกพ้อยภายในสิ้น มี.ค.</b></td></tr>
+    <tr><td>ถ้าไม่ทัน</td><td>แผนที่ Interactive และข้อมูลพืชพรรณ ออกพร้อมรอบ พ.ค.</td></tr>
+  </table><p><b>เกณฑ์สำเร็จ</b></p><ul class="dash"><li>เปิดแลกพ้อยภายใน มี.ค. 2027 ไม่มีพ้อยจากบัญชีปลอมหลุดไปแลก</li><li>สมาชิกกลับมาเที่ยวซ้ำภายใน 12 เดือน [__%]</li><li>Crash-free sessions ≥ 99.5%</li></ul></div>
+    <div class="block"><h3>เฟส 2, รายละเอียด Epic</h3><ul class="dash"><li>เปิดแลกพ้อย: มูลค่า อายุ และเพดานตามที่นงนุชอนุมัติ, แลกได้เฉพาะพ้อยไกด์ที่ผ่านการตรวจ</li><li>พ้อยจากการใช้จ่าย 100 บาท = 1 พ้อย หักคืนเมื่อคืนเงิน</li><li>โปรโมชันกลับมาเที่ยวครั้งที่ 2 ขึ้นไป ผ่าน Push / อีเมล เฉพาะผู้ยินยอม</li><li>Digital Pass (Apple / Google Wallet), ต่ออายุออนไลน์, แจ้งเตือน 30 / 7 วัน</li><li>อัปเกรดบัตรรายวันเป็นรายปี หักมูลค่าได้ภายใน [__ วัน]</li><li>ซื้อของกินอื่นๆ ในสวน [ขึ้นกับการเชื่อม POS]</li></ul></div>
+    <div class="block"><h3>เฟส 3 (พ.ค.) และ 4 (ก.ค.)</h3><ul class="dash"><li>Bulk ของ Agent: เจน QR ให้ Agent แจกลูกค้า, ส่วนแบ่ง [อาจไม่มี รอยืนยัน]</li><li>พ้อยต่อเนื่องให้ไกด์เมื่อลูกค้าที่ชวนกลับมาซื้อซ้ำภายใน [__ เดือน] (ข้อเสนอ)</li><li>Garden Mission, Reward และ Sponsored Campaign พร้อมรายงานผลให้ Sponsor</li><li>รายงานการตลาด: Segment, Cohort การกลับมาซ้ำ, ผลงาน Agent</li><li>เฟส 4: Partner, โรงแรม จัดเลี้ยง, ภาษาเพิ่ม, WeChat Mini Program</li></ul></div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="slide deco-3" style="gap:28px">
+  <div class="head"><h2>สถาปัตยกรรมและเทคโนโลยี</h2><p class="lead">ข้อเสนอเบื้องต้น ยืนยันหลังสำรวจระบบเดิมในเฟส 0</p></div>
+  <div class="arch" aria-label="ภาพรวมสถาปัตยกรรม">
+    <div class="row"><div class="node">Next.js<small>เว็บ 3 ภาษา, หน้า Agent, Admin</small></div><div class="node">Flutter<small>App นักท่องเที่ยว + Agent App</small></div><div class="node">เจ้าหน้าที่<small>Admin / Dashboard / Gate Scanner</small></div></div>
+    <span class="down" aria-hidden="true"></span>
+    <div class="node edge wide">Cloudflare: CDN + WAF + SSL + กันบอท</div>
+    <span class="down" aria-hidden="true"></span>
+    <div class="node main wide">Go API: ออเดอร์ บัตร สมาชิก พ้อย Agent + CMS เขียนเอง (เนื้อหา 3 ภาษา)</div>
+    <span class="down" aria-hidden="true"></span>
+    <div class="row"><div class="node">MariaDB<small>ข้อมูลหลัก, พ้อย Ledger</small></div><div class="node">Object Storage<small>รูปภาพ, เอกสาร Agent</small></div><div class="node">Job Queue<small>ตารางใน MariaDB</small></div><div class="node">Payment Gateway<small>เงินเข้าบัญชีนงนุชโดยตรง</small></div><div class="node">Email<small>ยืนยัน / e-Ticket</small></div><div class="node">SMS OTP<small>ไทย + ต่างประเทศ</small></div><div class="node">Push<small>Firebase + Huawei Push Kit</small></div></div>
+    <span class="down" aria-hidden="true"></span>
+    <div class="node ext wide">ระบบขายบัตร / ประตูเดิม, POS, บัญชี<small>ตาม Integration Spec</small></div>
+  </div>
+  <div class="split three">
+    <div class="block"><p><b>Go API ชุดเดียว (API-first)</b> Next.js และ Flutter เรียก API เดียวกัน สร้างโค้ดเรียก API จาก OpenAPI อัตโนมัติ</p></div>
+    <div class="block"><p><b>หน้าที่นักท่องเที่ยวจีนใช้</b> (สมัคร, Invite, ซื้อบัตร) ไม่พึ่งบริการที่ถูกบล็อกในจีน เช่น Google Fonts, reCAPTCHA, Firebase SDK (ใช้ Turnstile แทน)</p></div>
+    <div class="block"><p>ใช้บริการสำเร็จรูปที่ได้มาตรฐาน และทุกอย่างอยู่ใน Cloud ในนามนงนุช มี Infrastructure as Code</p></div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="slide" style="gap:20px">
+  <h2>Stack ที่วางไว้</h2>
+  <table class="tbl sm tight">
+    <tr><th style="width:18%">ส่วน</th><th style="width:44%">เทคโนโลยี</th><th style="width:38%">เหตุผล</th></tr>
+    <tr class="key"><td>Frontend</td><td>Next.js: เว็บ, หน้า Agent, หน้า Admin</td><td>SSR ดีต่อ SEO, โหลดเบา, i18n ไทย / อังกฤษ / จีน</td></tr>
+    <tr class="key"><td>Mobile</td><td>Flutter: App นักท่องเที่ยว + Agent App</td><td>โค้ดเดียว แยก 2 App, เตรียมอัปเดตด่วนโดยไม่รอสโตร์</td></tr>
+    <tr class="key"><td>Backend</td><td>Go: API ออเดอร์ บัตร สมาชิก พ้อย Agent Gate</td><td>รับการสมัครพร้อมกันจากกรุ๊ปทัวร์ได้ดี, API-first ผ่าน OpenAPI</td></tr>
+    <tr class="key"><td>ฐานข้อมูล</td><td>MariaDB 10.6+ (Managed หรือ VM + Replica), utf8mb4</td><td>Transaction สำหรับเงินและพ้อย, รองรับไทย / จีน</td></tr>
+    <tr class="key"><td>CMS</td><td>เขียนเอง: Go API + หน้าแก้เนื้อหาใน Next.js Admin</td><td>3 ภาษา, Preview, อนุมัติและ Audit log ร่วมกับ Admin</td></tr>
+    <tr><td>Job / Queue</td><td>ตาราง Job ใน MariaDB + Worker ใน Go (SKIP LOCKED)</td><td>Webhook, อีเมล, กระทบยอด, ไม่ต้องเพิ่ม Redis</td></tr>
+    <tr><td>QR e-Ticket</td><td>Token ลงลายเซ็น (Ed25519)</td><td>ตรวจ Offline ที่ประตูได้, ปลอมไม่ได้</td></tr>
+    <tr><td>Gate Scanner</td><td>Web App บนแท็บเล็ต / มือถือ (ถ้าไม่ใช้เครื่องสแกนเดิม)</td><td>ไม่ต้องซื้ออุปกรณ์ใหม่</td></tr>
+    <tr><td>SMS OTP</td><td>ผู้ให้บริการที่ส่งถึงเบอร์ต่างประเทศได้ (รวม +86) + อีเมล OTP สำรอง</td><td>นักท่องเที่ยวต่างชาติต้องยืนยันตัวตนได้</td></tr>
+    <tr class="key"><td>Cloud</td><td>เลือก 1 ใน 3 รูปแบบ (หน้าถัดไป), Data Center ในไทย, Docker + CI/CD</td><td>ข้อมูลอยู่ในไทย ง่ายต่อ PDPA, Latency ต่ำ</td></tr>
+    <tr class="key"><td>CDN / WAF</td><td>Cloudflare วางหน้า Cloud (Cache, WAF, Rate limit, Turnstile)</td><td>รับพีค, กันบอทสมัครบัญชีปลอม, ทดสอบจากซิมจีน</td></tr>
+    <tr class="key"><td>Push / Store</td><td>Firebase + Huawei Push Kit, ขึ้น App Store / Google Play / AppGallery</td><td>ถึงมือถือ Huawei ของนักท่องเที่ยวจีน, Waiting room พัฒนาเอง</td></tr>
+    <tr><td>Payment</td><td>KBank Payment Gateway (รอยืนยัน) บัตร + PromptPay, PCI DSS</td><td>เงินเข้า Merchant นงนุช ทั้งเว็บ App และในสวน</td></tr>
+    <tr><td>Monitoring</td><td>Uptime + Error tracking + Crash reporting + Log รวมศูนย์</td><td>รองรับ SLA 99.5%</td></tr>
+  </table>
+  <p class="note" style="font-size:20px"><b>สภาพแวดล้อม:</b> Local, Staging (UAT, Payment sandbox, TestFlight / Internal testing), Production (Deploy ผ่าน CI/CD เท่านั้น ต้องมีผู้อนุมัติ)<br><b>Data model เฟส 1:</b> Product, PriceRule, Inventory, Order, OrderItem, Payment, Ticket, AnnualPass, Member, Consent, PointLedger, AgentCompany, Guide, InviteCode, Referral, GateScan, ApprovalRequest, AuditLog</p>
+</section>
+
+<!-- CLOUD OPTIONS -->
+<section class="slide deco-1" style="gap:32px">
+  <div class="head"><h2>รูปแบบ Cloud: เสนอ 3 ทางเลือก</h2><p class="lead">ระบบทำงานเหมือนกันทุกแบบ (Docker + IaC, Cloudflare วางหน้า) ผู้บริหารเลือกภายใน 27 พ.ย.</p></div>
+  <table class="tbl">
+    <tr><th style="width:19%">หัวข้อ</th><th style="width:27%">1. เช่า Cloud จาก Partner ของ WV</th><th style="width:27%">2. นงนุชดูแล Server เอง</th><th style="width:27%">3. WV ดูแลทั้งหมด (Wisdom Cloud)</th></tr>
+    <tr><td>ผู้เช่า / เจ้าของสัญญา</td><td>นงนุชเช่าตรงกับบริษัท Partner, WV ช่วยตั้งค่า</td><td>นงนุช (Server หรือ Cloud ของนงนุช)</td><td>WV, นงนุชจ่ายค่าบริการรายเดือน</td></tr>
+    <tr><td>ผู้ดูแลระบบ</td><td>WV ดูแล OS ฐานข้อมูล Backup, Partner ดูแลฮาร์ดแวร์</td><td>ทีม IT นงนุช, WV Deploy แอปและช่วยแก้ปัญหา</td><td>WV ทั้งหมด</td></tr>
+    <tr><td>SLA 99.5%</td><td>WV รับผิดชอบ ตาม SLA ของ Partner</td><td>แยก: WV ดูแอป, นงนุชดู Server / เครือข่าย</td><td>WV รับผิดชอบทั้งหมด จุดติดต่อเดียว</td></tr>
+    <tr><td>ข้อดี</td><td>สมดุลระหว่างความเป็นเจ้าของและภาระงาน, ขยายเครื่องช่วงพีคง่าย</td><td>นงนุชควบคุมเต็มที่, ไม่มีค่าดูแลรายเดือนให้ WV</td><td>เร็วที่สุด, นงนุชไม่ต้องมีทีม Server</td></tr>
+    <tr><td>ข้อควรระวัง</td><td>ต้องแบ่งความรับผิดชอบ WV / Partner ให้ชัด</td><td>IT นงนุชต้องพร้อม 24 ชม. ช่วงเปิดตัว, ขยายเครื่องช่วงตรุษจีนอาจช้า</td><td>บัญชี Cloud ไม่ได้อยู่ในนามนงนุช ต้องมีข้อสัญญาเรื่องข้อมูลและการย้ายออก</td></tr>
+  </table>
+  <div class="block"><p><b>ทุกรูปแบบต้องมี:</b> Data Center ในไทย, ข้อมูลเป็นของนงนุช, ขอ Backup / Export ได้ทุกเมื่อ, แผนย้ายออก (Exit plan), Production พร้อมก่อน 14 ม.ค. เพื่อ Load test, WV เสนอราคาและสเปกทั้ง 3 แบบก่อน 27 พ.ย.</p></div>
+</section>
+
+<!-- TEAM -->
+<section class="slide deco-1" style="gap:32px">
+  <h2>ทีมงานและความรับผิดชอบ</h2>
+  <div class="split even">
+    <div class="block"><h3>ทีม Wisdom Vast (เฟส 1)</h3><table class="tbl tight">
+    <tr><th style="width:38%">บทบาท</th><th style="width:22%">จำนวน</th><th style="width:40%">หน้าที่</th></tr>
+    <tr><td>Product Owner / PM</td><td>1</td><td>วางแผน ประสานงาน กำหนดการ</td></tr>
+    <tr><td>UX/UI Designer</td><td>1</td><td>UI เว็บ App และหน้า Agent</td></tr>
+    <tr><td>Tech Lead</td><td>1</td><td>สถาปัตยกรรม, Go API, Integration</td></tr>
+    <tr><td>Backend (Go)</td><td>2</td><td>Checkout, Payment, สมาชิก / พ้อย, Agent</td></tr>
+    <tr><td>Frontend (Next.js)</td><td>1 (+1 เสนอ)</td><td>เว็บ, หน้า Agent, Admin, CMS</td></tr>
+    <tr class="key"><td>Mobile Developer (Flutter)</td><td>2 (เพิ่ม ตั้งแต่ ธ.ค.) ยืนยันแล้ว</td><td>App นักท่องเที่ยว + Agent App, ส่งตรวจสโตร์</td></tr>
+    <tr class="key"><td>QA Engineer</td><td>2 (เพิ่ม 1) ยืนยันแล้ว</td><td>ทดสอบเว็บและ App, Load test</td></tr>
+    <tr><td>DevOps</td><td>1 (Full-time ธ.ค. ถึง ก.พ.)</td><td>Cloud, CI/CD, ฐานข้อมูล, Security</td></tr>
+  </table></div>
+    <div class="block"><h3>ทีมนงนุช เวิลด์</h3><table class="tbl tight">
+    <tr><th style="width:40%">บทบาท</th><th style="width:60%">หน้าที่</th></tr>
+    <tr><td>ผู้ประสานงานหลัก</td><td>จุดติดต่อเดียว ติดตามงานฝั่งนงนุช</td></tr>
+    <tr><td>ผู้อนุมัติ (Approver)</td><td>อนุมัติดีไซน์ ราคา โปรโมชั่น กติกาพ้อย และ UAT</td></tr>
+    <tr><td>IT</td><td>สิทธิ์ระบบเดิม, เครือข่ายที่ประตู, อุปกรณ์สแกน</td></tr>
+    <tr><td>การตลาด / เนื้อหา</td><td>เนื้อหา 3 ภาษา (รวมคำแปลจีน), แคมเปญตรุษจีน / วาเลนไทน์</td></tr>
+    <tr class="key"><td>ฝ่ายขาย / ดูแล Agent</td><td>ชวน Agent, ตรวจเอกสาร, อนุมัติบริษัทและไกด์, ตรวจ Invite ผิดปกติ</td></tr>
+    <tr><td>บัญชี / การเงิน</td><td>Payment Merchant, กระทบยอด, มูลค่าพ้อย</td></tr>
+    <tr><td>ฝ่ายปฏิบัติการหน้างาน</td><td>ประตู เคาน์เตอร์ ร้านอาหาร และชวนสมัครในสวน</td></tr>
+  </table></div>
+  </div>
+</section>
+
+<!-- RACI -->
+<section class="slide" style="gap:28px">
+  <div class="head"><h2>RACI</h2><p class="lead">R = ลงมือทำ, A = รับผิดชอบผลลัพธ์ / อนุมัติ, C = ให้คำปรึกษา, I = รับทราบ</p></div>
+  <table class="tbl sm">
+    <tr><th style="width:28%">งาน</th><th class="c">WV</th><th class="c">NN ผู้อนุมัติ</th><th class="c">NN IT</th><th class="c">NN การตลาด</th><th class="c">NN ฝ่ายขาย / Agent</th><th class="c">NN บัญชี</th></tr>
+    <tr><td>เปิดบัญชีในนามนงนุช</td><td class="c">C</td><td class="c a">A</td><td class="c">R</td><td class="c">I</td><td class="c">I</td><td class="c">R</td></tr>
+    <tr><td>UX/UI</td><td class="c">R</td><td class="c a">A</td><td class="c">I</td><td class="c">C</td><td class="c">C</td><td class="c">I</td></tr>
+    <tr><td>พัฒนาระบบ</td><td class="c a">R, A</td><td class="c">I</td><td class="c">C</td><td class="c">I</td><td class="c">I</td><td class="c">I</td></tr>
+    <tr><td>เชื่อมระบบเดิม</td><td class="c">R</td><td class="c">I</td><td class="c a">A, R</td><td class="c">I</td><td class="c">I</td><td class="c">C</td></tr>
+    <tr><td>ราคาและกติกาบัตร</td><td class="c">C</td><td class="c a">A</td><td class="c">I</td><td class="c">R</td><td class="c">I</td><td class="c">C</td></tr>
+    <tr><td>กติกาพ้อยและเงื่อนไข Agent</td><td class="c">C</td><td class="c a">A</td><td class="c">I</td><td class="c">R</td><td class="c">R</td><td class="c">C</td></tr>
+    <tr><td>เนื้อหา รูปภาพ และคำแปล</td><td class="c">C</td><td class="c a">A</td><td class="c">I</td><td class="c">R</td><td class="c">I</td><td class="c">I</td></tr>
+    <tr><td>ชวน อนุมัติ และอบรม Agent / ไกด์</td><td class="c">C (สื่ออบรม)</td><td class="c a">A</td><td class="c">I</td><td class="c">C</td><td class="c">R</td><td class="c">I</td></tr>
+    <tr><td>UAT</td><td class="c">C</td><td class="c a">A</td><td class="c">R</td><td class="c">R</td><td class="c">R</td><td class="c">R</td></tr>
+    <tr><td>อบรมพนักงาน</td><td class="c">R</td><td class="c a">A</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">I</td></tr>
+    <tr><td>แคมเปญการตลาด</td><td class="c">C</td><td class="c a">A</td><td class="c">I</td><td class="c">R</td><td class="c">C</td><td class="c">I</td></tr>
+    <tr><td>Go-Live decision</td><td class="c">R</td><td class="c a">A</td><td class="c">C</td><td class="c">C</td><td class="c">C</td><td class="c">C</td></tr>
+  </table>
+</section>
+
+<!-- TESTING -->
+<section class="slide deco-1" style="gap:32px">
+  <h2>คุณภาพและการทดสอบ</h2>
+  <div class="split">
+    <div class="block"><table class="tbl sm">
+    <tr><th style="width:24%">ประเภท</th><th style="width:56%">ขอบเขต</th><th style="width:20%">เมื่อไร</th></tr>
+    <tr><td>Unit / Integration</td><td>ราคา, โควตา, ออกบัตร, Webhook, ลายเซ็น QR, พ้อย Ledger, Invite code, กฎตรวจจับความผิดปกติ</td><td>ตลอดการพัฒนา</td></tr>
+    <tr><td>End-to-end</td><td>สมัครสมาชิกทุกวิธี, สมัครด้วย QR ของไกด์, สมัครและอนุมัติ Agent / ไกด์, ซื้อบัตร, คืนเงิน, สแกนประตู</td><td>W8 เป็นต้นไป</td></tr>
+    <tr><td>UAT</td><td>นงนุชทดสอบตาม Test script 2 รอบ (รวมฝ่ายขาย / Agent)</td><td>W10 ถึง W11</td></tr>
+    <tr><td>Load test</td><td>พีคตรุษจีน 3 เท่า รวมการสมัครพร้อมกันจากกรุ๊ปทัวร์</td><td>W11</td></tr>
+    <tr><td>Security test</td><td>OWASP Top 10, บัญชีปลอม / Bot สมัคร, Pen test [ถ้างบอนุมัติ]</td><td>W11</td></tr>
+    <tr><td>Device test</td><td>iOS Safari, Android Chrome, Huawei ไม่มี Google services (เว็บ + App HMS), WeChat browser, เครื่องสแกน</td><td>W9 ถึง W12</td></tr>
+    <tr><td>App store review</td><td>TestFlight / Internal testing แล้วส่งตรวจจริง</td><td>W10 ถึง W12</td></tr>
+    <tr><td>Smoke test</td><td>ซื้อจริงยอดเล็ก + สแกนจริง + คืนเงิน + สมัครด้วยเบอร์ต่างประเทศ</td><td>W12</td></tr>
+  </table></div>
+    <div class="block"><h3>ระดับความรุนแรงของบั๊ก</h3><table class="tbl sm">
+    <tr><th style="width:22%">ระดับ</th><th style="width:46%">ตัวอย่าง</th><th style="width:32%">เกณฑ์ Go-Live</th></tr>
+    <tr><td>Critical</td><td>ซื้อบัตรไม่ได้, เงินตัดแต่ไม่ได้บัตร, สแกนเข้าไม่ได้, สมัครไม่ได้ / ไม่ได้รับ OTP</td><td>ต้องเป็น 0</td></tr>
+    <tr><td>High</td><td>Add-on ผิด, รายงานยอดไม่ตรง, พ้อยหรือ Invite นับผิด</td><td>ต้องเป็น 0</td></tr>
+    <tr><td>Medium</td><td>ข้อความผิด, คำแปลผิด, หน้าตาเพี้ยนบางอุปกรณ์</td><td>มีแผนแก้ใน Hypercare</td></tr>
+    <tr><td>Low</td><td>ปรับปรุงเล็กน้อย</td><td>เข้า Backlog</td></tr>
+  </table></div>
+  </div>
+</section>
+
+<!-- SLA SECURITY PDPA -->
+<section class="slide deco-1" style="gap:32px">
+  <h2>SLA ความปลอดภัย และ PDPA</h2>
+  <div class="split three">
+    <div class="block"><h3>SLA</h3><table class="tbl sm">
+    <tr><th style="width:44%">หัวข้อ</th><th style="width:56%">ข้อตกลง</th></tr>
+    <tr><td>Uptime</td><td>ไม่ต่ำกว่า 99.5% ต่อเดือน</td></tr>
+    <tr><td>ปัญหาวิกฤต (Critical)</td><td>ตอบสนอง 1 ชม. แก้ไข 4 ชม.</td></tr>
+    <tr><td>ปัญหาสูง (High)</td><td>ตอบสนอง 4 ชม. แก้ไข 1 วันทำการ</td></tr>
+    <tr><td>ปัญหาปกติ</td><td>ตอบสนอง 1 วันทำการ แก้ไขตามรอบ Release</td></tr>
+    <tr><td>รายงานประจำเดือน</td><td>ภายใน 7 วันทำการหลังสิ้นเดือน</td></tr>
+  </table></div>
+    <div class="block"><h3>ความปลอดภัย</h3><ul class="dash"><li>ไม่เก็บข้อมูลบัตรเครดิต ใช้ Gateway มาตรฐาน PCI DSS</li><li>เข้ารหัสข้อมูลระหว่างส่งและขณะจัดเก็บ รวมเอกสารนิติบุคคลของ Agent</li><li>CMS ใช้ 2FA ทุกบัญชี สิทธิ์ตามบทบาท และ Audit log</li><li>จำกัดอัตราการขอ OTP และการสมัครต่อเครื่อง / IP / ไกด์ กันบัญชีปลอมและค่า SMS บานปลาย</li><li>Secret เก็บใน Secret manager ไม่อยู่ในโค้ด</li><li>Backup รายวัน เก็บ 30 วัน ทดสอบกู้คืนทุกไตรมาส</li></ul></div>
+    <div class="block"><h3>PDPA</h3><ul class="dash"><li>DPA ระหว่างนงนุช (ผู้ควบคุมข้อมูล) และ WV (ผู้ประมวลผล)</li><li>ความยินยอมด้านการตลาดแยก ไม่ติ๊กไว้ล่วงหน้า ครบ 3 ภาษา, มี Cookie consent</li><li>Agent และไกด์เห็นเฉพาะจำนวน ไม่ได้รับข้อมูลส่วนบุคคล</li><li>แจ้งนักท่องเที่ยวต่างชาติว่าข้อมูลจัดเก็บที่ใด [ฝ่ายกฎหมาย NN ตรวจ]</li><li>เก็บข้อมูลเท่าที่จำเป็น ผู้ใช้ขอดู แก้ไข หรือลบได้</li><li>แจ้งเหตุข้อมูลรั่วไหลแก่นงนุชภายใน 24 ชม.</li></ul></div>
+  </div>
+</section>
+
+<!-- RISKS: schedule and systems -->
+<section class="slide" style="gap:24px" data-filter>
+  <div class="head-row">
+    <h2>ความเสี่ยงด้านกำหนดการและระบบ</h2>
+    <div class="legend"><span class="freeze">กรองตามผลกระทบ</span><button class="lg" data-f="hi" aria-pressed="false"><i class="jt"></i>สูง</button><button class="lg" data-f="mid" aria-pressed="false"><i class="nn"></i>กลาง</button></div>
+  </div>
+  <table class="tbl risks tight" data-f-target>
+    <tr><th style="width:5%">#</th><th style="width:29%">ความเสี่ยง</th><th class="c" style="width:8%">โอกาส</th><th class="c" style="width:10%">ผลกระทบ</th><th style="width:48%">แผนรับมือ</th></tr>
+    <tr data-k="hi"><td>R1</td><td>เปิดบัญชี Payment Merchant ไม่ทัน 13 พ.ย.</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>เริ่มยื่นเอกสารวันแรก, เตรียม Gateway สำรอง 1 ราย, พัฒนาบน Sandbox ไปก่อน</td></tr>
+    <tr data-k="hi"><td>R2</td><td>เชื่อมระบบประตูเดิมไม่ได้ / ไม่ทัน</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>ตัดสินใจภายใน 27 พ.ย.: ถ้าไม่ได้ ใช้ Gate Scanner ของเราบนแท็บเล็ตที่ประตู</td></tr>
+    <tr data-k="mid"><td>R4</td><td>ราคา / เนื้อหา / คำแปลมาช้า</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv mid">กลาง</span></td><td>ใช้ข้อมูลตัวอย่างพัฒนาไปก่อน, แก้ผ่าน CMS ได้จนถึงวันก่อน Go-Live</td></tr>
+    <tr data-k="hi"><td>R5</td><td>Traffic พีคช่วงตรุษจีน หรือกรุ๊ปทัวร์สมัครพร้อมกันทำระบบล่ม</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>Load test 3 เท่าบน Production จริง, เพิ่มขนาดเครื่องล่วงหน้าก่อนช่วงพีค, Cloudflare Cache, Waiting room (พัฒนาเอง) เปิดได้ทันที</td></tr>
+    <tr data-k="hi"><td>R6</td><td>เน็ตที่ประตูไม่เสถียร</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>โหมดสแกน Offline, ทดสอบที่หน้างานจริงใน W12</td></tr>
+    <tr data-k="mid"><td>R7</td><td>ผู้อนุมัติฝั่งนงนุชไม่ว่างช่วง UAT</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv mid">กลาง</span></td><td>จองเวลาล่วงหน้าตั้งแต่ Kick-off, มีผู้อนุมัติสำรอง</td></tr>
+    <tr data-k="hi"><td>R10</td><td>ยังไม่ลงนามสัญญาธุรกิจก่อน Go-Live</td><td class="c"><span class="lv lo">ต่ำ</span></td><td class="c"><span class="lv hi">สูง</span></td><td>ใช้ MOU 12 พ.ย. กำหนดกรอบเวลาลงนาม Definitive Agreement ให้ชัด</td></tr>
+    <tr data-k="hi"><td>R11</td><td>MOU เลื่อนจาก 12 พ.ย. หรือถูกแก้ขอบเขตระหว่างเจรจา</td><td class="c"><span class="lv lo">ต่ำ</span></td><td class="c"><span class="lv hi">สูง</span></td><td>ส่งร่างสุดท้ายภายใน 10 พ.ย., ระหว่างรอทำเฉพาะงานที่ไม่ต้องเข้าถึงระบบ / ข้อมูลของนงนุช</td></tr>
+    <tr data-k="hi"><td>R12</td><td>ต้นแบบดีไซน์มีหน้ามากกว่าขอบเขตเฟส 1 และยังไม่มีหน้าสมาชิก / Agent</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>ระบุหน้าที่อยู่ในเฟส 1 และออกแบบหน้าสมาชิก / Agent ให้เสร็จก่อน M2 (27 พ.ย.)</td></tr>
+    <tr data-k="hi"><td>R20</td><td>เลือกรูปแบบ Cloud ช้า หรือ Production ไม่พร้อมทัน Load test</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>เลือกภายใน 27 พ.ย., ใช้ Staging ชั่วคราวของ WV ระหว่างรอ, Docker + IaC ย้ายขึ้น Production ได้ใน 1 ถึง 2 วัน</td></tr>
+    <tr data-k="hi"><td>R22</td><td>เวลาพัฒนาเฟส 2 ถึง 4 เหลือราว 2 เดือนต่อเฟส</td><td class="c"><span class="lv hi">สูง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>คงทีมเต็มหลัง Go-Live, แยกทีม Hypercare, ฟีเจอร์ที่ไม่ทันเลื่อนไปรอบถัดไปแทนการเลื่อนวัน</td></tr>
+  </table>
+</section>
+
+<!-- RISKS: members, App and Agent -->
+<section class="slide" style="gap:24px" data-filter>
+  <div class="head-row">
+    <h2>ความเสี่ยงจากสมาชิก App และ Agent</h2>
+    <div class="legend"><span class="freeze">กรองตามผลกระทบ</span><button class="lg" data-f="hi" aria-pressed="false"><i class="jt"></i>สูง</button><button class="lg" data-f="mid" aria-pressed="false"><i class="nn"></i>กลาง</button></div>
+  </div>
+  <table class="tbl risks tight" data-f-target>
+    <tr><th style="width:5%">#</th><th style="width:29%">ความเสี่ยง</th><th class="c" style="width:8%">โอกาส</th><th class="c" style="width:10%">ผลกระทบ</th><th style="width:48%">แผนรับมือ</th></tr>
+    <tr data-k="hi"><td>R3</td><td>ขอบเขตเพิ่มมาก (สมาชิก พ้อย Agent ภาษาจีน App) ในเวลาพัฒนา 8 สัปดาห์</td><td class="c"><span class="lv hi">สูง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>ล็อกขอบเขตเฟส 1 ที่ M2, ไม่มีการแลกพ้อยในเฟส 1, Change request ใหม่เข้าเฟส 2 อัตโนมัติ, ทบทวน Burn-down ทุกสัปดาห์</td></tr>
+    <tr data-k="hi"><td>R8</td><td>Apple Developer / D-U-N-S ใช้เวลานาน</td><td class="c"><span class="lv hi">สูง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>ยื่นทันทีในสัปดาห์แรก, ถ้า App ไม่ผ่านทัน Go-Live ยังเปิดด้วยเว็บได้</td></tr>
+    <tr data-k="mid"><td>R9</td><td>พนักงานหน้างานและไกด์ไม่คุ้นระบบ</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv mid">กลาง</span></td><td>อบรม + คู่มือภาพ 3 ภาษา + Soft launch + วิศวกรประจำหน้างานช่วงเปิดตัว</td></tr>
+    <tr data-k="mid"><td>R13</td><td>App นักท่องเที่ยว / Agent App ถูกสโตร์ตีกลับ</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv mid">กลาง</span></td><td>ส่งตรวจ 15 ม.ค. เผื่อ 2 รอบ, ทำตาม Guideline (Sign in with Apple, ลบบัญชีได้ใน App), บัญชีทดสอบให้ผู้ตรวจ, ใช้เว็บเป็นทางสำรอง</td></tr>
+    <tr data-k="mid"><td>R14</td><td>ไกด์สร้างบัญชีปลอมเพื่อสะสมพ้อย (ไม่ผูกการเข้าประตู)</td><td class="c"><span class="lv hi">สูง</span></td><td class="c"><span class="lv mid">กลาง</span></td><td>OTP, 1 เบอร์ = 1 บัญชี, เพดานต่อไกด์ต่อวัน, ตรวจจับความผิดปกติ, พ้อยไกด์ “รอตรวจ” และยังแลกไม่ได้, เงื่อนไขให้สิทธิ์ตัดพ้อยและระงับบัญชี</td></tr>
+    <tr data-k="hi"><td>R15</td><td>นักท่องเที่ยวจีนสมัครไม่ได้ (Google / LINE / Facebook ใช้ในจีนไม่ได้, SMS +86 ไม่ถึง, ไม่มี Google Play)</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>OTP เบอร์โทรเป็นวิธีหลัก + อีเมล OTP สำรอง, เว็บไม่พึ่งบริการที่ถูกบล็อก, ไม่บังคับโหลด App, ขึ้น AppGallery + Push Kit, ทดสอบด้วยซิมจีนจริง</td></tr>
+    <tr data-k="hi"><td>R16</td><td>Agent / ไกด์ลงทะเบียนไม่ทันช่วงตรุษจีน</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>ฝ่ายขายแจ้ง Agent ตั้งแต่ ธ.ค., เปิดลงทะเบียนล่วงหน้า 22 ม.ค., อนุมัติเอกสารภายใน 1 วันทำการ</td></tr>
+    <tr data-k="mid"><td>R17</td><td>ค่า SMS OTP ต่างประเทศสูงกว่าที่คาด</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv mid">กลาง</span></td><td>จำกัดอัตราขอ OTP, ใช้อีเมล OTP เมื่อเหมาะสม, ตั้งงบและ Alert ค่าใช้จ่ายรายวัน</td></tr>
+    <tr data-k="mid"><td>R18</td><td>มือถือ Huawei จากจีนหา App ใน AppGallery ไม่เจอ (AppGallery จีนแยกจากสากล)</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv mid">กลาง</span></td><td>ตรวจเงื่อนไขกับ Huawei ภายใน 13 พ.ย., ถ้าขึ้นไม่ได้ QR ของไกด์พาไปใช้เว็บเป็นหลัก</td></tr>
+    <tr data-k="hi"><td>R19</td><td>CMS เขียนเองกระทบกำหนดการ</td><td class="c"><span class="lv mid">กลาง</span></td><td class="c"><span class="lv hi">สูง</span></td><td>เฉพาะเนื้อหาเฟส 1, ไม่ทำ Page builder, เพิ่ม Frontend 1 คน (#25)</td></tr>
+  </table>
+</section>
+
+<!-- 12 KPI -->
+<section class="slide dark deco-2" style="gap:36px">
+  <h2>KPI หลัก: ฐานสมาชิกและการกลับมาเที่ยวซ้ำ</h2>
+  <div class="kpis">
+    <div class="kpi"><p class="num tbd">[__]</p><p class="lbl">สมาชิกที่ยืนยันตัวตนแล้ว ภายใน [__ เดือน]<span class="src">วัดจาก ระบบสมาชิก</span></p></div>
+    <div class="kpi"><p class="num tbd">[__%]</p><p class="lbl">ของผู้สแกนเข้าประตูเป็นสมาชิก<span class="src">วัดจาก GateScan เทียบสมาชิก</span></p></div>
+    <div class="kpi"><p class="num tbd">[__%]</p><p class="lbl">ของสมาชิกยินยอมรับข่าวสารการตลาด<span class="src">วัดจาก Consent</span></p></div>
+    <div class="kpi"><p class="num tbd">[__%]</p><p class="lbl">สมาชิกกลับมาเที่ยวซ้ำภายใน 12 เดือน<span class="src">ประวัติการเข้าชม (วัดได้จริงหลังเฟส 2)</span></p></div>
+    <div class="kpi"><p class="num tbd">[__]</p><p class="lbl">สมาชิกที่สมัครผ่าน Invite ของไกด์ ต่อเดือน<span class="src">วัดจาก Referral</span></p></div>
+    <div class="kpi"><p class="num tbd">[__]</p><p class="lbl">ไกด์ที่มีผู้สมัคร ≥ 1 คนต่อเดือน จาก [__] บริษัท<span class="src">วัดจาก Referral</span></p></div>
+    <div class="kpi"><p class="num tbd">≤ [__%]</p><p class="lbl">Invite ที่ถูกตัดเพราะผิดเงื่อนไข<span class="src">วัดจาก PointLedger</span></p></div>
+  </div>
+  <div class="spacer"></div>
+  <ul class="note-list">
+    <li><b>KPI รอง:</b> ยอดขายผ่านดิจิทัล [__%], ยอดโหลด Mobile App [__], สมาชิกบัตรรายปี [__] คนภายในสิ้นปี 2027, ออเดอร์ที่ซื้อ Add-on [__%], Conversion หน้าซื้อบัตร / หน้าสมัคร [__%], Uptime ≥ 99.5%, สแกนเข้าประตู ≤ 1 วินาที / คน</li>
+    <li>ตัวเลขเป้าหมายกำหนดร่วมกันหลังได้ข้อมูลผู้เข้าชมและยอดขายปัจจุบันของนงนุช ทบทวนรายวันช่วง Hypercare รายเดือนหลังจากนั้น และทบทวน Roadmap ทุกไตรมาส</li>
+  </ul>
+</section>
+
+<!-- MEETINGS -->
+<section class="slide deco-1" style="gap:32px">
+  <h2>การประชุมและการสื่อสาร</h2>
+  <div class="split">
+    <div class="block"><table class="tbl sm">
+    <tr><th style="width:22%">การประชุม</th><th style="width:24%">ความถี่</th><th style="width:24%">ผู้เข้าร่วม</th><th style="width:30%">ผลลัพธ์</th></tr>
+    <tr><td>Daily stand-up</td><td>ทุกวันทำการ 15 นาที</td><td>ทีม WV</td><td>ความคืบหน้า สิ่งที่ติดขัด</td></tr>
+    <tr><td>ประชุมติดตามงาน</td><td>ทุกสัปดาห์ (พฤหัสบดี)</td><td>ผู้ประสานงานทั้งสองฝ่าย</td><td>สถานะ Milestone, Decision log, ความเสี่ยง</td></tr>
+    <tr><td>Sprint demo</td><td>ทุก 2 สัปดาห์</td><td>WV + NN</td><td>ดูงานจริงบน Staging และ App ทดสอบ</td></tr>
+    <tr><td>Steering committee</td><td>ทุกเดือน (และก่อน Go-Live)</td><td>ผู้บริหารทั้งสองฝ่าย</td><td>อนุมัติขอบเขต งบ และการเปลี่ยนแปลงใหญ่</td></tr>
+    <tr><td>Daily Hypercare</td><td>ทุกเช้า 1 ถึง 26 ก.พ.</td><td>WV + NN ปฏิบัติการ + ฝ่ายขาย / Agent</td><td>ยอดขาย ยอดสมัคร ยอด Invite รายการผิดปกติ</td></tr>
+    <tr><td>Quarterly review</td><td>ทุกไตรมาส</td><td>ผู้บริหาร + ทีม</td><td>ผล KPI, ลำดับความสำคัญเฟสถัดไป</td></tr>
+  </table><p class="note" style="font-size:20px">เอกสาร Roadmap ทบทวนทุกสัปดาห์ในการประชุมติดตามงาน ปรับปรุงล่าสุด 9 พฤศจิกายน 2026</p></div>
+    <div class="block"><h3>ช่องทาง</h3><ul class="dash"><li><b>งานและบั๊ก:</b> [ระบบติดตามงาน เช่น ClickUp / Jira]</li><li><b>พูดคุยประจำวัน:</b> กลุ่ม LINE / Slack ของโครงการ</li><li><b>เอกสารและดีไซน์:</b> [Google Drive / Figma ของโครงการ]</li><li><b>เหตุฉุกเฉินหลัง Go-Live:</b> เบอร์ On-call [__] และช่อง Incident</li></ul><h3>Change request</h3><ol class="dash"><li>ผู้ขอส่งคำขอผ่านผู้ประสานงาน</li><li>WV ประเมินผลกระทบต่อเวลา งบ และความเสี่ยง ภายใน 2 วันทำการ</li><li>ผู้อนุมัติฝั่งนงนุชตัดสินใจ</li><li><b>หลัง 8 ม.ค. 2027 (M4)</b> ทุกคำขอใหม่เข้า Backlog เฟส 2 ยกเว้นเรื่องที่ขวางการขายหรือการสมัครสมาชิก</li></ol></div>
+  </div>
+</section>
+
+<!-- DECIDED 9 NOV -->
+<section class="slide leaf deco-2" style="gap:32px">
+  <div class="head"><h2>มติที่ตัดสินแล้ว 9 พ.ย. 2026</h2><p class="lead">เป็นฐานของ Roadmap ฉบับ v2.1</p></div>
+  <table class="tickets">
+    <tr><th style="width:26%">เรื่อง</th><th style="width:74%">มติ</th></tr>
+    <tr><td>เป้าหมายหลักของโครงการ</td><td>รวบรวมข้อมูลนักท่องเที่ยวผ่านการสมัครสมาชิก เพื่อให้กลับมาเที่ยวซ้ำ และได้โปรโมชันเมื่อกลับมา</td></tr>
+    <tr><td>วันเปิดตัว</td><td>Go-Live จันทร์ 1 ก.พ. 2027 (แทน 25 ธ.ค.) พร้อม Mobile App ตามด้วยตรุษจีนและวาเลนไทน์</td></tr>
+    <tr><td>เงื่อนไขพ้อยของไกด์</td><td>นักท่องเที่ยวต้องสมัครแบบยืนยันตัวตน แต่ไม่จำเป็นต้องสแกนเข้าประตูจริง</td></tr>
+    <tr><td>ผู้ได้รับพ้อยฝั่ง Agent</td><td>แยกรายไกด์, บริษัท Agent ต้องสมัครบัญชีแยกในระบบและยื่นหนังสือรับรองนิติบุคคล</td></tr>
+    <tr><td>พ้อยของนักท่องเที่ยว</td><td>ได้พ้อยเมื่อสมัครสำเร็จ และได้พ้อยเพิ่มเมื่อกรอก Invite code</td></tr>
+    <tr><td>การแลกพ้อย</td><td>เฟส 1 สะสมได้อย่างเดียว ยังแลกไม่ได้</td></tr>
+    <tr><td>ภาษาและการโหลด App</td><td>มีภาษาจีน นักท่องเที่ยวใช้ผ่านเว็บได้โดยไม่ต้องโหลด App, Agent ใช้ได้ทั้งเว็บและ Agent App แยก</td></tr>
+    <tr><td>ทีม</td><td>เพิ่ม Mobile Developer (Flutter) 2 คน และ QA 1 คน ตั้งแต่ ธ.ค.</td></tr>
+    <tr><td>Stack</td><td>Flutter, Go, Next.js, MariaDB, Cloudflare, Firebase + Huawei Push Kit, AppGallery, CMS และ Waiting room พัฒนาเอง</td></tr>
+  </table>
+</section>
+
+<!-- 13 DECISIONS -->
+<section class="slide accent" style="gap:28px">
+  <h2>11 เรื่องที่ต้องได้คำตอบ เพื่อให้ทัน Go-Live 1 ก.พ.</h2>
+  <table class="decide">
+    <tr><th style="width:54%">เรื่องที่ต้องตัดสินใจร่วมกัน</th><th style="width:19%">ผู้ตัดสินใจ</th><th style="width:11%">ภายใน</th><th style="width:16%">สถานะ</th></tr>
+    <tr><td>0. ลงนาม MOU (แก้วัน Go-Live ในร่างเป็น 1 ก.พ. 2027)</td><td>ผู้บริหารทั้งสองฝ่าย</td><td class="when">12 พ.ย.</td><td>นัดหมายแล้ว</td></tr>
+    <tr><td>2. แต่งตั้งผู้ประสานงาน ผู้อนุมัติ และผู้ดูแล Agent ฝั่งนงนุช</td><td>ผู้บริหาร NN</td><td class="when">สัปดาห์นี้</td><td>รอ</td></tr>
+    <tr><td>3. เปิดบัญชี Payment Gateway / Merchant ในนามนงนุช</td><td>NN บัญชี</td><td class="when">13 พ.ย.</td><td>รอ</td></tr>
+    <tr><td>4. บัญชี Apple (D-U-N-S), Google Play, Huawei + เงื่อนไข AppGallery จีน (#24)</td><td>NN</td><td class="when">13 พ.ย.</td><td>รอ (เส้นทางวิกฤต)</td></tr>
+    <tr><td>5. สิทธิ์เชื่อมต่อระบบขายบัตรและระบบประตูเดิม</td><td>NN IT</td><td class="when">13 พ.ย.</td><td>รอ</td></tr>
+    <tr><td>6. ยืนยันราคาและกติกาบัตรรายวัน / รายปี</td><td>NN ผู้อนุมัติ</td><td class="when">27 พ.ย.</td><td>รอ</td></tr>
+    <tr><td>7. อนุมัติงบค่า Cloud, SMS (รวมต่างประเทศ) และ Payment fee</td><td>ผู้บริหาร NN</td><td class="when">27 พ.ย.</td><td>รอ</td></tr>
+    <tr><td>8. ส่งเนื้อหา รูปภาพ ข้อมูลอาหาร และการแสดง ครบ 3 ภาษา</td><td>NN การตลาด</td><td class="when">11 ธ.ค.</td><td>รอ</td></tr>
+    <tr><td>9. กำหนดวันลงนามสัญญาธุรกิจ (Definitive Agreement)</td><td>ผู้บริหารทั้งสองฝ่าย</td><td class="when">[__ ม.ค.]</td><td>รอ</td></tr>
+    <tr><td>10. ใช้ระบบประตูเดิม หรือ Gate Scanner ใหม่</td><td>ร่วม</td><td class="when">27 พ.ย.</td><td>รอผลสำรวจ</td></tr>
+    <tr><td><b>23. เลือกรูปแบบ Cloud 1 ใน 3 + เปิดบัญชี Cloudflare / Firebase</b></td><td>ผู้บริหารทั้งสองฝ่าย</td><td class="when">27 พ.ย.</td><td>WV เสนอราคา 3 แบบ</td></tr>
+  </table>
+</section>
+
+<!-- DECISIONS POINTS, AGENT, APP -->
+<section class="slide accent" style="gap:28px">
+  <h2>เรื่องที่ต้องตัดสินใจ: พ้อย Agent ทีม และต้นแบบ</h2>
+  <table class="decide">
+    <tr><th style="width:51%">เรื่อง</th><th style="width:19%">ผู้ตัดสินใจ</th><th style="width:11%">ภายใน</th><th style="width:19%">สถานะ</th></tr>
+    <tr><td>11. เลือก Payment Gateway</td><td>NN (WV เสนอ)</td><td class="when">13 พ.ย.</td><td>โครง App ระบุ KBank</td></tr>
+    <tr><td>12. จำนวน Welcome point, Invite point และพ้อยของไกด์ต่อผู้สมัคร</td><td>NN ผู้อนุมัติ + บัญชี</td><td class="when">27 พ.ย.</td><td>หลักการผ่านแล้ว ตัวเลขรอหารือ</td></tr>
+    <tr><td>13. เงื่อนไข Agent: เอกสารเพิ่ม, สังกัดกี่บริษัท, เพดานต่อวัน, เวลากรอกโค้ด</td><td>ผู้บริหาร NN</td><td class="when">27 พ.ย.</td><td>บางส่วนตัดสินแล้ว</td></tr>
+    <tr><td>14. นิยาม Starter pack, railly event และการสแกนหางบัตรดิจิทัล</td><td>NN</td><td class="when">[__]</td><td>รอ</td></tr>
+    <tr><td>15. ลำดับภาษาที่ 4 เป็นต้นไป (โครง App 7, เว็บ 8) และสกุลเงิน</td><td>NN การตลาด</td><td class="when">[__]</td><td>เฟส 1 ตัดสินแล้ว</td></tr>
+    <tr><td>16. เลือก Concept Landing (A Garden Editorial หรือ B Night Garden)</td><td>NN ผู้อนุมัติ</td><td class="when">27 พ.ย.</td><td>รอ</td></tr>
+    <tr><td>17. กติกาบัตรตามต้นแบบ: อายุบัตร, ราคาไทย / ต่างชาติ, ส่วนสูง, แพ็กเกจ</td><td>NN ผู้อนุมัติ</td><td class="when">27 พ.ย.</td><td>รอ</td></tr>
+    <tr><td>18. หน้า Accommodations และ Auditorium / MICE อยู่ในเฟส 1 หรือไม่</td><td>ผู้บริหารทั้งสองฝ่าย</td><td class="when">27 พ.ย.</td><td>รอ</td></tr>
+    <tr><td>19. ป้าย QR สมัครสมาชิกในสวน และของสมนาคุณหน้างาน</td><td>NN การตลาด + ปฏิบัติการ</td><td class="when">11 ธ.ค.</td><td>WV เสนอ, รอยืนยัน</td></tr>
+    <tr><td>21. มูลค่าพ้อย อายุพ้อย เพดานการใช้ และวันเปิดแลกพ้อย</td><td>NN ผู้อนุมัติ + บัญชี</td><td class="when">26 ก.พ. 2027</td><td>รอข้อมูลจริง</td></tr>
+    <tr><td><b>25. เพิ่ม Frontend (Next.js) 1 คน รองรับ CMS ที่เขียนเอง</b></td><td>ผู้บริหารทั้งสองฝ่าย</td><td class="when">20 พ.ย.</td><td>WV เสนอ, รอยืนยัน</td></tr>
+  </table>
+</section>
+
+<!-- 14 NEXT -->
+<section class="slide dark next-slide photo-right">
+  <div class="next-body">
+    <h2>เริ่มได้ทันทีหลังการประชุมนี้</h2>
+    <ol class="steps">
+      <li><span class="n" aria-hidden="true">1</span><p class="when">12 พ.ย.</p><div><h3>ลงนาม MOU (Go-Live 1 ก.พ.)</h3><p>รับรองขอบเขตเฟส 1 ที่มีระบบสมาชิก พ้อย Agent และ Mobile App</p></div></li>
+      <li><span class="n" aria-hidden="true">2</span><p class="when">13 พ.ย.</p><div><h3>บัญชีและสิทธิ์พร้อม (M1)</h3><p>Apple / Google Developer, Payment Merchant, SMS ต่างประเทศ และสิทธิ์ API ระบบเดิม</p></div></li>
+      <li><span class="n" aria-hidden="true">3</span><p class="when">20 พ.ย.</p><div><h3>ทีม Mobile + QA และ Frontend เพิ่ม (#25)</h3><p>เริ่มงาน ธ.ค. เพื่อส่ง App ตรวจทัน 15 ม.ค.</p></div></li>
+      <li><span class="n" aria-hidden="true">4</span><p class="when">27 พ.ย.</p><div><h3>M2 และเลือกรูปแบบ Cloud</h3><p>ดีไซน์ ราคา กติกาพ้อย เงื่อนไข Agent และ Cloud 1 ใน 3</p></div></li>
+    </ol>
+    <div class="spacer"></div>
+    <div class="thanks">
+      <h1>ขอบคุณ</h1>
+      <p class="contact">[ชื่อ Product Owner], Wisdom Vast<br>[อีเมล]<br>[เบอร์โทร]</p>
+    </div>
+  </div>
+  <div data-slot="closing" data-alt="เรือนปาล์ม">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Palm_House%2C_Royal_Botanic_Garden_Edinburgh.JPG/1280px-Palm_House%2C_Royal_Botanic_Garden_Edinburgh.JPG" sizes="640px" alt="เรือนปาล์มทรงวิกตอเรียน มีต้นปาล์มบนสนามหญ้า" style="object-position:40% 50%">
+    <p class="slot-hint">รูปสวนนงนุช 640 × 1080</p>
+  </div>
+  <p class="credits">ภาพประกอบชั่วคราว: <a href="https://commons.wikimedia.org/wiki/File:Beech_Forest_(AU),_Great_Otway_National_Park,_Beauchamp_Falls_--_2019_--_1271.jpg">Dietmar Rabich</a> (CC BY-SA 4.0), <a href="https://commons.wikimedia.org/wiki/File:Walbrzych_Palm_House_greenhouse_interior_2019.jpg">Adrian Tync</a> (CC BY-SA 4.0), <a href="https://commons.wikimedia.org/wiki/File:Palm_House,_Royal_Botanic_Garden_Edinburgh.JPG">Ham</a> (CC BY-SA 3.0), Wikimedia Commons</p>
+</section>
+
+</div></div>
+
+<div id="bar"></div>
+<div id="nav"><button id="prev" aria-label="สไลด์ก่อนหน้า"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span id="count">1 / 14</span><button id="next" aria-label="สไลด์ถัดไป"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button id="fs" aria-label="เต็มจอ">⛶</button></div>
+
+<script>
+document.querySelectorAll('[data-slot] img').forEach(function(i){ if(i.complete && !i.naturalWidth) i.remove(); else i.addEventListener('error', function(){ i.remove(); }, {once:true}); });
+
+// pick a stop: the road stops on slide 4 and the journey steps on slide 7
+document.querySelectorAll('[data-pick]').forEach(function(sec){
+  var picks=[].slice.call(sec.querySelectorAll('.pick'));
+  var items=[].slice.call(sec.querySelectorAll('[data-for]'));
+  var trail=sec.querySelector('.trail'), fr=[];
+  if(trail){
+    // ponytail: nearest of 400 samples along the road, plenty at this scale
+    var L=trail.getTotalLength(), pts=[];
+    for(var k=0;k<=400;k++) pts.push(trail.getPointAtLength(L*k/400));
+    picks.forEach(function(b,i){
+      var x=parseFloat(b.style.left), y=parseFloat(b.style.top), best=0, bd=Infinity;
+      pts.forEach(function(p,k){ var d=(p.x-x)*(p.x-x)+(p.y-y)*(p.y-y); if(d<bd){bd=d;best=k;} });
+      fr[i]=best/400;
+    });
+  }
+  function sel(i){
+    var on = sec.dataset.active===String(i) ? null : String(i);
+    if(on===null) delete sec.dataset.active; else sec.dataset.active=on;
+    picks.forEach(function(b){ var m=b.dataset.i===on; b.classList.toggle('on',m); b.setAttribute('aria-pressed',m); });
+    items.forEach(function(it){ it.classList.toggle('on', it.dataset.for===on); });
+    if(trail) trail.style.strokeDashoffset = on===null ? 1000 : 1000*(1-fr[+on]);
+  }
+  picks.forEach(function(b){ b.addEventListener('click',function(e){ e.stopPropagation(); sel(b.dataset.i); }); });
+  items.forEach(function(it){ it.addEventListener('click',function(){ sel(it.dataset.for); }); });
+});
+
+// filter chips: gantt owners, risk impact
+document.querySelectorAll('[data-filter]').forEach(function(sc){
+  var t=sc.querySelector('[data-f-target]'), bs=[].slice.call(sc.querySelectorAll('.lg'));
+  bs.forEach(function(b){ b.addEventListener('click',function(){
+    var f = t.dataset.f===b.dataset.f ? '' : b.dataset.f;
+    if(f) t.dataset.f=f; else delete t.dataset.f;
+    bs.forEach(function(o){ o.setAttribute('aria-pressed', o.dataset.f===f); });
+  }); });
+});
+
+// tabs: epics
+document.querySelectorAll('[data-tabs]').forEach(function(sc){
+  var tabs=[].slice.call(sc.querySelectorAll('[role="tab"]'));
+  function pick(t){
+    tabs.forEach(function(o){ var m=o===t; o.setAttribute('aria-selected',m); o.tabIndex=m?0:-1; document.getElementById(o.getAttribute('aria-controls')).classList.toggle('on',m); });
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){ pick(t); });
+    t.addEventListener('keydown',function(e){
+      var d = e.key==='ArrowDown' ? 1 : e.key==='ArrowUp' ? -1 : 0;
+      if(!d) return;
+      e.preventDefault(); e.stopPropagation();
+      var n=tabs[(i+d+tabs.length)%tabs.length]; pick(n); n.focus();
+    });
+  });
+  pick(tabs[0]);
+});
+
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var stage=document.getElementById('stage');
+  var total=slides.length, cur=0;
+  slides.forEach(function(s,i){
+    if(i===0) return;
+    var f=document.createElement('div'); f.className='footer';
+    f.innerHTML='<span>Nong Nooch World × Wisdom Vast, Digital Roadmap</span><span>'+(i+1)+'</span>';
+    s.appendChild(f);
+  });
+  function fit(){
+    var k=Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    stage.style.transform='scale('+k+')';
+  }
+  function go(n){
+    cur=Math.max(0,Math.min(total-1,n));
+    slides.forEach(function(s,i){s.classList.toggle('active',i===cur);});
+    document.getElementById('count').textContent=(cur+1)+' / '+total;
+    document.getElementById('bar').style.transform='scaleX('+((cur+1)/total)+')';
+    if(location.hash!=='#'+(cur+1)) history.replaceState(null,'','#'+(cur+1));
+  }
+  document.addEventListener('keydown',function(e){
+    // Enter and Space press a focused button; they only turn the slide elsewhere
+    if((e.key==='Enter'||e.key===' ') && e.target.closest && e.target.closest('button,a,input,label')) return;
+    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();go(cur+1);}
+    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();go(cur-1);}
+    else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(total-1);}
+    else if(e.key==='f'){toggleFs();}
+  });
+  var sx=null;
+  document.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(cur+(dx<0?1:-1));sx=null;});
+  document.getElementById('prev').onclick=function(){go(cur-1);};
+  document.getElementById('next').onclick=function(){go(cur+1);};
+  function toggleFs(){ if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();} else {document.exitFullscreen();} }
+  document.getElementById('fs').onclick=toggleFs;
+  window.addEventListener('resize',fit);
+  fit();
+  var h=parseInt((location.hash||'').slice(1),10);
+  go(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# dependencies / build output
+node_modules/
+.next/
+dist/
+build/
+gen-cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+~$*
+*.tmp
+
+# local tool state
+.hallmark/
+.impeccable/
+.claude/settings.local.json
+
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# large slide history: keep only the latest deck (v9)
+roadmap/Nongnooch_Roadmap_v[3-8].pptx
+roadmap/roadmap.pptx

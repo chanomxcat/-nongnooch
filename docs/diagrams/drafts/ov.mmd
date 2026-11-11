@@ -1,0 +1,56 @@
+flowchart TB
+  subgraph U[ผู้ใช้]
+    tourist@{ icon: "lucide:user", form: "circle", label: "นักท่องเที่ยว", pos: "b" }
+    agent@{ icon: "lucide:users", form: "circle", label: "บริษัททัวร์ / ไกด์", pos: "b" }
+    staff@{ icon: "lucide:user-cog", form: "circle", label: "เจ้าหน้าที่นงนุช", pos: "b" }
+  end
+  subgraph C[Client]
+    web@{ icon: "lucide:globe", form: "square", label: "Website + หน้า Agent<br>Next.js · SSR · TH/EN/ZH", pos: "b" }
+    app@{ icon: "lucide:smartphone", form: "square", label: "Tourist App · Agent App<br>Flutter · GMS / HMS", pos: "b" }
+    admin@{ icon: "lucide:layout-dashboard", form: "square", label: "Admin / CMS / Dashboard<br>Next.js", pos: "b" }
+    gate@{ icon: "lucide:scan-line", form: "square", label: "Gate Scanner<br>Web App · Offline Ed25519", pos: "b" }
+  end
+  cf@{ icon: "lucide:shield", form: "square", label: "Cloudflare<br>CDN · WAF · Rate limit · Turnstile", pos: "b" }
+  subgraph API[Go API · Modular monolith · OpenAPI]
+    direction LR
+    subgraph P1[เฟส 1]
+      auth[Auth / OTP / Social]:::p1
+      member[Member + Consent]:::p1
+      ledger[Point Ledger]:::p1
+      agentm[Agent / Invite]:::p1
+      catalog[Catalog / Price / Inventory]:::p1
+      order[Order + Waiting room]:::p1
+      pay[Payment]:::p1
+      ticket[Ticket / Annual Pass]:::p1
+      gatem[Gate]:::p1
+      cms[CMS + Approval + Audit]:::p1
+      notify[Notification]:::p1
+      report[Report]:::p1
+    end
+    redeem[Redemption · Wallet Pass · Map]:::p2
+    engage[Bulk · Mission · Voucher · Event · Sponsor · In-park Pay]:::p3
+    partner[Partner · Hotel / MICE · Revenue share]:::p4
+  end
+  db@{ icon: "lucide:database", form: "square", label: "MariaDB 10.6+<br>InnoDB · utf8mb4", pos: "b" }
+  obj@{ icon: "lucide:hard-drive", form: "square", label: "Object Storage<br>รูป · เอกสาร Agent", pos: "b" }
+  job@{ icon: "lucide:list-todo", form: "square", label: "Job Worker (Go)<br>ตาราง Job · SKIP LOCKED", pos: "b" }
+  subgraph X[บริการภายนอก]
+    kbank@{ icon: "lucide:credit-card", form: "square", label: "KBank PG<br>บัตร · PromptPay", pos: "b" }
+    mail@{ icon: "lucide:mail", form: "square", label: "Email", pos: "b" }
+    sms@{ icon: "lucide:message-square", form: "square", label: "SMS OTP (+86)", pos: "b" }
+    push@{ icon: "lucide:bell", form: "square", label: "FCM + Huawei Push Kit", pos: "b" }
+    legacy@{ icon: "lucide:building-2", form: "square", label: "ระบบเดิมนงนุช<br>ขายบัตร · ประตู · POS · บัญชี<br>[สมมติฐาน]", pos: "b" }
+  end
+  tourist --> web & app
+  agent --> web & app
+  staff --> admin & gate
+  web & app & admin & gate --> cf --> API
+  API --> db & obj
+  db <--> job
+  job --> mail & sms & push
+  pay <--> kbank
+  job -. Integration Spec .-> legacy
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea

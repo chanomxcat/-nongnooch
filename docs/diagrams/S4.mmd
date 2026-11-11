@@ -1,0 +1,46 @@
+sequenceDiagram
+  autonumber
+  actor F as เจ้าหน้าที่ Finance
+  participant AD as Admin (Next.js)
+  participant CO as Commerce
+  participant KB as KBank PG
+  participant NB as NATS JetStream
+  participant TG as Ticket & Gate
+  participant MP as Member & Point
+  participant NT as Notification
+
+  rect rgb(240, 253, 244)
+    Note over CO,KB: กระทบยอดรายชั่วโมง (scheduler ภายใน Commerce)
+    CO->>CO: หา Payment pending เกิน 15 นาที + รายการชั่วโมงก่อน
+    loop ทุกรายการ
+      CO->>KB: ถามสถานะ (ref=orderId)
+      alt KBank = paid แต่ระบบ = pending
+        CO->>CO: ทำขั้นตอนเดียวกับ Webhook · outbox order.paid
+        CO-)NB: order.paid (ต่อเหมือน S3)
+      else KBank = failed / expired
+        CO->>CO: Payment=failed · ปล่อยโควตาคืน
+      else ยอดเงินไม่ตรง
+        CO->>CO: บันทึก discrepancy
+        CO-)NB: payment.discrepancy
+        NB-)NT: payment.discrepancy
+        NT-->>F: แจ้งเตือนทีม Finance
+      end
+    end
+  end
+
+  rect rgb(255, 247, 237)
+    Note over F,NT: คืนเงิน
+    F->>AD: กดคืนเงินออเดอร์
+    AD->>CO: POST /orders/{id}/refunds {amount, reason}
+    CO->>CO: ตรวจสิทธิ์ Finance · Refund(pending) · AuditLog
+    CO->>TG: gRPC VoidTickets(orderId) แบบ sync ให้สแกนไม่ผ่านทันที
+    TG-->>CO: voided
+    CO->>KB: ขอคืนเงิน
+    KB-->>CO: ผลการคืนเงิน
+    CO->>CO: Refund=done · outbox order.refunded
+    CO-)NB: order.refunded
+    NB-)MP: order.refunded
+    MP->>MP: เฟส 2 ขึ้นไป: ปรับพ้อยตาม S8
+    NB-)NT: order.refunded
+    NT->>NT: ส่งใบเสร็จคืนเงิน
+  end

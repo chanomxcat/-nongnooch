@@ -1,0 +1,78 @@
+flowchart LR
+  subgraph PUB[Publisher]
+    direction TB
+    identity[Identity]:::p1
+    agentP[Agent]:::p1
+    commerce[Commerce]:::p1
+    ticketP[Ticket & Gate]:::p1
+    content[Content]:::p1
+    memberP[Member & Point]:::p1
+    engageP[Engagement]:::p3
+    partnerP[Partner]:::p4
+  end
+
+  subgraph EV[Event บน NATS JetStream]
+    direction TB
+    e1([otp.requested])
+    e2([member.registered])
+    e3([referral.created])
+    e4([agent.approved])
+    e5([order.paid])
+    e6([order.refunded])
+    e7([ticket.issued])
+    e8([ticket.scanned])
+    e9([price.approved])
+    e10([content.published])
+    e11([points.changed])
+    e12([mission.completed])
+    e13([order.expired])
+    e14([payment.discrepancy])
+    e15([bill.paid])
+    e16([partner.order.updated])
+    e17([ticket.transferred])
+  end
+
+  subgraph SUB[Consumer]
+    direction TB
+    memberC[Member & Point]:::p1
+    agentC[Agent]:::p1
+    commerceC[Commerce]:::p1
+    ticketC[Ticket & Gate]:::p1
+    notifyC[Notification]:::p1
+    reportC[Report]:::p1
+    engageC[Engagement]:::p3
+    partnerC[Partner]:::p4
+  end
+
+  identity --> e1 --> notifyC
+  memberP --> e2 --> agentC
+  e2 --> reportC
+  agentP --> e3 --> memberC
+  e3 --> notifyC
+  agentP --> e4 --> notifyC
+  commerce --> e5 --> ticketC
+  e5 --> memberC
+  e5 --> reportC
+  e5 -->|partner items| partnerC
+  commerce --> e6 --> ticketC
+  e6 --> memberC
+  e6 --> partnerC
+  ticketP --> e7 --> notifyC
+  ticketP --> e8 --> memberC
+  e8 --> reportC
+  e8 --> engageC
+  content --> e9 --> commerceC
+  content --> e10 --> notifyC
+  memberP --> e11 --> reportC
+  engageP --> e12 --> memberC
+  commerce --> e13 --> memberC
+  commerce --> e14 --> notifyC
+  commerce --> e15 --> memberC
+  e15 --> reportC
+  partnerP --> e16 --> notifyC
+  ticketP --> e17 --> notifyC
+  e17 --> reportC
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea

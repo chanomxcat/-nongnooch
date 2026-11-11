@@ -1,0 +1,24 @@
+flowchart TD
+  a([เจ้าของบัตรเปิด บัตรของฉัน]) --> b{"บัตรยังไม่ใช้<br>และยังไม่ถึงเวลาเข้าชม?"}
+  b -->|ไม่| bx([ส่งไม่ได้])
+  b -->|ใช่| c{"ส่งต่อครบจำนวนครั้งแล้ว?<br>[1 ครั้ง / ใบ · รอยืนยัน #31]"}
+  c -->|ครบ| bx
+  c -->|ยัง| d[ใส่เบอร์ / อีเมล หรือสร้างลิงก์]
+  d --> e{"บัตรราคาคนไทย?"}
+  e -->|ใช่| f{"ผู้รับยืนยัน<br>เลขบัตรประชาชนแล้ว?"}
+  f -->|ไม่| fx([ส่งไม่ได้ · แจ้งให้ผู้รับสมัคร / ยืนยันก่อน])
+  f -->|ใช่| g
+  e -->|ไม่| g["TicketTransfer: รอผู้รับ<br>Push / อีเมล / SMS ถึงผู้รับ"]
+  g --> h{"ผู้รับมีบัญชี?"}
+  h -->|มี| i[รับบัตรเข้าบัญชีตัวเอง]
+  h -->|ไม่มี| j["เปิดบัตรผ่านลิงก์ได้<br>พร้อมชวนสมัคร F1"] --> i
+  i --> k["ออก QR ใหม่ (Unique ticket ID ใหม่)<br>QR เดิม void ทันที · outbox ticket.transferred"]
+  k --> l(["Push แจ้งทั้งสองฝ่าย<br>Gate snapshot รอบถัดไปได้รายการ void"])
+  class d,g,i,k,l p1
+  class c,j assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

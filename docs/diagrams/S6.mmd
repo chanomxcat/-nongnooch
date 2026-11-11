@@ -1,0 +1,27 @@
+sequenceDiagram
+  autonumber
+  actor A as เจ้าหน้าที่ Admin
+  actor T as นักท่องเที่ยว
+  participant FE as Next.js (หน้ารอคิว 7 ภาษา)
+  participant GW as API Gateway
+  participant CO as Commerce (Waiting room)
+
+  A->>CO: เปิด Waiting room · capacity N คนต่อนาที
+  T->>FE: เข้าหน้าซื้อบัตร
+  FE->>CO: GET /queue/status
+  alt Waiting room ปิด
+    CO-->>FE: เข้าได้ทันที
+  else Waiting room เปิด
+    CO->>CO: ออกลำดับคิว (seq)
+    CO-->>FE: บัตรคิวลงลายเซ็น {seq, issuedAt, sig}
+    loop ทุก 10–20 วินาที [สมมติฐาน]
+      FE->>CO: GET /queue/position (แนบบัตรคิว)
+      CO-->>FE: ลำดับ · เวลารอโดยประมาณ
+    end
+    CO->>CO: ปล่อยคิวจนถึง releasedUpTo ตาม capacity
+    CO-->>FE: access token อายุสั้น
+    FE->>GW: POST /orders (แนบ access token)
+    GW->>GW: ตรวจ token ก่อน route
+    GW->>CO: สร้างออเดอร์
+  end
+  Note over GW,CO: ไม่กระทบ Ticket & Gate และ Member & Point เพราะเป็น service แยก · Cloudflare rate limit ทำงานคู่กัน

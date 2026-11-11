@@ -1,0 +1,21 @@
+flowchart TD
+  a([สมาชิกเปิดบัตรที่ยังไม่ใช้]) --> b{"ต้องการอะไร"}
+  b -->|ยกเลิก / คืนเงิน| c{"แจ้งก่อนวันเข้าชม<br>ตามนโยบาย #17"}
+  c -->|ทันเวลา| d{"รับเงินคืนหรือ Voucher"}
+  d -->|เงินคืน| e[[S4 คืนเงิน · void บัตร]]
+  d -->|Voucher| f[ออก Voucher ตามอายุที่กำหนด · void บัตร]
+  c -->|ไม่ทัน| x([คืนเงินไม่ได้ · แสดงนโยบาย])
+  b -->|เลื่อนวันเข้าชม| g{"เลื่อนครั้งแรก<br>และแจ้งล่วงหน้าพอ?"}
+  g -->|ไม่| x2([เลื่อนไม่ได้])
+  g -->|ใช่| h{"โควตาวันใหม่พอ?"}
+  h -->|ไม่| x3([เสนอวันอื่น])
+  h -->|ใช่| i["ย้ายโควตา · ออก QR ใหม่<br>QR เดิม void"]
+  e & f & i --> j(["PointLedger: หักพ้อยที่ได้จากออเดอร์<br>Push + อีเมลยืนยัน"])
+  class d,e,f,g,i,j p2
+  class c assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

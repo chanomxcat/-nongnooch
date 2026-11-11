@@ -1,0 +1,26 @@
+flowchart TD
+  s([เจ้าหน้าที่สแกน QR ที่ประตู]) --> sig{ลายเซ็น Ed25519<br>ถูกต้อง?}
+  nophone([ลูกค้าแสดง QR ไม่ได้<br>แบตหมด · จอแตก]) --> look["เจ้าหน้าที่ค้นหาบัตร<br>เลขคำสั่งซื้อ · เบอร์ · อีเมล<br>ตรวจชื่อกับบัตรประชาชน / พาสปอร์ต<br>บันทึก Audit log"]
+  sig -->|ไม่| bad([บัตรไม่ถูกต้อง / ปลอม])
+  sig -->|ใช่| id["อ่าน Unique ticket ID จาก QR<br>รู้ว่าเป็นบัตรใบไหนแม้ออฟไลน์"] --> net{ประตูออนไลน์?}
+  net -->|ใช่| api[ถามสถานะบัตรจาก Ticket & Gate service]
+  net -->|ไม่| local["ตรวจ ticket ID กับ snapshot ในเครื่อง<br>รายการยกเลิก / คืนเงิน / ส่งต่อ<br>+ บัตรที่เครื่องนี้สแกนแล้ว · เก็บ scan ลงคิว"]
+  api & local & look --> st{สถานะบัตร}
+  st -->|คืนเงินแล้ว / ระงับ / ส่งต่อแล้ว| void([บัตรถูกยกเลิก<br>QR เดิมใช้ไม่ได้])
+  st -->|ปกติ| type{ประเภทบัตร}
+  type -->|รายวัน| d1{วันที่ตรง<br>และยังไม่ใช้?}
+  d1 -->|ใช้แล้ว| used([แสดง ใช้แล้ว + เวลาที่ใช้])
+  d1 -->|ผิดวัน| wrong([แสดง ไม่ใช่วันเข้าชม])
+  d1 -->|ถูกต้อง| pass
+  type -->|รายปี| a1{เปิดใช้แล้ว<br>ยังไม่หมดอายุ 365 วัน?}
+  a1 -->|ไม่| exp([แสดง หมดอายุ / ยังไม่เปิดใช้])
+  a1 -->|ใช่| photo[แสดงรูปผู้ถือบัตร<br>เจ้าหน้าที่ตรวจเทียบ] --> pass
+  pass(["ผ่าน · บันทึก GateScan ด้วย ticket ID<br>ผูกประวัติเข้าชมของสมาชิก"])
+  local -. เน็ตกลับมา .-> sync[[S5 sync + ส่งระบบเดิม]]
+  class id,api,local,look,photo,pass p1
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

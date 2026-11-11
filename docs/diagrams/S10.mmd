@@ -1,0 +1,30 @@
+sequenceDiagram
+  autonumber
+  actor T as ลูกค้า
+  participant FE as Next.js / Flutter
+  participant CO as Commerce
+  participant NB as NATS JetStream
+  participant PT as Partner service
+  participant P as Partner
+
+  T->>FE: สั่งสินค้า / บริการของ Partner
+  FE->>CO: POST /orders (partner items)
+  CO->>PT: gRPC GetOffer(itemIds)
+  PT-->>CO: ราคา · % ส่วนแบ่ง
+  Note over FE,CO: ชำระเงินตาม S3 (เงินเข้าบัญชีนงนุช)
+  CO-)NB: order.paid (partner items)
+  NB-)PT: order.paid
+  PT->>PT: RevenueShare(partnerId, % ตามสัญญา) idempotent ด้วย orderId
+  PT->>P: แจ้งออเดอร์ (อีเมล / Partner portal [สมมติฐาน])
+  P->>PT: อัปเดตสถานะ จัดส่ง / พร้อมรับ
+  PT-)NB: partner.order.updated
+  Note over NB: Notification consume แล้วแจ้งลูกค้า
+  opt คืนเงิน
+    NB-)PT: order.refunded
+    PT->>PT: กลับรายการ RevenueShare
+  end
+  loop สิ้นเดือน
+    PT->>PT: สรุป RevenueShare ราย Partner
+    PT->>P: ส่งรายงานส่วนแบ่ง
+    Note over PT,P: ฝ่ายบัญชีนงนุชโอนส่วนแบ่งนอกระบบ [สมมติฐาน]
+  end

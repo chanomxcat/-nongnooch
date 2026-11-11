@@ -1,0 +1,35 @@
+flowchart TD
+  entry([เปิดหน้าสมัครสมาชิก]) --> src{มาจากไหน?}
+  src -->|QR / ลิงก์ของไกด์| autoinv["ใส่ Invite code อัตโนมัติ<br>Deep link เปิด App ถ้าติดตั้งแล้ว"]
+  src -->|ป้าย QR ในสวน · เว็บ · App · Checkout| method
+  autoinv --> method{วิธีสมัคร}
+  method -->|เบอร์โทร| bot{Turnstile ผ่าน?}
+  method -->|อีเมล| bot
+  method -->|LINE · WeChat · Google · Apple| social[[S2 Social login]]
+  bot -->|ไม่ผ่าน| blocked([ปฏิเสธ · จำกัดอัตรา])
+  bot -->|ผ่าน, เบอร์โทร| otp["ส่ง SMS OTP<br>ไทย / ต่างประเทศ รวม +86"]
+  bot -->|ผ่าน, อีเมล| eotp[ส่ง Email OTP]
+  otp -->|SMS ไม่ถึง| eotp
+  otp & eotp --> verify{OTP ถูกต้อง<br>และยังไม่หมดอายุ?}
+  verify -->|ไม่| retry[ส่งใหม่ · จำกัดจำนวนครั้ง] --> verify
+  verify -->|ใช่| dup
+  social --> dup{เบอร์ / อีเมลนี้<br>มีบัญชีแล้ว?}
+  dup -->|มี| login(["เข้าสู่ระบบบัญชีเดิม<br>ไม่ได้พ้อยซ้ำ"])
+  dup -->|ไม่มี| idd["กรอกชื่อ-นามสกุล + สัญชาติ<br>ไทย: เลขบัตรประชาชน 13 หลัก ตรวจ check digit<br>ต่างชาติ: เลขพาสปอร์ต + ประเทศที่ออก"]
+  idd --> iddup{เลขบัตร / พาสปอร์ตนี้<br>มีบัญชีแล้ว?}
+  iddup -->|มี| idx(["ปฏิเสธ · 1 เลขบัตร = 1 บัญชี<br>ติดต่อเจ้าหน้าที่"])
+  iddup -->|ไม่มี| consent["ยอมรับเงื่อนไข + PDPA<br>ข่าวสารการตลาดแยกช่อง ไม่ติ๊กไว้ก่อน"]
+  consent --> create["สร้าง Member + Consent<br>เลขบัตรเก็บแบบเข้ารหัส + hash ไว้ตรวจซ้ำ<br>สิทธิ์ราคา: ไทย / ต่างชาติ"]
+  create --> welcome[PointLedger: Welcome point]
+  welcome --> hasinv{มี Invite code?}
+  hasinv -->|มี| inv["PointLedger: Invite point ให้นักท่องเที่ยว<br>+ พ้อยไกด์ สถานะ รอตรวจ<br>บันทึก Referral + ธงความผิดปกติ"]
+  hasinv -->|ไม่มี| later["กรอกโค้ดภายหลังได้ 1 ครั้ง<br>ภายใน __ วัน"]
+  inv & later --> done(["สมัครสำเร็จ<br>ดูพ้อยได้ · แลกได้ในเฟส 2"])
+  class autoinv,otp,eotp,idd,consent,create,welcome,inv,done p1
+  class later assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3

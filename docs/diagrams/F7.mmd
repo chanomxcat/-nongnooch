@@ -1,0 +1,20 @@
+flowchart TD
+  a([Agent เลือกวัน · ประเภทบัตร · จำนวน]) --> q{โควตาพอ?}
+  q -->|ไม่พอ| alt([เสนอวันอื่น])
+  q -->|พอ| price["คำนวณราคา Agent<br>ส่วนแบ่ง: อาจไม่มี รอยืนยัน"]
+  price --> hold[จองโควตา] --> pay[[S3 ชำระเงิน]]
+  pay --> gen[BulkOrder: เจน QR รายใบ]
+  gen --> pts[PointLedger: พ้อยจากการซื้อ Bulk ให้ไกด์]
+  gen --> dist{แจกบัตรอย่างไร}
+  dist -->|ส่งลิงก์ให้ลูกค้ารายคน| link[ลูกค้าเปิดบัตรบนมือถือ<br>ชวนสมัครสมาชิก]
+  dist -->|ใบรวม QR / แสดงจากมือถือไกด์| print[ใบรวม QR]
+  link -.-> reg[[F1 สมัครสมาชิก]]
+  link & print --> gate[[F4 เข้าประตู]]
+  class hold,gen,pts,link,print p3
+  class price assume
+
+  classDef p1 fill:#dcfce7,stroke:#16a34a
+  classDef p2 fill:#dbeafe,stroke:#2563eb
+  classDef p3 fill:#ffedd5,stroke:#ea580c
+  classDef p4 fill:#f3e8ff,stroke:#9333ea
+  classDef assume fill:#fef9c3,stroke:#ca8a04,stroke-dasharray:4 3
