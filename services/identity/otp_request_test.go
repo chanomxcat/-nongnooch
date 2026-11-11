@@ -157,3 +157,25 @@ func TestUnknownLangFallsBackToEN(t *testing.T) {
 		t.Fatalf("lang %q", ev.Payload.Lang)
 	}
 }
+
+func TestConcurrentRequestsSameContactOnlyOneAccepted(t *testing.T) {
+	e := newEnv(t)
+	codes := make(chan int, 10)
+	for i := 0; i < 10; i++ {
+		go func() { codes <- e.post("/auth/otp", "10.0.0.1", otpBody("0812345678")).Code }()
+	}
+	ok, limited := 0, 0
+	for i := 0; i < 10; i++ {
+		switch c := <-codes; c {
+		case 202:
+			ok++
+		case 429:
+			limited++
+		default:
+			t.Errorf("unexpected status %d", c)
+		}
+	}
+	if ok != 1 || limited != 9 || count(t, e, `SELECT COUNT(*) FROM otp_requests`) != 1 {
+		t.Fatalf("ok=%d limited=%d", ok, limited)
+	}
+}

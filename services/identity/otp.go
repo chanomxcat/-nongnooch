@@ -99,7 +99,26 @@ func (s *OTPService) Request(ctx context.Context, phone, email, lang, turnstileT
 	now := s.now()
 	ipb := ipBytes(ip)
 
-	if err := s.checkLimits(ctx, c.Value, ipb, now); err != nil {
+	keys := []string{"c:" + c.Value, fmt.Sprintf("i:%x", ipb)}
+	for _, k := range keys { // autocommit, so no locks are held while creating rows
+		if _, err := s.DB.ExecContext(ctx, `INSERT IGNORE INTO otp_rate(k) VALUES(?)`, k); err != nil {
+			return "", err
+		}
+	}
+	tx, err := s.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return "", err
+	}
+	defer tx.Rollback()
+	// Serialize requests per contact and per IP (fixed order: "c:" < "i:") so the
+	// limit checks and the insert are atomic.
+	for _, k := range keys {
+		var x string
+		if err := tx.QueryRowContext(ctx, `SELECT k FROM otp_rate WHERE k = ? FOR UPDATE`, k).Scan(&x); err != nil {
+			return "", err
+		}
+	}
+	if err := s.checkLimits(ctx, tx, c.Value, ipb, now); err != nil {
 		return "", err
 	}
 
@@ -115,11 +134,6 @@ func (s *OTPService) Request(ctx context.Context, phone, email, lang, turnstileT
 	if err != nil {
 		return "", err
 	}
-	tx, err := s.DB.BeginTx(ctx, nil)
-	if err != nil {
-		return "", err
-	}
-	defer tx.Rollback()
 	if _, err := tx.ExecContext(ctx,
 		`INSERT INTO otp_requests(id, contact, kind, code_hmac, lang, ip, expires_at, created_at) VALUES(?,?,?,?,?,?,?,?)`,
 		id, c.Value, c.Kind, s.mac(id, code), lang, ipb, now.Add(otpTTL), now); err != nil {
@@ -142,10 +156,10 @@ func ceilSecs(d time.Duration) int {
 	return n
 }
 
-func (s *OTPService) checkLimits(ctx context.Context, contact string, ip []byte, now time.Time) error {
+func (s *OTPService) checkLimits(ctx context.Context, q *sql.Tx, contact string, ip []byte, now time.Time) error {
 	hourAgo := now.Add(-time.Hour)
 	var last sql.NullTime
-	if err := s.DB.QueryRowContext(ctx, `SELECT MAX(created_at) FROM otp_requests WHERE contact = ?`, contact).Scan(&last); err != nil {
+	if err := q.QueryRowContext(ctx, `SELECT MAX(created_at) FROM otp_requests WHERE contact = ?`, contact).Scan(&last); err != nil {
 		return err
 	}
 	if last.Valid {
@@ -155,14 +169,14 @@ func (s *OTPService) checkLimits(ctx context.Context, contact string, ip []byte,
 	}
 	var cnt int
 	var oldest sql.NullTime
-	if err := s.DB.QueryRowContext(ctx, `SELECT COUNT(*), MIN(created_at) FROM otp_requests WHERE contact = ? AND created_at > ?`,
+	if err := q.QueryRowContext(ctx, `SELECT COUNT(*), MIN(created_at) FROM otp_requests WHERE contact = ? AND created_at > ?`,
 		contact, hourAgo).Scan(&cnt, &oldest); err != nil {
 		return err
 	}
 	if cnt >= perContactHour {
 		return &RateLimitError{RetryAfter: ceilSecs(oldest.Time.Add(time.Hour).Sub(now))}
 	}
-	if err := s.DB.QueryRowContext(ctx, `SELECT COUNT(*), MIN(created_at) FROM otp_requests WHERE ip = ? AND created_at > ?`,
+	if err := q.QueryRowContext(ctx, `SELECT COUNT(*), MIN(created_at) FROM otp_requests WHERE ip = ? AND created_at > ?`,
 		ip, hourAgo).Scan(&cnt, &oldest); err != nil {
 		return err
 	}
