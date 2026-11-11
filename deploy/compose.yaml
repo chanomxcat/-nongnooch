@@ -99,6 +99,26 @@ services:
       nats: {condition: service_healthy}
     mem_limit: 96m
 
+  commerce:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.go
+      args: {SVC: commerce}
+    image: nongnooch/commerce:dev
+    environment:
+      DB_DSN: commerce:commerce@tcp(mariadb:3306)/commerce?parseTime=true
+      NATS_URL: nats://nats:4222
+      DEMO_MODE: "true"
+      KBANK_BASE_URL: http://mockext:8090/pg
+      KBANK_API_KEY: demo-key
+      KBANK_WEBHOOK_SECRET: demo-secret
+      MEMBER_GRPC: member:9090
+    depends_on:
+      mariadb: {condition: service_healthy}
+      nats: {condition: service_healthy}
+      mockext: {condition: service_healthy}
+    mem_limit: 96m
+
   gateway:
     build:
       context: .
