@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="3">
+<title>Mock Console</title>
+<style>
+body{font-family:"Noto Sans Thai",system-ui,sans-serif;margin:0;background:#f6f5f0;color:#1d2b26}
+header{background:#074536;color:#fff;padding:14px 24px;border-bottom:4px solid #D9A52E}
+main{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;padding:16px 24px}
+section{background:#fff;border-radius:8px;padding:12px 16px;box-shadow:0 1px 3px #0002}
+h2{margin:0 0 8px;color:#074536;font-size:1.05rem}
+ul{padding:0;margin:0}
+li{margin:6px 0;list-style:none;border-bottom:1px solid #eee;padding-bottom:6px}
+small{color:#667}.otp{font-weight:700}
+button{background:#D9A52E;border:0;border-radius:4px;padding:3px 10px;cursor:pointer}
+</style></head><body>
+<header><b>Nongnooch Mock Console</b> <small style="color:#cfe">รีเฟรชทุก 3 วินาที</small></header>
+<main>
+<section><h2>SMS (OTP)</h2><ul>
+{{range .SMS}}<li><span class="otp">{{.Body}}</span><br><small>ถึง {{.Title}} · {{.At.Format "15:04:05"}}</small></li>{{else}}<li><small>ยังไม่มีข้อความ</small></li>{{end}}
+</ul></section>
+<section><h2>การจ่ายเงิน (KBank)</h2><ul>
+{{range .Payments}}<li><b>{{.Ref}}</b> · {{.Status}} · {{printf "%.2f" .BahtAmount}} บาท · {{.Method}}<br>
+<small>{{.ID}}</small>
+<a href="{{$.Public}}/pg/checkout/{{.ID}}">หน้าจ่ายเงิน</a>
+<form method="post" action="/pg/payments/{{.ID}}/webhook:resend" style="display:inline"><button>ส่ง webhook ซ้ำ</button></form></li>{{else}}<li><small>ยังไม่มีรายการ</small></li>{{end}}
+</ul></section>
+<section><h2>Webhook ที่ส่งออก</h2><ul>
+{{range .Webhooks}}<li>{{.Title}} <small>{{.Body}} · {{.At.Format "15:04:05"}}</small></li>{{else}}<li><small>ยังไม่มี</small></li>{{end}}
+</ul></section>
+<section><h2>อีเมล</h2><a href="http://localhost:8025">Mailpit</a></section>
+</main></body></html>

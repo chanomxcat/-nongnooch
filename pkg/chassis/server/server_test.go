@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"net"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -79,5 +80,14 @@ func TestHealthEndpoints(t *testing.T) {
 		}
 	case <-time.After(5 * time.Second):
 		t.Fatal("shutdown timeout")
+	}
+}
+
+func TestReadyzWithoutDB(t *testing.T) {
+	s := server.New(config.Base{ServiceName: "t"}, nil)
+	rec := httptest.NewRecorder()
+	s.Mux.ServeHTTP(rec, httptest.NewRequest("GET", "/readyz", nil))
+	if rec.Code != 200 {
+		t.Fatal(rec.Code)
 	}
 }

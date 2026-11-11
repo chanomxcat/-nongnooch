@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KBank Payment Gateway (จำลอง)</title>
+<style>
+body{font-family:"Noto Sans Thai",system-ui,sans-serif;margin:0;background:#f6f5f0;color:#1d2b26}
+header{background:#074536;color:#fff;padding:16px 24px;border-bottom:4px solid #D9A52E}
+h1{margin:0;font-size:1.25rem}
+main{max-width:480px;margin:24px auto;background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 1px 4px #0003}
+.amt{font-size:2rem;font-weight:700;color:#074536;margin:4px 0 12px}
+code{word-break:break-all;background:#f0efe8;padding:4px 6px;display:block;border-radius:4px}
+form{display:grid;gap:8px;margin-top:16px}
+button{padding:10px;border-radius:6px;border:1px solid #074536;background:#fff;color:#074536;font-size:1rem;cursor:pointer}
+button.ok{background:#074536;color:#fff}
+button.warn{border-color:#D9A52E;color:#7a5a10}
+</style></head><body>
+<header><h1>KBank Payment Gateway (จำลอง)</h1></header>
+<main>
+<div>รายการ <b>{{.P.Ref}}</b> · วิธีจ่าย {{.P.Method}} · สถานะ {{.P.Status}}</div>
+<div class="amt">{{printf "%.2f" .P.BahtAmount}} บาท</div>
+{{if .Payload}}<div>PromptPay QR (ข้อความจำลอง)</div><code>{{.Payload}}</code>{{end}}
+<form method="post" action="/pg/checkout/{{.P.ID}}/pay">
+<button class="ok" name="action" value="success">จ่ายสำเร็จ</button>
+<button name="action" value="fail">ล้มเหลว</button>
+<button name="action" value="cancel">ยกเลิก</button>
+<button class="warn" name="action" value="silent">จ่ายสำเร็จแต่ไม่ส่ง webhook</button>
+<button class="warn" name="action" value="mismatch">ยอดไม่ตรง (จ่ายขาด 1 บาท)</button>
+</form>
+</main></body></html>

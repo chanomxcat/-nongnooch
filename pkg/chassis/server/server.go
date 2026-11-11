@@ -45,6 +45,10 @@ func New(cfg config.Base, db *sql.DB) *Server {
 		_, _ = w.Write([]byte("ok"))
 	})
 	s.Mux.HandleFunc("GET /readyz", func(w http.ResponseWriter, r *http.Request) {
+		if s.db == nil {
+			_, _ = w.Write([]byte("ok"))
+			return
+		}
 		ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
 		defer cancel()
 		if err := s.db.PingContext(ctx); err != nil {
