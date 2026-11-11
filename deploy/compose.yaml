@@ -77,6 +77,28 @@ services:
       mockext: {condition: service_healthy}
     mem_limit: 96m
 
+  gateway:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.go
+      args: {SVC: gateway}
+    image: nongnooch/gateway:dev
+    ports: ["8000:8080"]
+    environment:
+      JWKS_URL: http://identity:8080/.well-known/jwks.json
+      GATEWAY_SERVICES: identity,member,commerce,ticket,notify,content,agent,report
+      # Peers allowed to set X-Forwarded-For: IPs, CIDRs or container names (re-resolved every 30s).
+      TRUSTED_PROXIES: caddy,web,admin,gate
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001,http://localhost:3002
+    depends_on:
+      identity: {condition: service_started}
+    healthcheck:
+      test: ["CMD", "/app", "-healthcheck"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    mem_limit: 64m
+
   notify:
     build:
       context: .
