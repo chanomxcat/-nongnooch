@@ -3,6 +3,8 @@ import { formatBaht, timeHHmm } from './format';
 import { createDebouncer, mapScan } from './scan';
 import { canScan, decodeStaff } from './session/jwt';
 import { safeNext } from './safeNext';
+import { upstreamPath } from './session/bffPath';
+import { forwardedFor } from './session/upstream';
 
 const hh = (i?: string) => timeHHmm(i);
 
@@ -46,13 +48,35 @@ describe('formatBaht', () => {
 describe('debounce', () => {
   it('ignores same qr within 3s only', () => {
     let t = 1000;
-    const ok = createDebouncer(3000, () => t);
-    expect(ok('a')).toBe(true);
+    const d = createDebouncer(3000, () => t);
+    expect(d.accept('a')).toBe(true);
     t += 1000;
-    expect(ok('a')).toBe(false);
-    expect(ok('b')).toBe(true);
-    t += 2500;
-    expect(ok('a')).toBe(true);
+    expect(d.accept('a')).toBe(false);
+    expect(d.accept('b')).toBe(true);
+    t += 3500;
+    expect(d.accept('a')).toBe(true);
+  });
+  it('a qr held in view is one presentation, however long', () => {
+    let t = 0;
+    const d = createDebouncer(3000, () => t);
+    expect(d.accept('a')).toBe(true);
+    for (let i = 0; i < 20; i++) {
+      t += 500; // 10 s of continuous sightings
+      expect(d.accept('a')).toBe(false);
+    }
+    t += 3000; // left the frame for 3 s
+    expect(d.accept('a')).toBe(true);
+  });
+  it('forget (failed request) and reset (scan next) allow an immediate retry', () => {
+    let t = 0;
+    const d = createDebouncer(3000, () => t);
+    expect(d.accept('a')).toBe(true);
+    d.forget('a');
+    t += 100;
+    expect(d.accept('a')).toBe(true);
+    d.reset();
+    t += 100;
+    expect(d.accept('a')).toBe(true);
   });
 });
 
@@ -70,5 +94,42 @@ describe('session', () => {
     expect(safeNext('//evil.com')).toBe('/dashboard');
     expect(safeNext('https://evil.com')).toBe('/dashboard');
     expect(safeNext(null)).toBe('/dashboard');
+  });
+});
+
+const hx = (xff?: string) => ({ get: (n: string) => (n.toLowerCase() === 'x-forwarded-for' ? (xff ?? null) : null) });
+
+describe('bff upstream path', () => {
+  it('builds /api/<svc>/… and limits services', () => {
+    expect(upstreamPath('ticket', ['gate', 'scans'])).toEqual({ ok: true, path: '/api/ticket/gate/scans' });
+    expect(upstreamPath('commerce', ['admin', 'stats', 'today'])).toEqual({ ok: true, path: '/api/commerce/admin/stats/today' });
+    expect(upstreamPath('identity', ['auth', 'staff', 'login'])).toEqual({ ok: false, status: 404 });
+    expect(upstreamPath('notify', ['x'])).toEqual({ ok: false, status: 404 });
+    expect(upstreamPath('member', ['InTeRnAl', 'seed'])).toEqual({ ok: false, status: 404 });
+  });
+  it.each([
+    [['..', 'identity']],
+    [['.', 'x']],
+    [['%2e%2e', 'identity']],
+    [['%2E%2e', 'identity']],
+    [['%252e%252e', 'identity']],
+    [['a%2Fb']],
+    [['a%5Cb']],
+    [['']],
+    [['%E0%A4%A']],
+    [[]],
+  ])('rejects traversal %j', (segs) => {
+    expect(upstreamPath('ticket', segs as string[])).toEqual({ ok: false, status: 400 });
+  });
+});
+
+describe('X-Forwarded-For', () => {
+  it('never forwards the client header without a trusted proxy', () => {
+    expect(forwardedFor(hx('6.6.6.6'), false)).toBeNull();
+  });
+  it('behind a trusted proxy keeps only the right-most valid entry', () => {
+    expect(forwardedFor(hx('6.6.6.6, 203.0.113.9'), true)).toBe('203.0.113.9');
+    expect(forwardedFor(hx('1.2.3.4, evil<x>'), true)).toBeNull();
+    expect(forwardedFor(hx(), true)).toBeNull();
   });
 });

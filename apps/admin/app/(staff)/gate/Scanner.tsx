@@ -63,10 +63,14 @@ export default function Scanner() {
   );
 
   const submit = useCallback(
-    async (raw: string) => {
+    async (raw: string, explicit = false) => {
       const qr = raw.trim();
-      if (!qr || busy.current || !seen.current(qr)) return;
+      if (!qr || busy.current) return;
+      if (explicit) seen.current.forget(qr);
+      if (!seen.current.accept(qr)) return;
       busy.current = true;
+      // Only a definitive verdict keeps the presentation marked; errors allow an immediate retry.
+      let definitive = false;
       try {
         const r = await fetch('/bff/ticket/gate/scans', {
           method: 'POST',
@@ -82,6 +86,7 @@ export default function Scanner() {
           return;
         }
         if (r.status === 400) {
+          definitive = true;
           show(mapScan({ result: 'invalid' }, timeHHmm));
           return;
         }
@@ -89,10 +94,13 @@ export default function Scanner() {
           show(SYSTEM_ERROR);
           return;
         }
+        definitive = true;
         show(mapScan((await r.json()) as ScanApi, timeHHmm));
       } catch {
         show(SYSTEM_ERROR);
       } finally {
+        // Brief cooldown so a code still in view does not hammer a failing server; manual entry bypasses it.
+        if (!definitive) setTimeout(() => seen.current.forget(qr), 1000);
         busy.current = false;
       }
     },
@@ -188,7 +196,7 @@ export default function Scanner() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              submit(manual);
+              submit(manual, true);
               setManual('');
             }}
             style={{ display: 'contents' }}
@@ -208,7 +216,10 @@ export default function Scanner() {
       </div>
 
       {view && (
-        <div className={`result ${view.tone}`} role="alert" onClick={() => setView(null)}>
+        <div className={`result ${view.tone}`} role="alert" onClick={() => {
+            seen.current.reset();
+            setView(null);
+          }}>
           <div className="t">{view.title}</div>
           <div className="e">{view.en}</div>
           {view.lines.map((l) => (
@@ -216,7 +227,7 @@ export default function Scanner() {
               {l}
             </div>
           ))}
-          <div className="x">แตะเพื่อปิด · tap to dismiss</div>
+          <div className="x">แตะเพื่อสแกนถัดไป · tap for next scan</div>
         </div>
       )}
     </>

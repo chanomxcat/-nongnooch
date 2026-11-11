@@ -32,14 +32,28 @@ export function mapScan(r: ScanApi, hhmm: (iso?: string) => string): ScanView {
   }
 }
 
-/** Ignores the same QR within `windowMs`. Returns true when the scan should be processed. */
+/**
+ * Treats continuous sightings of one QR as a single presentation. `accept(qr)` is true only for a
+ * new presentation: the QR was not seen in the last `windowMs`. Every sighting (accepted or not)
+ * refreshes the timestamp, so a code held in front of the camera is never re-submitted; it counts as
+ * new again only after it has been out of view for `windowMs`. `forget(qr)` (failed request, explicit
+ * manual entry) and `reset()` ("scan next") let it be submitted immediately.
+ */
 export function createDebouncer(windowMs = 3000, now: () => number = Date.now) {
-  const seen = new Map<string, number>();
-  return (qr: string): boolean => {
-    const t = now();
-    for (const [k, at] of seen) if (t - at >= windowMs) seen.delete(k);
-    if (seen.has(qr)) return false;
-    seen.set(qr, t);
-    return true;
+  const lastSeen = new Map<string, number>();
+  return {
+    accept(qr: string): boolean {
+      const t = now();
+      for (const [k, at] of lastSeen) if (t - at >= windowMs && k !== qr) lastSeen.delete(k);
+      const prev = lastSeen.get(qr);
+      lastSeen.set(qr, t);
+      return prev === undefined || t - prev >= windowMs;
+    },
+    forget(qr: string) {
+      lastSeen.delete(qr);
+    },
+    reset() {
+      lastSeen.clear();
+    },
   };
 }
