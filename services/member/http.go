@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"time"
 	"encoding/json"
 	"errors"
 	"log/slog"
@@ -31,6 +33,7 @@ func (a *API) Register(mux *http.ServeMux) {
 	mux.Handle("POST /members", user(http.HandlerFunc(a.register)))
 	mux.Handle("GET /members/me", user(http.HandlerFunc(a.me)))
 	mux.Handle("GET /members/me/points", user(http.HandlerFunc(a.points)))
+	mux.Handle("GET /admin/stats/today", authn.Require("staff")(http.HandlerFunc(a.stats)))
 	mux.HandleFunc("POST /internal/seed", a.seed)
 }
 
@@ -136,4 +139,31 @@ func (a *API) points(w http.ResponseWriter, r *http.Request) {
 	}
 	slog.ErrorContext(r.Context(), "points failed", "err", err)
 	writeErr(w, http.StatusInternalServerError, "internal")
+}
+
+// ict is Asia/Bangkok (UTC+7, no DST); a fixed zone avoids needing tzdata in distroless.
+var ict = time.FixedZone("ICT", 7*3600)
+
+// Stats returns members registered today (Asia/Bangkok) and the total.
+func (s *MemberService) Stats(ctx context.Context) (newToday, total int, err error) {
+	now := time.Now()
+	if s.Now != nil {
+		now = s.Now()
+	}
+	n := now.In(ict)
+	start := time.Date(n.Year(), n.Month(), n.Day(), 0, 0, 0, 0, ict).UTC()
+	err = s.DB.QueryRowContext(ctx,
+		`SELECT COALESCE(SUM(created_at >= ? AND created_at < ?), 0), COUNT(*) FROM members WHERE deleted_at IS NULL`,
+		start, start.Add(24*time.Hour)).Scan(&newToday, &total)
+	return
+}
+
+func (a *API) stats(w http.ResponseWriter, r *http.Request) {
+	n, t, err := a.Svc.Stats(r.Context())
+	if err != nil {
+		slog.ErrorContext(r.Context(), "stats failed", "err", err)
+		writeErr(w, http.StatusInternalServerError, "internal")
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]int{"newMembersToday": n, "totalMembers": t})
 }

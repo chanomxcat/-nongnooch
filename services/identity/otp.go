@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"math/big"
 	"net"
+	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -21,10 +22,44 @@ import (
 const (
 	otpTTL         = 5 * time.Minute
 	maxAttempts    = 5
-	resendCooldown = 60 * time.Second
-	perContactHour = 5
-	perIPHour      = 20
 )
+
+// OTPLimits are the resend/hourly OTP request limits (env-configurable, see LoadOTPLimits).
+type OTPLimits struct {
+	Cooldown       time.Duration
+	PerContactHour int
+	PerIPHour      int
+}
+
+// LoadOTPLimits reads OTP_RESEND_COOLDOWN_SECONDS (60), OTP_MAX_PER_CONTACT_PER_HOUR (5) and
+// OTP_MAX_PER_IP_PER_HOUR (20); invalid or non-positive values fall back to the defaults.
+func LoadOTPLimits(getenv func(string) string) OTPLimits {
+	n := func(k string, def int) int {
+		if v, err := strconv.Atoi(getenv(k)); err == nil && v > 0 {
+			return v
+		}
+		return def
+	}
+	return OTPLimits{
+		Cooldown:       time.Duration(n("OTP_RESEND_COOLDOWN_SECONDS", 60)) * time.Second,
+		PerContactHour: n("OTP_MAX_PER_CONTACT_PER_HOUR", 5),
+		PerIPHour:      n("OTP_MAX_PER_IP_PER_HOUR", 20),
+	}
+}
+
+func (l OTPLimits) withDefaults() OTPLimits {
+	d := LoadOTPLimits(func(string) string { return "" })
+	if l.Cooldown <= 0 {
+		l.Cooldown = d.Cooldown
+	}
+	if l.PerContactHour <= 0 {
+		l.PerContactHour = d.PerContactHour
+	}
+	if l.PerIPHour <= 0 {
+		l.PerIPHour = d.PerIPHour
+	}
+	return l
+}
 
 var (
 	ErrOTPInvalid  = errors.New("otp_invalid")
@@ -55,6 +90,7 @@ type OTPService struct {
 	DB       *sql.DB
 	Verifier Verifier
 	Pepper   []byte
+	Limits   OTPLimits // zero fields use the defaults
 	Now      func() time.Time
 }
 
@@ -157,13 +193,14 @@ func ceilSecs(d time.Duration) int {
 }
 
 func (s *OTPService) checkLimits(ctx context.Context, q *sql.Tx, contact string, ip []byte, now time.Time) error {
+	lim := s.Limits.withDefaults()
 	hourAgo := now.Add(-time.Hour)
 	var last sql.NullTime
 	if err := q.QueryRowContext(ctx, `SELECT MAX(created_at) FROM otp_requests WHERE contact = ?`, contact).Scan(&last); err != nil {
 		return err
 	}
 	if last.Valid {
-		if wait := last.Time.Add(resendCooldown).Sub(now); wait > 0 {
+		if wait := last.Time.Add(lim.Cooldown).Sub(now); wait > 0 {
 			return &RateLimitError{RetryAfter: ceilSecs(wait)}
 		}
 	}
@@ -173,14 +210,14 @@ func (s *OTPService) checkLimits(ctx context.Context, q *sql.Tx, contact string,
 		contact, hourAgo).Scan(&cnt, &oldest); err != nil {
 		return err
 	}
-	if cnt >= perContactHour {
+	if cnt >= lim.PerContactHour {
 		return &RateLimitError{RetryAfter: ceilSecs(oldest.Time.Add(time.Hour).Sub(now))}
 	}
 	if err := q.QueryRowContext(ctx, `SELECT COUNT(*), MIN(created_at) FROM otp_requests WHERE ip = ? AND created_at > ?`,
 		ip, hourAgo).Scan(&cnt, &oldest); err != nil {
 		return err
 	}
-	if cnt >= perIPHour {
+	if cnt >= lim.PerIPHour {
 		return &RateLimitError{RetryAfter: ceilSecs(oldest.Time.Add(time.Hour).Sub(now))}
 	}
 	return nil

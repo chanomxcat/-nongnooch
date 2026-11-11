@@ -14,6 +14,7 @@ type API struct {
 	OTP      *OTPService
 	Tokens   *TokenIssuer
 	Members  MemberLookup
+	Staff    *StaffService
 	DemoMode bool
 }
 
@@ -56,6 +57,7 @@ func (a *API) Register(mux *http.ServeMux) {
 	mux.HandleFunc("POST /auth/verify", a.verify)
 	mux.HandleFunc("POST /auth/refresh", a.refresh)
 	mux.HandleFunc("POST /auth/logout", a.logout)
+	mux.HandleFunc("POST /auth/staff/login", a.staffLogin)
 	mux.HandleFunc("GET /.well-known/jwks.json", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "public, max-age=300")
 		writeJSON(w, http.StatusOK, a.Tokens.JWKS())
@@ -65,7 +67,12 @@ func (a *API) Register(mux *http.ServeMux) {
 			http.NotFound(w, r)
 			return
 		}
-		w.WriteHeader(http.StatusNoContent) // identity has nothing to seed
+		if err := a.Staff.Seed(r.Context()); err != nil {
+			slog.ErrorContext(r.Context(), "seed failed", "err", err)
+			writeErr(w, http.StatusInternalServerError, "internal", nil)
+			return
+		}
+		w.WriteHeader(http.StatusNoContent)
 	})
 }
 

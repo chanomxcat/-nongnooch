@@ -102,3 +102,14 @@ func captureLogs(t *testing.T) *syncBuf {
 	t.Cleanup(func() { slog.SetDefault(old) })
 	return buf
 }
+
+// staff sends a request as a staff user with the viewer role.
+func (e *env) staff(method, path string) *httptest.ResponseRecorder {
+	r := httptest.NewRequest(method, path, nil)
+	r.Header.Set("X-User-Type", "staff")
+	r.Header.Set("X-User-Sub", "staff-1")
+	r.Header.Set("X-Roles", "viewer")
+	w := httptest.NewRecorder()
+	e.mux.ServeHTTP(w, r)
+	return w
+}

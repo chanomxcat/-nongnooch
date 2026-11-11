@@ -203,3 +203,17 @@ func (t *TokenIssuer) Logout(ctx context.Context, refresh string) error {
 		t.now(), hashToken(refresh))
 	return err
 }
+
+const staffTTL = 8 * time.Hour
+
+// StaffAccess signs a typ=staff token (8 h, no refresh).
+func (t *TokenIssuer) StaffAccess(id, name string, roles []string) (string, int, error) {
+	now := t.now()
+	tok := jwt.NewWithClaims(jwt.SigningMethodEdDSA, jwt.MapClaims{
+		"typ": "staff", "sub": id, "roles": roles, "name": name,
+		"iss": issuer, "aud": audience, "iat": now.Unix(), "exp": now.Add(staffTTL).Unix(),
+	})
+	tok.Header["kid"] = t.KID()
+	s, err := tok.SignedString(t.Key)
+	return s, int(staffTTL.Seconds()), err
+}

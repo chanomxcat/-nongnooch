@@ -34,6 +34,7 @@ type MemberService struct {
 	Invites       InviteValidator
 	WelcomePoints int
 	InvitePoints  int
+	Now           func() time.Time // test clock; nil = time.Now
 }
 
 type ConsentInput struct{ Terms, PDPA, Marketing bool }

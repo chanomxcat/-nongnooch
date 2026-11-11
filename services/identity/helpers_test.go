@@ -67,7 +67,7 @@ func newEnv(t *testing.T) *env {
 	e.otp = &OTPService{DB: d, Verifier: e.ver, Pepper: []byte("test-pepper"), Now: e.clock.Now}
 	e.tk = &TokenIssuer{DB: d, Key: priv, Members: noMember{}, Now: e.clock.Now}
 	e.mux = http.NewServeMux()
-	(&API{OTP: e.otp, Tokens: e.tk, DemoMode: true}).Register(e.mux)
+	(&API{OTP: e.otp, Tokens: e.tk, Staff: &StaffService{DB: d, Tokens: e.tk, Now: e.clock.Now}, DemoMode: true}).Register(e.mux)
 	return e
 }
 

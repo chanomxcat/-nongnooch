@@ -93,12 +93,14 @@ func run(ctx context.Context, cfg config.Base) error {
 		defer cc.Close()
 		members = l
 	}
+	tokens := &TokenIssuer{DB: d, Key: key, Members: members}
 	api := &API{
-		OTP: &OTPService{DB: d, Pepper: []byte(os.Getenv("OTP_PEPPER")), Verifier: TurnstileVerifier{
+		OTP: &OTPService{DB: d, Pepper: []byte(os.Getenv("OTP_PEPPER")), Limits: LoadOTPLimits(os.Getenv), Verifier: TurnstileVerifier{
 			URL: os.Getenv("TURNSTILE_VERIFY_URL"), Secret: os.Getenv("TURNSTILE_SECRET"),
 			Client: &http.Client{Timeout: 3 * time.Second},
 		}},
-		Tokens:   &TokenIssuer{DB: d, Key: key, Members: members},
+		Tokens:   tokens,
+		Staff:    &StaffService{DB: d, Tokens: tokens},
 		Members:  members,
 		DemoMode: os.Getenv("DEMO_MODE") == "true",
 	}
