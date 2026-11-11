@@ -210,6 +210,15 @@ services:
       gateway: {condition: service_started}
     mem_limit: 256m
 
+  app:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.app
+      args: {API_BASE: "http://localhost:8000", WEB_BASE: "http://localhost:3000", MOCKEXT_BASE: "http://localhost:8090", DEMO: "true"}
+    image: nongnooch/app:dev
+    ports: ["127.0.0.1:3002:80"]
+    mem_limit: 64m
+
   node:
     image: node:20-bookworm
     profiles: [tools]
@@ -237,6 +246,16 @@ services:
       admin: {condition: service_started}
       mockext: {condition: service_healthy}
 
+  flutter:
+    image: ghcr.io/cirruslabs/flutter:3.24.0
+    profiles: [tools]
+    working_dir: /src/apps/mobile
+    environment:
+      PUB_CACHE: /pub-cache
+    volumes:
+      - .:/src
+      - pubcache:/pub-cache
+
   gotest:
     image: golang:1.23-bookworm
     profiles: [tools]
@@ -253,6 +272,7 @@ services:
       nats: {condition: service_healthy}
 
 volumes:
+  pubcache:
   mariadb-data:
   nats-data:
   gomod:
