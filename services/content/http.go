@@ -4,11 +4,13 @@ import (
 	"context"
 	"database/sql"
 	_ "embed"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"log/slog"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"nongnooch/platform/pkg/chassis/authn"
@@ -52,8 +54,7 @@ func decode(w http.ResponseWriter, r *http.Request, v any) bool {
 func (a *API) Register(mux *http.ServeMux) {
 	staff := authn.Require("staff")
 	edit := authn.RequireRole("editor", "admin")
-	decide := authn.RequireRole("approver", "admin")
-	h := func(fn http.HandlerFunc) http.Handler { return fn }
+	h := func(fn http.HandlerFunc) http.Handler { return a.names(fn) }
 
 	mux.HandleFunc("GET /public/items", a.publicItems)
 	mux.HandleFunc("GET /public/preview/{token}", a.publicPreview)
@@ -66,8 +67,9 @@ func (a *API) Register(mux *http.ServeMux) {
 	mux.Handle("POST /admin/items/{id}/preview", edit(h(a.preview)))
 	mux.Handle("POST /admin/items/{id}/submit", edit(h(a.submit)))
 	mux.Handle("GET /admin/approvals", staff(h(a.approvals)))
-	mux.Handle("POST /admin/approvals/{id}/approve", decide(h(a.approve)))
-	mux.Handle("POST /admin/approvals/{id}/reject", decide(h(a.reject)))
+	// Decide checks four-eyes first, then the approver/admin role.
+	mux.Handle("POST /admin/approvals/{id}/approve", staff(h(a.approve)))
+	mux.Handle("POST /admin/approvals/{id}/reject", staff(h(a.reject)))
 	mux.Handle("GET /admin/audit", staff(h(a.audit)))
 	mux.HandleFunc("POST /internal/seed", a.seed)
 }
@@ -115,7 +117,7 @@ func (a *API) getItem(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, err)
 		return
 	}
-	writeJSON(w, 200, d)
+	writeJSON(w, 200, map[string]any{"id": d.ID, "type": d.Type, "published": d.Published, "draft": d.Draft, "lastDecision": d.LastDecision, "names": a.Svc.Names(r.Context())})
 }
 
 func (a *API) createItem(w http.ResponseWriter, r *http.Request) {
@@ -168,7 +170,7 @@ func (a *API) approvals(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, err)
 		return
 	}
-	writeJSON(w, 200, map[string]any{"items": list})
+	writeJSON(w, 200, map[string]any{"items": list, "names": a.Svc.Names(r.Context())})
 }
 
 func (a *API) approve(w http.ResponseWriter, r *http.Request) {
@@ -204,7 +206,29 @@ func (a *API) audit(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, err)
 		return
 	}
-	writeJSON(w, 200, map[string]any{"items": rows, "nextCursor": next})
+	writeJSON(w, 200, map[string]any{"items": rows, "nextCursor": next, "names": a.Svc.Names(r.Context())})
+}
+
+// names records the caller's display name on writes. The gateway has already verified the bearer
+// token and set X-User-Sub from it, so reading the payload's "name" here is safe.
+func (a *API) names(next http.HandlerFunc) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		p := authn.From(r.Context())
+		if p.Sub == "" {
+			p = authn.FromHeaders(r.Header)
+		}
+		if r.Method != http.MethodGet && p.Type == "staff" {
+			if tok, ok := strings.CutPrefix(r.Header.Get("Authorization"), "Bearer "); ok {
+				if parts := strings.Split(tok, "."); len(parts) == 3 {
+					var c struct{ Sub, Name string }
+					if b, err := base64.RawURLEncoding.DecodeString(parts[1]); err == nil && json.Unmarshal(b, &c) == nil && c.Sub == p.Sub {
+						a.Svc.RememberName(r.Context(), c.Sub, c.Name)
+					}
+				}
+			}
+		}
+		next(w, r)
+	})
 }
 
 //go:embed seed.json

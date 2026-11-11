@@ -75,16 +75,18 @@ func TestFourEyes(t *testing.T) {
 		t.Fatal(err)
 	}
 	wantCode(t, s.Decide(ctx, admin, aid, true, ""), "four_eyes_violation")
+	other := authn.Principal{Type: "staff", Sub: "u-editor2", Roles: []string{"editor"}}
+	wantCode(t, s.Decide(ctx, other, aid, true, ""), "forbidden")
 	if err := s.Decide(ctx, approver, aid, true, ""); err != nil {
 		t.Fatal(err)
 	}
 
-	// Over HTTP: 403 four_eyes_violation.
+	// Over HTTP: a plain editor approving their own change gets 403 four_eyes_violation (not forbidden).
 	_, aid2 := pending(t, s, ctx)
 	mux := http.NewServeMux()
 	(&API{Svc: s}).Register(mux)
 	req := httptest.NewRequest("POST", "/admin/approvals/"+aid2+"/approve", nil)
-	req.Header = authn.Principal{Type: "staff", Sub: editor.Sub, Roles: []string{"editor", "approver"}}.Headers()
+	req.Header = editor.Headers()
 	w := httptest.NewRecorder()
 	mux.ServeHTTP(w, req)
 	if w.Code != 403 || !strings.Contains(w.Body.String(), "four_eyes_violation") {

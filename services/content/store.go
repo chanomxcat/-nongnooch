@@ -40,6 +40,7 @@ var (
 	errFourEyes       = apiErr(403, "four_eyes_violation")
 	errReasonRequired = apiErr(400, "reason_required")
 	errPreviewExpired = apiErr(404, "preview_expired")
+	errForbidden      = apiErr(403, "forbidden")
 )
 
 const previewTTL = 30 * time.Minute
@@ -507,6 +508,10 @@ func (s *Svc) Decide(ctx context.Context, p authn.Principal, aid string, approve
 		if s.FourEyes && slices.Contains(a.Editors, p.Sub) {
 			return errFourEyes
 		}
+		// Role is checked after four-eyes so an editor trying to approve their own change sees why.
+		if !p.HasAnyRole("approver", "admin") {
+			return errForbidden
+		}
 		status := map[bool]string{true: "approved", false: "rejected"}[approve]
 		now := s.now()
 		res, err := tx.ExecContext(ctx, `UPDATE approval_requests SET status = ?, decided_by = ?, decided_at = ?, updated_at = ?, reason = ? WHERE id = ? AND status = 'pending'`,
@@ -600,4 +605,29 @@ FROM audit_log WHERE `+strings.Join(where, " AND ")+` ORDER BY id DESC LIMIT ?`,
 		next = out[limit-1].ID
 	}
 	return out, next, rows.Err()
+}
+
+// RememberName stores the display name of a staff caller (from the gateway-verified JWT).
+func (s *Svc) RememberName(ctx context.Context, sub, name string) {
+	if sub == "" || name == "" {
+		return
+	}
+	_, _ = s.DB.ExecContext(ctx, `INSERT INTO staff_names(sub, name) VALUES(?,?) ON DUPLICATE KEY UPDATE name = VALUES(name)`, sub, name)
+}
+
+// Names maps staff sub -> display name (demo scale: the whole table).
+func (s *Svc) Names(ctx context.Context) map[string]string {
+	out := map[string]string{}
+	rows, err := s.DB.QueryContext(ctx, `SELECT sub, name FROM staff_names`)
+	if err != nil {
+		return out
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var k, v string
+		if rows.Scan(&k, &v) == nil {
+			out[k] = v
+		}
+	}
+	return out
 }
