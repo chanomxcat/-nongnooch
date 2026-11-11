@@ -20,8 +20,8 @@ import (
 )
 
 const (
-	otpTTL         = 5 * time.Minute
-	maxAttempts    = 5
+	otpTTL      = 5 * time.Minute
+	maxAttempts = 5
 )
 
 // OTPLimits are the resend/hourly OTP request limits (env-configurable, see LoadOTPLimits).

@@ -4,6 +4,7 @@ package main
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 	"time"
 )
@@ -134,5 +135,34 @@ func TestOTPRelaxedLimitsAllowRapidRequests(t *testing.T) {
 		if w := e.post("/auth/otp", "10.0.0.1", map[string]string{"phone": "0812345678", "lang": "th", "turnstileToken": "x"}); w.Code != 202 {
 			t.Fatalf("req %d: %d", i, w.Code)
 		}
+	}
+}
+
+func TestStaffLoginOversizedEmailIs401(t *testing.T) {
+	e := newEnv(t)
+	long := strings.Repeat("a", 300) + "@demo.nongnooch.local"
+	if w := e.post("/auth/staff/login", "", map[string]string{"email": long, "password": "x"}); w.Code != 401 || !contains(w.Body.String(), "invalid_credentials") {
+		t.Fatalf("%d %s", w.Code, w.Body)
+	}
+	if w := e.post("/auth/staff/login", "", map[string]string{"email": "not-an-email", "password": "x"}); w.Code != 401 {
+		t.Fatalf("malformed: %d", w.Code)
+	}
+}
+
+func TestStaffLoginFailsPurgedAfterWindow(t *testing.T) {
+	e := newEnv(t)
+	for i := 0; i < 5; i++ {
+		e.post("/auth/staff/login", "", map[string]string{"email": "u" + string(rune('a'+i)) + "@x.io", "password": "x"})
+	}
+	var n int
+	e.d.QueryRow(`SELECT COUNT(*) FROM staff_login_fails`).Scan(&n)
+	if n != 5 {
+		t.Fatalf("rows %d", n)
+	}
+	e.clock.Advance(16 * time.Minute)
+	e.post("/auth/staff/login", "", map[string]string{"email": "z@x.io", "password": "x"})
+	e.d.QueryRow(`SELECT COUNT(*) FROM staff_login_fails`).Scan(&n)
+	if n != 1 {
+		t.Fatalf("rows after window %d", n)
 	}
 }

@@ -45,6 +45,11 @@ func (s *StaffService) now() time.Time {
 func (s *StaffService) Login(ctx context.Context, email, password string) (string, int, error) {
 	email = strings.ToLower(strings.TrimSpace(email))
 	now := s.now()
+	if email == "" || len(email) > 254 || len(password) > 72 || !strings.Contains(email, "@") {
+		// Malformed or oversized input never reaches the DB (bcrypt also caps at 72 bytes).
+		_ = bcrypt.CompareHashAndPassword(dummyHash, []byte("x"))
+		return "", 0, ErrInvalidCredentials
+	}
 	var fails int
 	var oldest sql.NullTime
 	if err := s.DB.QueryRowContext(ctx, `SELECT COUNT(*), MIN(created_at) FROM staff_login_fails WHERE email = ? AND created_at > ?`,
@@ -75,6 +80,10 @@ func (s *StaffService) Login(ctx context.Context, email, password string) (strin
 }
 
 func (s *StaffService) fail(ctx context.Context, email string, now time.Time) error {
+	// Keep the table bounded: rows older than the window no longer count.
+	if _, err := s.DB.ExecContext(ctx, `DELETE FROM staff_login_fails WHERE created_at < ?`, now.Add(-staffFailWindow)); err != nil {
+		return err
+	}
 	if _, err := s.DB.ExecContext(ctx, `INSERT INTO staff_login_fails(email, created_at) VALUES(?,?)`, email, now); err != nil {
 		return err
 	}
