@@ -4,6 +4,7 @@ WORKDIR /src
 COPY package.json package-lock.json ./
 COPY packages/tokens/package.json packages/tokens/
 COPY apps/web/package.json apps/web/
+COPY apps/admin/package.json apps/admin/
 RUN npm ci --no-audit --no-fund
 
 FROM deps AS build

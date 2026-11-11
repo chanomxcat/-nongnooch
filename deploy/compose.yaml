@@ -196,6 +196,20 @@ services:
       gateway: {condition: service_started}
     mem_limit: 256m
 
+  admin:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.web
+      args: {APP: admin}
+    image: nongnooch/admin:dev
+    ports: ["3001:3000"]
+    environment:
+      GATEWAY_URL: http://gateway:8080
+      SITE_URL: http://localhost:3001
+    depends_on:
+      gateway: {condition: service_started}
+    mem_limit: 256m
+
   node:
     image: node:20-bookworm
     profiles: [tools]
