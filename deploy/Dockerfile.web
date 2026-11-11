@@ -9,7 +9,10 @@ RUN npm ci --no-audit --no-fund
 
 FROM deps AS build
 ARG APP=web
-ENV NEXT_TELEMETRY_DISABLED=1
+# NEXT_PUBLIC_* are inlined at build time (compose passes the demo values as build args).
+ARG NEXT_PUBLIC_DEMO_TOOLS=false
+ARG NEXT_PUBLIC_TURNSTILE_MODE=mock
+ENV NEXT_TELEMETRY_DISABLED=1 NEXT_PUBLIC_DEMO_TOOLS=${NEXT_PUBLIC_DEMO_TOOLS} NEXT_PUBLIC_TURNSTILE_MODE=${NEXT_PUBLIC_TURNSTILE_MODE}
 COPY packages/tokens packages/tokens
 COPY apps/${APP} apps/${APP}
 RUN npm run build -w @nn/tokens && npm run build -w apps/${APP}

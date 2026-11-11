@@ -183,7 +183,7 @@ services:
     build:
       context: .
       dockerfile: deploy/Dockerfile.web
-      args: {APP: web}
+      args: {APP: web, NEXT_PUBLIC_DEMO_TOOLS: "true", NEXT_PUBLIC_TURNSTILE_MODE: mock}
     image: nongnooch/web:dev
     ports: ["3000:3000"]
     environment:

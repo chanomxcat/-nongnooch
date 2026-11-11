@@ -1,11 +1,37 @@
 'use client';
 
+import { useState } from 'react';
 import { Icon } from '@/components/ui/Icon';
 import { useI18n } from '@/components/providers/Providers';
 import type { Ticket } from '@/lib/api/client';
 import { formatVisitDate, maskId } from '@/lib/format';
 import { QrCode } from './QrCode';
 import s from './account.module.css';
+
+const DEMO_TOOLS = process.env.NEXT_PUBLIC_DEMO_TOOLS === 'true';
+
+/** Demo only: copies the QR string so the staff gate page (paste field) can be shown on a laptop without a second camera. */
+function CopyQr({ qr }: { qr: string }) {
+  const [done, setDone] = useState(false);
+  return (
+    <button
+      type="button"
+      className="nn-btn nn-btn--block"
+      data-copy-qr
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(qr);
+          setDone(true);
+          setTimeout(() => setDone(false), 2000);
+        } catch {
+          window.prompt('Copy QR', qr);
+        }
+      }}
+    >
+      {done ? 'คัดลอกแล้ว · Copied' : 'คัดลอกรหัส QR (เดโม) · Copy QR (demo)'}
+    </button>
+  );
+}
 
 export function TicketCard({ ticket }: { ticket: Ticket }) {
   const { t, locale } = useI18n();
@@ -43,6 +69,7 @@ export function TicketCard({ ticket }: { ticket: Ticket }) {
           </div>
         </dl>
         <span className={s.ticketId}>{ticket.ticketId}</span>
+        {DEMO_TOOLS && ticket.qr && <CopyQr qr={ticket.qr} />}
       </div>
     </li>
   );
