@@ -66,6 +66,10 @@ services:
       TURNSTILE_VERIFY_URL: http://mockext:8090/turnstile/v0/siteverify
       TURNSTILE_SECRET: demo-turnstile-secret
       OTP_PEPPER: demo-otp-pepper-change-me
+      # Relaxed demo OTP limits (prod defaults: 60 / 5 / 20).
+      OTP_RESEND_COOLDOWN_SECONDS: "10"
+      OTP_MAX_PER_CONTACT_PER_HOUR: "100"
+      OTP_MAX_PER_IP_PER_HOUR: "1000"
       MEMBER_GRPC_ADDR: member:9090
       # DEMO ONLY Ed25519 key (public repo, not a secret). Real envs inject via secret manager.
       JWT_ED25519_KEY: |
