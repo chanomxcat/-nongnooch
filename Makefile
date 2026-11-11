@@ -65,7 +65,7 @@ e2e:
 # ---- Demo ----
 .PHONY: seed demo-reset
 
-# Service seeds (identity -> member -> commerce -> ticket -> notify) + today's demo history
+# Service seeds (identity -> member -> commerce -> ticket -> notify -> content) + today's demo history
 # (orders / tickets / scans via the real APIs). Runs on the compose network; idempotent.
 seed:
 	$(COMPOSE) run --rm --no-deps node node deploy/seed/seed.mjs $(SEED_ARGS)

@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 
 const GW = process.env.GATEWAY_URL ?? 'http://gateway:8080';
 const MOCK = process.env.MOCKEXT_URL ?? 'http://mockext:8090';
-const SERVICES = ['identity', 'member', 'commerce', 'ticket', 'notify'];
+const SERVICES = ['identity', 'member', 'commerce', 'ticket', 'notify', 'content'];
 const fx = JSON.parse(readFileSync(new URL('./fixtures.json', import.meta.url), 'utf8'));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const log = (...a) => console.log('[seed]', ...a);

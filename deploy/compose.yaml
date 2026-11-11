@@ -179,6 +179,23 @@ services:
       mockext: {condition: service_healthy}
     mem_limit: 96m
 
+  content:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.go
+      args: {SVC: content}
+    image: nongnooch/content:dev
+    environment:
+      DB_DSN: content:content@tcp(mariadb:3306)/content?parseTime=true
+      NATS_URL: nats://nats:4222
+      DEMO_MODE: "true"
+      APPROVAL_FOUR_EYES: "true"
+      SITE_URL: http://localhost:3000
+    depends_on:
+      mariadb: {condition: service_healthy}
+      nats: {condition: service_healthy}
+    mem_limit: 96m
+
   web:
     build:
       context: .
@@ -194,6 +211,7 @@ services:
       NEXT_PUBLIC_DEMO_TOOLS: "true"
     depends_on:
       gateway: {condition: service_started}
+      content: {condition: service_started}
     mem_limit: 256m
 
   admin:
