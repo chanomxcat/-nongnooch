@@ -1,0 +1,24 @@
+{
+  "_comment": "Demo history created by deploy/seed/seed.mjs through the real APIs (OTP login, orders, mock KBank payment, gate scans). Visit date = today (Asia/Bangkok). Prices are demo prices.",
+  "newMembers": [
+    { "phone": "+66891110001", "firstName": "มานี", "lastName": "มีสุข", "nationality": "TH", "idPrefix": "310050012345", "inviteCode": "DEMOGUIDE1", "lang": "th" },
+    { "phone": "+66891110002", "firstName": "Emma", "lastName": "Smith", "nationality": "GB", "idNumber": "GB5550123", "passportCountry": "GB", "lang": "en" },
+    { "phone": "+66891110003", "firstName": "ปิติ", "lastName": "รักเรียน", "nationality": "TH", "idPrefix": "520010098765", "lang": "th" }
+  ],
+  "orders": [
+    { "buyer": "+66811111111", "items": [["day-adult", "thai", "me"], ["day-adult", "foreign", "Li Na/CN/4411"], ["day-child", "foreign", "Li Xiao/CN/4412"]] },
+    { "buyer": "+8613800138000", "items": [["day-adult", "foreign", "me"], ["day-adult", "foreign", "Zhang Min/CN/2201"]] },
+    { "buyer": "+66891110001", "items": [["day-adult", "thai", "me"], ["day-child", "foreign", "Tom Brown/US/7788"], ["day-adult", "foreign", "Anna Brown/US/7789"]] },
+    { "buyer": "+66891110002", "items": [["day-adult", "foreign", "me"], ["day-adult", "foreign", "James Smith/GB/1209"]] },
+    { "buyer": "+66891110003", "items": [["day-adult", "thai", "me"], ["day-adult", "foreign", "Kenji Sato/JP/3030"], ["day-child", "foreign", "Yui Sato/JP/3031"]] },
+    { "buyer": "+66811111111", "items": [["annual", "thai", "me"], ["day-adult", "foreign", "Park Jisoo/KR/5150"]] },
+    { "buyer": "+8613800138000", "items": [["day-adult", "foreign", "Wang Fang/CN/8080"], ["day-adult", "foreign", "Wang Lei/CN/8081"], ["day-child", "foreign", "Wang Hao/CN/8082"]] },
+    { "buyer": "+66891110001", "items": [["day-adult", "foreign", "Lukas Meyer/DE/6061"], ["day-adult", "foreign", "Mia Meyer/DE/6062"]] },
+    { "buyer": "+66891110002", "items": [["day-adult", "foreign", "Chloe Martin/FR/9001"], ["day-adult", "foreign", "Hugo Martin/FR/9002"], ["day-child", "foreign", "Lea Martin/FR/9003"]] },
+    { "buyer": "+66891110003", "items": [["day-adult", "foreign", "Ivan Petrov/RU/1717"], ["day-adult", "foreign", "Olga Petrova/RU/1718"]] },
+    { "buyer": "+66811111111", "items": [["day-adult", "foreign", "Nguyen An/VN/2323"], ["day-adult", "foreign", "Tran Binh/VN/2324"], ["day-child", "foreign", "Nguyen Chi/VN/2325"]] },
+    { "buyer": "+8613800138000", "items": [["day-adult", "foreign", "Liu Yang/CN/6464"], ["annual", "foreign", "me"]] }
+  ],
+  "scans": 8,
+  "gateId": "GATE-A1"
+}

@@ -26,3 +26,9 @@ Thumbs.db
 # large slide history: keep only the latest deck (v9)
 roadmap/Nongnooch_Roadmap_v[3-8].pptx
 roadmap/roadmap.pptx
+
+# test / tool output
+.playwright-mcp/
+*.tsbuildinfo
+test-results/
+playwright-report/

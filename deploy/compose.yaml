@@ -225,14 +225,17 @@ services:
     image: mcr.microsoft.com/playwright:v1.48.2-jammy
     profiles: [e2e]
     working_dir: /src
+    # Browser uses http://localhost:3000/3001/8090 like the host (TCP proxy, deploy/e2e/localhost-proxy.mjs).
     environment:
-      BASE_URL: http://web:3000
       MOCKEXT_URL: http://mockext:8090
+      GATEWAY_URL: http://gateway:8080
     volumes:
       - .:/src
       - nodemods:/src/node_modules
     depends_on:
       web: {condition: service_started}
+      admin: {condition: service_started}
+      mockext: {condition: service_healthy}
 
   gotest:
     image: golang:1.23-bookworm

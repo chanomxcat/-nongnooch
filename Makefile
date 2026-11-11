@@ -61,3 +61,23 @@ build-web:
 
 e2e:
 	$(COMPOSE) --profile e2e run --rm -w /src/apps/$(APP) playwright npx playwright test $(SPEC)
+
+# ---- Demo ----
+.PHONY: seed demo-reset
+
+# Service seeds (identity -> member -> commerce -> ticket -> notify) + today's demo history
+# (orders / tickets / scans via the real APIs). Runs on the compose network; idempotent.
+seed:
+	$(COMPOSE) run --rm --no-deps node node deploy/seed/seed.mjs $(SEED_ARGS)
+
+# Wipes demo data (MariaDB + NATS volumes, mockext memory), rebuilds, starts and seeds.
+# Tool caches (node_modules, Go modules) are kept.
+demo-reset:
+ifneq ($(CONFIRM),yes)
+	@echo "Refusing: demo-reset deletes all demo data. Run: make demo-reset CONFIRM=yes"; exit 1
+else
+	$(COMPOSE) --profile e2e --profile tools down --remove-orphans
+	-docker volume rm nongnooch_mariadb-data nongnooch_nats-data
+	$(COMPOSE) up -d --build --wait
+	$(MAKE) seed
+endif
