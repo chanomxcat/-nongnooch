@@ -1,0 +1,57 @@
+name: nongnooch
+services:
+  mariadb:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb-buffer-pool-size=128M
+      - --max-connections=200
+      - --performance-schema=OFF
+    ports: ["3306:3306"]
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./deploy/mariadb-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    mem_limit: 400m
+
+  nats:
+    image: nats:2.10-alpine
+    command: ["-js", "-sd", "/data", "-m", "8222"]
+    ports: ["4222:4222"]
+    volumes:
+      - nats-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8222/healthz"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    mem_limit: 128m
+
+  gotest:
+    image: golang:1.23-bookworm
+    profiles: [tools]
+    working_dir: /src
+    volumes:
+      - .:/src
+      - gomod:/go/pkg/mod
+      - gobuild:/root/.cache/go-build
+    environment:
+      TEST_DB_DSN: root:root@tcp(mariadb:3306)/test?parseTime=true&charset=utf8mb4
+      TEST_NATS_URL: nats://nats:4222
+    depends_on:
+      mariadb: {condition: service_healthy}
+      nats: {condition: service_healthy}
+
+volumes:
+  mariadb-data:
+  nats-data:
+  gomod:
+  gobuild:
