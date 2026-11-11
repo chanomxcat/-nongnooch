@@ -53,6 +53,47 @@ services:
       retries: 20
     mem_limit: 64m
 
+  identity:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.go
+      args: {SVC: identity}
+    image: nongnooch/identity:dev
+    environment:
+      DB_DSN: identity:identity@tcp(mariadb:3306)/identity?parseTime=true
+      NATS_URL: nats://nats:4222
+      DEMO_MODE: "true"
+      TURNSTILE_VERIFY_URL: http://mockext:8090/turnstile/v0/siteverify
+      TURNSTILE_SECRET: demo-turnstile-secret
+      OTP_PEPPER: demo-otp-pepper-change-me
+      # DEMO ONLY Ed25519 key (public repo, not a secret). Real envs inject via secret manager.
+      JWT_ED25519_KEY: |
+        -----BEGIN PRIVATE KEY-----
+        MC4CAQAwBQYDK2VwBCIEIAINhylNwNRlBnWSqDUkRkc2+cBIaq6j5JnzmVcimnNM
+        -----END PRIVATE KEY-----
+    depends_on:
+      mariadb: {condition: service_healthy}
+      nats: {condition: service_healthy}
+      mockext: {condition: service_healthy}
+    mem_limit: 96m
+
+  notify:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.go
+      args: {SVC: notify}
+    image: nongnooch/notify:dev
+    environment:
+      DB_DSN: notify:notify@tcp(mariadb:3306)/notify?parseTime=true
+      NATS_URL: nats://nats:4222
+      DEMO_MODE: "true"
+      SMS_BASE_URL: http://mockext:8090/sms
+    depends_on:
+      mariadb: {condition: service_healthy}
+      nats: {condition: service_healthy}
+      mockext: {condition: service_healthy}
+    mem_limit: 96m
+
   gotest:
     image: golang:1.23-bookworm
     profiles: [tools]

@@ -4,8 +4,10 @@ go 1.23
 
 require (
 	github.com/go-sql-driver/mysql v1.8.1
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0
 	github.com/nats-io/nats.go v1.37.0
+	github.com/nyaruka/phonenumbers v1.4.1
 	github.com/pressly/goose/v3 v3.22.1
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.57.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.57.0

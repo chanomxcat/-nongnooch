@@ -1,0 +1,1 @@
+Nong Nooch Tropical Garden: Ihr Bestätigungscode lautet {{.Code}}. Gültig für {{.Minutes}} Minuten. Bitte nicht weitergeben.

@@ -1,0 +1,1 @@
+Nong Nooch Tropical Garden: your verification code is {{.Code}}. Valid for {{.Minutes}} minutes. Do not share it.
