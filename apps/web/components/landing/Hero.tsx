@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@/components/ui/Icon';
 import { useI18n } from '@/components/providers/Providers';
 import { formatNumber } from '@/lib/format';
+import { str, type ContentItem } from '@/lib/content';
 import s from './landing.module.css';
 
 const ACTIVITIES = [
@@ -23,15 +24,27 @@ const STATS = [
   { value: 12000, key: 'species', suffix: '+' },
 ] as const;
 
-export function Hero() {
+type Card = { key: string; img: string; title: string; tag: string };
+
+/** `slides` come from the CMS (hero_slide: first = headline, rest = activity cards); the i18n texts are the fallback. */
+export function Hero({ slides }: { slides?: ContentItem[] | null }) {
   const { t, locale } = useI18n();
   const [active, setActive] = useState(0);
   const track = useRef<HTMLUListElement>(null);
-  const a = ACTIVITIES[active];
+  const head = slides?.[0];
+  const cards: Card[] =
+    slides && slides.length > 1
+      ? slides.slice(1).map((sl) => ({ key: sl.id, img: str(sl.attrs.imageUrl) || '/images/hero.webp', title: sl.texts.title ?? '', tag: sl.texts.subtitle ?? '' }))
+      : ACTIVITIES.map((act) => ({ key: act.key, img: act.img, title: t(`activities.${act.key}.title`), tag: t(`activities.${act.key}.tag`) }));
+  const a = cards[active] ?? cards[0];
+  const headTitle = head?.texts.title || t('hero.title');
+  const headSub = head ? head.texts.subtitle ?? '' : t('hero.subtitle');
+  const href = str(head?.attrs.ctaHref) || '/checkout';
+  const ctaHref = href.startsWith('/') ? `/${locale}${href}` : href;
 
   // Motion F: arrows move one card; the track itself scrolls / snaps (drag & swipe on touch).
   function go(i: number) {
-    const n = (i + ACTIVITIES.length) % ACTIVITIES.length;
+    const n = (i + cards.length) % cards.length;
     setActive(n);
     const card = track.current?.children[n] as HTMLElement | undefined;
     if (card && track.current) {
@@ -42,7 +55,7 @@ export function Hero() {
 
   return (
     <section className={s.hero} aria-labelledby="hero-title">
-      <Image src="/images/hero.webp" alt="" fill priority sizes="100vw" className={s.heroBg} />
+      <Image src={str(head?.attrs.imageUrl) || '/images/hero.webp'} alt="" fill priority sizes="100vw" className={s.heroBg} />
       <div className={s.heroShade} aria-hidden="true" />
 
       <div className={`nn-container ${s.heroInner}`}>
@@ -53,17 +66,17 @@ export function Hero() {
           </span>
           <div className={s.rise} style={{ animationDelay: '90ms' }} key={a.key} aria-live="polite">
             <h1 id="hero-title" className={s.heroTitle}>
-              {active === 0 ? t('hero.title') : t(`activities.${a.key}.title`)}
+              {active === 0 ? headTitle : a.title}
             </h1>
-            <p className={s.heroSubtitle}>{active === 0 ? t('hero.subtitle') : t(`activities.${a.key}.tag`)}</p>
+            <p className={s.heroSubtitle}>{active === 0 ? headSub : a.tag}</p>
           </div>
           <p className={`${s.heroBody} ${s.rise}`} style={{ animationDelay: '180ms' }}>
             {t('hero.body')}
           </p>
           <div className={`${s.heroCtas} ${s.rise}`} style={{ animationDelay: '270ms' }}>
-            <Link href={`/${locale}/checkout`} className="nn-btn nn-btn--gold">
+            <Link href={ctaHref} className="nn-btn nn-btn--gold">
               <Icon name="ticket" size={20} />
-              {t('hero.ctaTickets')}
+              {head?.texts.ctaLabel || t('hero.ctaTickets')}
             </Link>
             <a href="#activities" className="nn-btn nn-btn--outline-light">
               {t('hero.cta')}
@@ -80,7 +93,7 @@ export function Hero() {
         <div className={s.heroCards} id="activities">
           <h2 className="nn-sr-only">{t('hero.activitiesLabel')}</h2>
           <ul className={s.cardTrack} ref={track}>
-            {ACTIVITIES.map((act, i) => (
+            {cards.map((act, i) => (
               <li key={act.key}>
                 <button
                   type="button"
@@ -92,8 +105,8 @@ export function Hero() {
                   <span className={s.actShade} aria-hidden="true" />
                   <span className={s.actInfo}>
                     <span className={s.actNum}>{String(i + 1).padStart(2, '0')}</span>
-                    <span className={s.actTitle}>{t(`activities.${act.key}.title`)}</span>
-                    <span className={s.actTag}>{t(`activities.${act.key}.tag`)}</span>
+                    <span className={s.actTitle}>{act.title}</span>
+                    <span className={s.actTag}>{act.tag}</span>
                   </span>
                 </button>
               </li>
@@ -106,9 +119,9 @@ export function Hero() {
             <button type="button" className={`${s.arrowBtn} ${s.arrowGold}`} onClick={() => go(active + 1)} aria-label={t('hero.next')}>
               <Icon name="arrowR" size={20} />
             </button>
-            <span className={s.counter}>{t('hero.counter', { current: String(active + 1).padStart(2, '0'), total: '06' })}</span>
+            <span className={s.counter}>{t('hero.counter', { current: String(active + 1).padStart(2, '0'), total: String(cards.length).padStart(2, '0') })}</span>
             <span className={s.progressTrack} aria-hidden="true">
-              <span className={s.progressFill} style={{ transform: `scaleX(${(active + 1) / ACTIVITIES.length})` }} />
+              <span className={s.progressFill} style={{ transform: `scaleX(${(active + 1) / cards.length})` }} />
             </span>
           </div>
         </div>

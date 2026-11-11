@@ -982,3 +982,102 @@
     transform: none;
   }
 }
+
+/* ================= CMS: preview banner, today's shows, FAQ ================= */
+.previewBanner {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-8) var(--spacing-16);
+  background: var(--color-gold-500);
+  color: var(--color-green-950);
+  font-size: var(--type-label-1);
+  font-weight: 600;
+  text-align: center;
+}
+.cmsSection {
+  padding: var(--spacing-64) 0;
+}
+.showGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-24);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.showCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-xlarge);
+  background: var(--color-surface-default);
+  box-shadow: var(--elevation-2);
+}
+.showImg {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+.showImg img {
+  object-fit: cover;
+}
+.showBody {
+  display: grid;
+  gap: var(--spacing-8);
+  padding: var(--spacing-20) var(--spacing-24) var(--spacing-24);
+}
+.showName {
+  color: var(--color-text-brand);
+  font-size: var(--type-h6);
+  font-weight: 700;
+}
+.showVenue {
+  color: var(--color-brand-secondary-hover);
+  font-size: var(--type-label-1);
+  font-weight: 600;
+}
+.showDesc {
+  color: var(--color-text-subtle);
+  font-size: var(--type-body-3);
+}
+.showTimes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+  margin: var(--spacing-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.showTimes li {
+  padding: var(--spacing-4) var(--spacing-12);
+  border-radius: var(--radius-full);
+  background: var(--color-brand-primary-subtle);
+  color: var(--color-text-brand);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.faqList {
+  display: grid;
+  gap: var(--spacing-12);
+  max-width: 800px;
+  margin: 0 auto;
+}
+.faqItem {
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--radius-large);
+  background: var(--color-surface-default);
+  padding: var(--spacing-16) var(--spacing-20);
+}
+.faqItem summary {
+  cursor: pointer;
+  color: var(--color-text-brand);
+  font-weight: 600;
+}
+.faqItem p {
+  margin-top: var(--spacing-8);
+  color: var(--color-text-subtle);
+}
