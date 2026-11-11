@@ -1,0 +1,322 @@
+{
+ "items": [
+  {
+   "key": "hero-main",
+   "type": "hero_slide",
+   "attrs": {
+    "order": 1,
+    "imageUrl": "/images/hero.webp",
+    "ctaHref": "/checkout"
+   },
+   "texts": {
+    "th": {
+     "title": "สวนสวยระดับโลก",
+     "subtitle": "สวนธีมกว่า 60 โซน",
+     "ctaLabel": "ซื้อบัตร"
+    },
+    "en": {
+     "title": "Beautiful Garden",
+     "subtitle": "60+ themed garden zones",
+     "ctaLabel": "Buy Tickets"
+    },
+    "zh": {
+     "title": "美丽花园",
+     "subtitle": "60 多个主题花园",
+     "ctaLabel": "购买门票"
+    },
+    "ja": {
+     "title": "美しい庭園",
+     "subtitle": "60以上のテーマガーデン",
+     "ctaLabel": "チケット購入"
+    },
+    "ko": {
+     "title": "아름다운 정원",
+     "subtitle": "60개 이상의 테마 정원",
+     "ctaLabel": "티켓 구매"
+    },
+    "de": {
+     "title": "Wunderschöner Garten",
+     "subtitle": "Über 60 Themengärten",
+     "ctaLabel": "Tickets kaufen"
+    },
+    "fr": {
+     "title": "Jardin magnifique",
+     "subtitle": "Plus de 60 jardins thématiques",
+     "ctaLabel": "Acheter des billets"
+    }
+   }
+  },
+  {
+   "key": "hero-garden",
+   "type": "hero_slide",
+   "attrs": {
+    "order": 2,
+    "imageUrl": "/images/act-beautiful-garden.webp",
+    "ctaHref": "/checkout"
+   },
+   "texts": {
+    "th": {
+     "title": "สวนสวยงาม",
+     "subtitle": "สวนธีมกว่า 60 โซน"
+    },
+    "en": {
+     "title": "Beautiful Garden",
+     "subtitle": "60+ themed zones"
+    },
+    "zh": {
+     "title": "美丽花园",
+     "subtitle": "60 多个主题区"
+    }
+   }
+  },
+  {
+   "key": "hero-dino",
+   "type": "hero_slide",
+   "attrs": {
+    "order": 3,
+    "imageUrl": "/images/act-dinosaur-valley.webp",
+    "ctaHref": "/checkout"
+   },
+   "texts": {
+    "th": {
+     "title": "หุบเขาไดโนเสาร์",
+     "subtitle": "ไดโนเสาร์ขนาดเท่าตัวจริง"
+    },
+    "en": {
+     "title": "Valley of the Dinos",
+     "subtitle": "Life-size dinosaurs"
+    },
+    "zh": {
+     "title": "恐龙谷",
+     "subtitle": "真实比例恐龙"
+    }
+   }
+  },
+  {
+   "key": "hero-show",
+   "type": "hero_slide",
+   "attrs": {
+    "order": 4,
+    "imageUrl": "/images/act-thai-cultural-show.webp",
+    "ctaHref": "/checkout"
+   },
+   "texts": {
+    "th": {
+     "title": "การแสดงวัฒนธรรมไทย",
+     "subtitle": "10:30 · 13:30 · 15:30"
+    },
+    "en": {
+     "title": "Thai Cultural Show",
+     "subtitle": "10:30 · 13:30 · 15:30"
+    },
+    "zh": {
+     "title": "泰国文化表演",
+     "subtitle": "10:30 · 13:30 · 15:30"
+    }
+   }
+  },
+  {
+   "key": "hero-sky",
+   "type": "hero_slide",
+   "attrs": {
+    "order": 5,
+    "imageUrl": "/images/act-garden-in-the-sky.webp",
+    "ctaHref": "/checkout"
+   },
+   "texts": {
+    "th": {
+     "title": "สวนลอยฟ้า",
+     "subtitle": "จุดชมวิวพาโนรามา"
+    },
+    "en": {
+     "title": "Garden in the Sky",
+     "subtitle": "Panoramic viewpoint"
+    },
+    "zh": {
+     "title": "空中花园",
+     "subtitle": "全景观景台"
+    }
+   }
+  },
+  {
+   "key": "hero-arapaima",
+   "type": "hero_slide",
+   "attrs": {
+    "order": 6,
+    "imageUrl": "/images/act-arapaima.webp",
+    "ctaHref": "/checkout"
+   },
+   "texts": {
+    "th": {
+     "title": "ให้อาหารปลาช่อนอเมซอน",
+     "subtitle": "ปลายักษ์แห่งแม่น้ำอเมซอน"
+    },
+    "en": {
+     "title": "Arapaima Feeding",
+     "subtitle": "Giant fish of the Amazon"
+    },
+    "zh": {
+     "title": "巨骨舌鱼喂食",
+     "subtitle": "亚马逊巨型鱼类"
+    }
+   }
+  },
+  {
+   "key": "hero-botanical",
+   "type": "hero_slide",
+   "attrs": {
+    "order": 7,
+    "imageUrl": "/images/act-botanical-garden.webp",
+    "ctaHref": "/checkout"
+   },
+   "texts": {
+    "th": {
+     "title": "สวนพฤกษศาสตร์",
+     "subtitle": "พันธุ์ไม้กว่า 12,000 ชนิด"
+    },
+    "en": {
+     "title": "Botanical Garden",
+     "subtitle": "12,000+ species"
+    },
+    "zh": {
+     "title": "植物园",
+     "subtitle": "12,000 多种植物"
+    }
+   }
+  },
+  {
+   "key": "show-thai",
+   "type": "show",
+   "attrs": {
+    "order": 1,
+    "times": [
+     "10:30",
+     "13:30",
+     "15:30"
+    ],
+    "imageUrl": "/images/act-thai-cultural-show.webp"
+   },
+   "texts": {
+    "th": {
+     "name": "การแสดงวัฒนธรรมไทย",
+     "venue": "โรงละครกลางแจ้ง",
+     "description": "ระบำไทย มวยไทย และพิธีโกนจุก ในการแสดง 30 นาที"
+    },
+    "en": {
+     "name": "Thai Cultural Show",
+     "venue": "Open-air Theatre",
+     "description": "Thai dance, Muay Thai and a traditional top-knot ceremony in 30 minutes."
+    },
+    "zh": {
+     "name": "泰国文化表演",
+     "venue": "露天剧场"
+    },
+    "ja": {
+     "name": "タイ文化ショー"
+    }
+   }
+  },
+  {
+   "key": "show-elephant",
+   "type": "show",
+   "attrs": {
+    "order": 2,
+    "times": [
+     "11:00",
+     "14:00"
+    ],
+    "imageUrl": "/images/act-thai-cultural-show.webp"
+   },
+   "texts": {
+    "th": {
+     "name": "การแสดงช้าง",
+     "venue": "ลานแสดงช้าง",
+     "description": "ช้างแสนรู้วาดภาพ เล่นฟุตบอล และเต้นรำ"
+    },
+    "en": {
+     "name": "Elephant Show",
+     "venue": "Elephant Arena",
+     "description": "Clever elephants paint, play football and dance."
+    },
+    "zh": {
+     "name": "大象表演"
+    }
+   }
+  },
+  {
+   "key": "faq-hours",
+   "type": "faq",
+   "attrs": {
+    "order": 1
+   },
+   "texts": {
+    "th": {
+     "question": "สวนเปิดกี่โมง",
+     "answer": "เปิดทุกวัน 08:00–18:00 น. จำหน่ายบัตรถึง 17:00 น."
+    },
+    "en": {
+     "question": "What are the opening hours?",
+     "answer": "Open daily 08:00–18:00. Ticket sales close at 17:00."
+    },
+    "zh": {
+     "question": "开放时间是几点？",
+     "answer": "每天 08:00–18:00 开放，17:00 停止售票。"
+    }
+   }
+  },
+  {
+   "key": "faq-thai-price",
+   "type": "faq",
+   "attrs": {
+    "order": 2
+   },
+   "texts": {
+    "th": {
+     "question": "ซื้อบัตรราคาคนไทยอย่างไร",
+     "answer": "สมัครสมาชิกด้วยเลขบัตรประชาชน แล้วเลือก \"ตัวฉัน\" ตอนซื้อบัตร ระบบจะคิดราคาคนไทยให้อัตโนมัติ"
+    },
+    "en": {
+     "question": "How do I get the Thai price?",
+     "answer": "Register with your Thai ID card number and choose \"Me\" when buying. The Thai price applies automatically."
+    }
+   }
+  },
+  {
+   "key": "faq-gate-qr",
+   "type": "faq",
+   "attrs": {
+    "order": 3
+   },
+   "texts": {
+    "th": {
+     "question": "เข้าประตูอย่างไร",
+     "answer": "เปิดหน้า \"บัตรของฉัน\" แล้วแสดง QR ให้เจ้าหน้าที่สแกนที่ประตู ไม่ต้องพิมพ์บัตร"
+    },
+    "en": {
+     "question": "How do I enter at the gate?",
+     "answer": "Open \"My tickets\" and show the QR code to the gate staff. No printing needed."
+    },
+    "ja": {
+     "question": "ゲートの入り方は？"
+    }
+   }
+  },
+  {
+   "key": "faq-first-aid",
+   "type": "faq",
+   "attrs": {
+    "order": 4
+   },
+   "texts": {
+    "th": {
+     "question": "ฉุกเฉินหรือต้องการปฐมพยาบาล ติดต่อที่ไหน",
+     "answer": "ห้องปฐมพยาบาลอยู่ข้างประตูหลัก หรือแจ้งเจ้าหน้าที่ที่ใกล้ที่สุด โทร 038-238-061"
+    },
+    "en": {
+     "question": "Where do I get first aid or emergency help?",
+     "answer": "The first-aid room is next to the main gate, or ask the nearest staff member. Call 038-238-061."
+    }
+   }
+  }
+ ]
+}
