@@ -84,7 +84,11 @@ class _TicketListState extends State<_TicketList> {
                 ),
               if (v.tickets.isEmpty)
                 Padding(padding: const EdgeInsets.all(32), child: Center(child: Text(l.ticketsEmpty))),
-              for (final t in v.tickets) ...[TicketCard(t), const SizedBox(height: 16)],
+              // Not-used tickets first (the ones a visitor needs at the gate), then used ones.
+              for (final t in [...v.tickets.where((t) => !t.used), ...v.tickets.where((t) => t.used)]) ...[
+                TicketCard(t),
+                const SizedBox(height: 16),
+              ],
             ],
           ),
         );

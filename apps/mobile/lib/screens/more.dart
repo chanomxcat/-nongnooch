@@ -120,7 +120,12 @@ class _PointsState extends State<_Points> {
               child: Column(children: [
                 for (final p in items)
                   ListTile(
-                    title: Text('${p['reason']}'),
+                    title: Text(switch ('${p['reason']}') {
+                      'welcome' => l.pointsWelcome,
+                      'purchase' || 'order' || 'order_paid' => l.pointsPurchase,
+                      'invite' || 'referral' => l.pointsInvite,
+                      final r => r,
+                    }),
                     subtitle: Text(formatBangkok(DateTime.parse(p['createdAt'] as String))),
                     trailing: Text(
                       '${(p['deltaPoints'] as int) > 0 ? '+' : ''}${p['deltaPoints']}',

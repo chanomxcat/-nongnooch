@@ -54,5 +54,9 @@
   "morePointsHistory": "ประวัติพ้อย",
   "moreRedeemSoon": "เปิดแลกพ้อยเร็ว ๆ นี้",
   "moreLanguage": "ภาษา",
-  "moreLogout": "ออกจากระบบ"
+  "moreLogout": "ออกจากระบบ",
+  "pointsWelcome": "โบนัสต้อนรับ",
+  "pointsPurchase": "ซื้อบัตร",
+  "pointsInvite": "ชวนเพื่อน",
+  "homeTicketCount": "{count} ใบ"
 }

@@ -136,7 +136,7 @@ class _MyTicketCard extends StatelessWidget {
                       style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: NnColors.green900)),
                   Text(t.kind == 'annual' ? l.ticketAnnual : l.ticketDay,
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                  Text('${t.visitDate ?? ''} · ${cached!.tickets.length}',
+                  Text([if (t.visitDate != null) t.visitDate!, l.homeTicketCount(cached!.tickets.length)].join(' · '),
                       style: const TextStyle(fontSize: 12, color: NnColors.textSubtle)),
                 ]),
               ),

@@ -13,7 +13,13 @@
   "loginOtpLabel": "6-digit OTP",
   "loginVerify": "Verify",
   "loginOtpSentTo": "We sent a code to {phone}",
-  "@loginOtpSentTo": {"placeholders": {"phone": {"type": "String"}}},
+  "@loginOtpSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
   "loginDemoHint": "Demo mode: the OTP SMS appears at http://localhost:8090",
   "loginInvalidPhone": "Please enter a valid phone number",
   "loginWrongOtp": "Incorrect or expired code",
@@ -50,11 +56,28 @@
   "ticketVisitDate": "Visit date",
   "ticketsEmpty": "No tickets yet",
   "ticketsLastUpdated": "Last updated {time}",
-  "@ticketsLastUpdated": {"placeholders": {"time": {"type": "String"}}},
+  "@ticketsLastUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "moreMember": "Member",
   "morePoints": "My points",
   "morePointsHistory": "Points history",
   "moreRedeemSoon": "Points redemption opens soon",
   "moreLanguage": "Language",
-  "moreLogout": "Log out"
+  "moreLogout": "Log out",
+  "pointsWelcome": "Welcome bonus",
+  "pointsPurchase": "Ticket purchase",
+  "pointsInvite": "Friend invite",
+  "homeTicketCount": "{count} tickets",
+  "@homeTicketCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
