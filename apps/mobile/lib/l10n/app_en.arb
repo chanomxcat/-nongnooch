@@ -1,0 +1,83 @@
+{
+  "@@locale": "en",
+  "appTitle": "Nong Nooch",
+  "tabHome": "Home",
+  "tabExplore": "Explore",
+  "tabBook": "Book",
+  "tabTickets": "Tickets",
+  "tabMore": "More",
+  "loginTitle": "Log in with your phone",
+  "loginPhoneLabel": "Phone number",
+  "loginPhoneHint": "e.g. 0811111111",
+  "loginSendOtp": "Send OTP",
+  "loginOtpLabel": "6-digit OTP",
+  "loginVerify": "Verify",
+  "loginOtpSentTo": "We sent a code to {phone}",
+  "@loginOtpSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "loginDemoHint": "Demo mode: the OTP SMS appears at http://localhost:8090",
+  "loginInvalidPhone": "Please enter a valid phone number",
+  "loginWrongOtp": "Incorrect or expired code",
+  "loginChangePhone": "Change number",
+  "loginRequired": "Log in to see this page",
+  "loginButton": "Log in",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "errorNetwork": "Can't reach the server",
+  "retry": "Retry",
+  "homeMyTicket": "MY TICKET",
+  "homeShowQr": "Show QR",
+  "homeTodayShows": "Today's shows",
+  "homeQuickBook": "Book",
+  "homeQuickTickets": "Tickets",
+  "homeQuickExplore": "FAQ",
+  "homeQuickPoints": "Points",
+  "contentOffline": "Showing offline content",
+  "exploreFaq": "Frequently asked questions",
+  "exploreEmergency": "Emergency numbers",
+  "emergencyMedical": "Medical emergency",
+  "emergencyTouristPolice": "Tourist police",
+  "emergencyPolice": "Police",
+  "bookTitle": "Buy tickets",
+  "bookThaiPrice": "Thai",
+  "bookForeignPrice": "Foreigner",
+  "bookBuy": "Buy tickets",
+  "bookThaiNote": "Thai price requires a verified Thai ID.",
+  "ticketsTitle": "My tickets",
+  "ticketUsed": "Used",
+  "ticketUnused": "Not used",
+  "ticketDay": "Day pass",
+  "ticketAnnual": "Annual pass",
+  "ticketHolder": "Holder",
+  "ticketVisitDate": "Visit date",
+  "ticketsEmpty": "No tickets yet",
+  "ticketsLastUpdated": "Last updated {time}",
+  "@ticketsLastUpdated": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "moreMember": "Member",
+  "morePoints": "My points",
+  "morePointsHistory": "Points history",
+  "moreRedeemSoon": "Points redemption opens soon",
+  "moreLanguage": "Language",
+  "moreLogout": "Log out",
+  "pointsWelcome": "Welcome bonus",
+  "pointsPurchase": "Ticket purchase",
+  "pointsInvite": "Friend invite",
+  "homeTicketCount": "{count} tickets",
+  "@homeTicketCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

@@ -81,3 +81,21 @@ else
 	$(COMPOSE) up -d --build --wait
 	$(MAKE) seed
 endif
+
+# ---- Tourist App (Flutter web) — Flutter runs only in Docker (the `flutter` tools service) ----
+.PHONY: app-test app-build app-up app-e2e
+FLUTTER = $(COMPOSE) run --rm --no-deps flutter
+
+app-test:
+	$(FLUTTER) sh -c "flutter pub get && flutter analyze --no-fatal-infos && flutter test"
+
+app-build:
+	$(COMPOSE) build app
+
+# Starts only the app container (does not touch the other services).
+app-up:
+	$(COMPOSE) up -d --build --no-deps app
+
+# Mobile e2e against the running stack (app + gateway + mockext). Does not run web/admin specs.
+app-e2e:
+	$(COMPOSE) --profile e2e run --rm --no-deps -w /src/apps/mobile/e2e playwright npx playwright test $(SPEC)

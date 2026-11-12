@@ -1,0 +1,13 @@
+{
+  "@@locale": "zh",
+  "appTitle": "东芭乐园",
+  "tabHome": "首页",
+  "tabExplore": "探索",
+  "tabBook": "购票",
+  "tabTickets": "门票",
+  "tabMore": "更多",
+  "ticketUsed": "已使用",
+  "ticketUnused": "未使用",
+  "moreLanguage": "语言",
+  "moreLogout": "退出登录"
+}
