@@ -15,9 +15,9 @@ const type = async (page: Page, label: string, value: string) => {
   await expect(input).toHaveValue(value);
 };
 
-async function latestOtp(since: number): Promise<string> {
+async function latestOtp(since: number, phone = PHONE): Promise<string> {
   for (let i = 0; i < 30; i++) {
-    const r = await fetch(`${MOCK}/sms/messages?to=${encodeURIComponent(PHONE)}`);
+    const r = await fetch(`${MOCK}/sms/messages?to=${encodeURIComponent(phone)}`);
     const j = (await r.json()) as { items: { at: string; text: string }[] };
     const m = j.items.find((it) => new Date(it.at).getTime() >= since)?.text.match(/\b(\d{6})\b/);
     if (m) return m[1];
@@ -50,4 +50,28 @@ test('tourist logs in with OTP and sees a ticket QR', async ({ page }) => {
   await expect(card).toBeVisible({ timeout: 30_000 });
   await expect(card).toHaveAttribute('aria-label', /ใช้แล้ว|ยังไม่ใช้/);
   expect(external, 'no requests to external hosts').toEqual([]);
+});
+
+test('guest (OTP only, no membership) buys a ticket in-app and sees its QR', async ({ page }) => {
+  const phone = `+668999${String(Date.now()).slice(-5)}`; // fresh guest phone every run
+  await page.goto('/');
+  await page.locator('flt-semantics[flt-tappable]').first().waitFor({ timeout: 60_000 });
+  await tap(page, 'จองบัตร');
+  const plus = page.locator('flt-semantics[aria-label="+"], flt-semantics[role=button]:has-text("+")').first();
+  await plus.click({ timeout: 20_000 });
+  await tap(page, 'ซื้อบัตร');
+
+  await type(page, 'เบอร์โทรศัพท์', '0' + phone.slice(3));
+  const since = Date.now() - 2000;
+  await tap(page, 'ขอรหัส OTP');
+  await type(page, 'รหัส OTP', await latestOtp(since, phone));
+  await tap(page, 'ยืนยัน');
+
+  await type(page, 'ชื่อ-นามสกุล', 'Li Wei');
+  await type(page, '4 หลักท้าย', '1234');
+  await tap(page, 'ชำระเงิน');
+
+  await page.getByRole('button', { name: 'จ่ายสำเร็จ', exact: true }).click({ timeout: 30_000 });
+  const card = page.locator('flt-semantics[role=img][aria-label*="QR ****"]').first();
+  await expect(card).toBeVisible({ timeout: 60_000 });
 });

@@ -25,12 +25,14 @@ class Api {
   final String base;
 
   Future<dynamic> get(String path, {bool auth = false}) => send('GET', path, auth: auth);
-  Future<dynamic> post(String path, Object body, {bool auth = false}) => send('POST', path, body: body, auth: auth);
+  Future<dynamic> post(String path, Object body, {bool auth = false, Map<String, String>? headers}) =>
+      send('POST', path, body: body, auth: auth, headers: headers);
 
-  Future<dynamic> send(String method, String path, {Object? body, bool auth = false}) async {
-    var r = await _do(method, path, body, auth);
+  Future<dynamic> send(String method, String path,
+      {Object? body, bool auth = false, Map<String, String>? headers}) async {
+    var r = await _do(method, path, body, auth, headers);
     if (auth && r.statusCode == 401 && await _refresh()) {
-      r = await _do(method, path, body, auth);
+      r = await _do(method, path, body, auth, headers);
     }
     if (auth && r.statusCode == 401) await session.logout();
     if (r.statusCode < 200 || r.statusCode >= 300) {
@@ -44,8 +46,10 @@ class Api {
     return jsonDecode(utf8.decode(r.bodyBytes));
   }
 
-  Future<http.Response> _do(String method, String path, Object? body, bool auth) async {
+  Future<http.Response> _do(String method, String path, Object? body, bool auth,
+      [Map<String, String>? extra]) async {
     final h = <String, String>{
+      ...?extra,
       'X-Device-Id': session.deviceId,
       'Accept-Language': session.lang,
       if (body != null) 'Content-Type': 'application/json',

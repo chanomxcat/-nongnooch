@@ -104,7 +104,10 @@ class Shell extends StatefulWidget {
 }
 
 class _ShellState extends State<Shell> {
-  int _tab = 0;
+  // KBank returns to `/?paid=<orderId>`: open Book, which polls the order then jumps to Tickets.
+  final _paid = Uri.base.queryParameters['paid'];
+  late int _tab = _paid == null ? 0 : 2;
+  int _ticketsGen = 0;
 
   void go(int i) => setState(() => _tab = i);
 
@@ -114,8 +117,8 @@ class _ShellState extends State<Shell> {
     final pages = [
       HomeScreen(onTab: go),
       const ExploreScreen(),
-      const BookScreen(),
-      const TicketsScreen(),
+      BookScreen(paidOrder: _paid, onPaid: () => setState(() { _ticketsGen++; _tab = 3; })),
+      TicketsScreen(key: ValueKey(_ticketsGen)),
       const MoreScreen(),
     ];
     return Scaffold(

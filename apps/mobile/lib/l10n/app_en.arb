@@ -79,5 +79,21 @@
         "type": "int"
       }
     }
+  },
+  "bookThaiWeb": "Thai price: sign up as a member on the website",
+  "bookHolderN": "Ticket {n}",
+  "bookHolderName": "Full name",
+  "bookHolderNationality": "Nationality",
+  "bookHolderIdLast4": "Last 4 digits of ID / passport",
+  "bookHolderInvalid": "Please fill in a name and 4 ID digits for every ticket",
+  "bookPay": "Pay",
+  "bookPaying": "Confirming your payment...",
+  "bookPayFailed": "Payment was not completed. Please try again.",
+  "@bookHolderN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
   }
 }

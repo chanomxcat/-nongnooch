@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// App-wide state persisted in local storage: device id, language and tokens.
 class Session extends ChangeNotifier {
   Session(this.prefs) {
-    deviceId = prefs.getString(_kDevice) ?? _uuidV4();
+    deviceId = prefs.getString(_kDevice) ?? uuidV4();
     prefs.setString(_kDevice, deviceId);
   }
 
@@ -41,7 +41,7 @@ class Session extends ChangeNotifier {
     notifyListeners();
   }
 
-  static String _uuidV4() {
+  static String uuidV4() {
     final r = Random.secure();
     final b = List<int>.generate(16, (_) => r.nextInt(256));
     b[6] = (b[6] & 0x0f) | 0x40;

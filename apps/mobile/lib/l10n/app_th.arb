@@ -58,5 +58,14 @@
   "pointsWelcome": "โบนัสต้อนรับ",
   "pointsPurchase": "ซื้อบัตร",
   "pointsInvite": "ชวนเพื่อน",
-  "homeTicketCount": "{count} ใบ"
+  "homeTicketCount": "{count} ใบ",
+  "bookThaiWeb": "ราคาคนไทย: สมัครสมาชิกบนเว็บ",
+  "bookHolderN": "บัตรใบที่ {n}",
+  "bookHolderName": "ชื่อ-นามสกุล",
+  "bookHolderNationality": "สัญชาติ",
+  "bookHolderIdLast4": "เลขบัตร/พาสปอร์ต 4 หลักท้าย",
+  "bookHolderInvalid": "กรุณากรอกชื่อและเลข 4 หลักท้ายให้ครบทุกใบ",
+  "bookPay": "ชำระเงิน",
+  "bookPaying": "กำลังตรวจสอบการชำระเงิน...",
+  "bookPayFailed": "การชำระเงินไม่สำเร็จ กรุณาลองอีกครั้ง"
 }
