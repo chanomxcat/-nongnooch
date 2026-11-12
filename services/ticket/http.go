@@ -45,11 +45,12 @@ func (a *API) Register(mux *http.ServeMux) {
 
 func (a *API) mine(w http.ResponseWriter, r *http.Request) {
 	p := authn.From(r.Context())
-	if p.MemberID == "" {
+	buyer := p.BuyerID()
+	if buyer == "" {
 		errJSON(w, http.StatusForbidden, "member_required")
 		return
 	}
-	items, err := a.Svc.ByMember(r.Context(), p.MemberID)
+	items, err := a.Svc.ByMember(r.Context(), buyer)
 	if err != nil {
 		a.internal(w, r, err)
 		return

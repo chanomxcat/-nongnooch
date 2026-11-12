@@ -76,6 +76,7 @@ func (a *API) availability(w http.ResponseWriter, r *http.Request) {
 
 func memberOf(w http.ResponseWriter, r *http.Request) (authn.Principal, bool) {
 	p := authn.From(r.Context())
+	p.MemberID = p.BuyerID() // guests (OTP-verified, no membership) may buy at the general price
 	if p.MemberID == "" {
 		write(w, fail(http.StatusForbidden, "member_required"))
 		return p, false

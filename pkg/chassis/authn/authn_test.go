@@ -31,7 +31,10 @@ func TestRolesTrimAndDropEmpty(t *testing.T) {
 
 func do(mw func(http.Handler) http.Handler, h http.Header) *httptest.ResponseRecorder {
 	var sub string
-	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { sub = authn.From(r.Context()).Sub; w.Header().Set("X-Sub", sub) })
+	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		sub = authn.From(r.Context()).Sub
+		w.Header().Set("X-Sub", sub)
+	})
 	r := httptest.NewRequest("GET", "/", nil)
 	for k, v := range h {
 		r.Header[k] = v

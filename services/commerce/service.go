@@ -14,6 +14,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
 
+	"nongnooch/platform/pkg/chassis/authn"
 	"nongnooch/platform/pkg/chassis/events"
 	"nongnooch/platform/pkg/chassis/outbox"
 )
@@ -198,6 +199,9 @@ func (s *Service) CreateOrder(ctx context.Context, tx *sql.Tx, memberID, lang st
 		if it.Holder.CompanionID != "" {
 			if it.Holder.CompanionID != "me" {
 				return fail(http.StatusUnprocessableEntity, "holder_not_found"), nil
+			}
+			if authn.IsGuestBuyer(memberID) {
+				return fail(http.StatusUnprocessableEntity, "member_required"), nil
 			}
 			if me == nil {
 				h, err := s.Member.GetCompanion(ctx, memberID, "me")

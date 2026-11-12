@@ -4,6 +4,8 @@ package authn
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"net/http"
 	"slices"
@@ -26,10 +28,27 @@ var IdentityHeaders = []string{HeaderUserType, HeaderUserSub, HeaderMemberID, He
 
 // Principal is the caller. Type is "user", "staff" or "" (anonymous).
 type Principal struct {
-	Type, Sub, MemberID string
-	Roles               []string
+	Type, Sub, MemberID                 string
+	Roles                               []string
 	Lang, ClientIP, DeviceID, RequestID string
 }
+
+// BuyerID owns orders and tickets: the member id, or for an OTP-verified guest (user token
+// without mid) "g-" + 34 hex of sha256(sub). Fits CHAR(36) and keeps the contact out of ids.
+// ponytail: a member whose mid was missing at login (member down) buys as a guest until refresh.
+func (p Principal) BuyerID() string {
+	if p.MemberID != "" {
+		return p.MemberID
+	}
+	if p.Type != "user" || p.Sub == "" {
+		return ""
+	}
+	sum := sha256.Sum256([]byte(p.Sub))
+	return "g-" + hex.EncodeToString(sum[:])[:34]
+}
+
+// IsGuestBuyer reports whether a BuyerID belongs to a guest (member ids are UUIDs).
+func IsGuestBuyer(id string) bool { return strings.HasPrefix(id, "g-") }
 
 func (p Principal) HasAnyRole(roles ...string) bool {
 	for _, r := range roles {
