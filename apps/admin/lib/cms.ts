@@ -33,7 +33,7 @@ const ERR_TH: Record<string, string> = {
   unknown_type: 'ไม่รู้จักประเภทเนื้อหานี้',
   not_found: 'ไม่พบรายการ',
   upstream_unavailable: 'ระบบเนื้อหาไม่ตอบสนอง ลองใหม่อีกครั้ง',
-  unauthenticated: 'กรุณาเข้าสู่ระบบใหม่',
+  unauthenticated: 'เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่ในแท็บใหม่ (http://localhost:3001/login) แล้วกดอีกครั้ง',
 };
 
 export function errText(r: { error: string; fields?: string[] }) {
@@ -49,10 +49,8 @@ export async function cms<T>(method: 'GET' | 'POST', path: string, body?: unknow
       headers: { 'X-Requested-With': 'nn-web', ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
-    if (r.status === 401) {
-      window.location.assign(`/login?next=${encodeURIComponent(window.location.pathname)}`);
-      return { ok: false, status: 401, error: 'unauthenticated', message: '' };
-    }
+    // Staff tokens last 15 min and there is no refresh: never navigate away, so typed edits stay on the page.
+    if (r.status === 401) return { ok: false, status: 401, error: 'unauthenticated', message: '' };
     const j = await r.json().catch(() => ({}));
     if (!r.ok) return { ok: false, status: r.status, error: j.error ?? 'error', message: j.message ?? '', fields: j.fields };
     return { ok: true, data: j as T };

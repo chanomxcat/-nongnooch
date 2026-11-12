@@ -15,6 +15,7 @@ The CMS and App teams build in parallel. Both follow this file.
 - `texts` is already resolved to `lang`, one field at a time. A field with no text in that language falls back to `en`, then `th`.
 - An unknown `lang` is treated as `en`. An unknown `type` returns `400 {"error":"unknown_type"}`.
 - `imageUrl` is either a path relative to the website (`http://localhost:3000`) or an absolute URL.
+- Optional attrs (`ctaHref`, `imageUrl`) may be absent. URL attrs are always a site path starting with `/` (never `//`) or an `https://` URL; the API rejects anything else.
 
 | type | attrs | texts (translatable) |
 |---|---|---|
