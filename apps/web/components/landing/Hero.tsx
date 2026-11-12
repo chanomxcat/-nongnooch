@@ -40,7 +40,8 @@ export function Hero({ slides }: { slides?: ContentItem[] | null }) {
   const headTitle = head?.texts.title || t('hero.title');
   const headSub = head ? head.texts.subtitle ?? '' : t('hero.subtitle');
   const href = str(head?.attrs.ctaHref) || '/checkout';
-  const ctaHref = href.startsWith('/') ? `/${locale}${href}` : href;
+  // The API only accepts "/path" or https URLs; guard again so a bad value can never become a javascript: link.
+  const ctaHref = href.startsWith('/') && !href.startsWith('//') ? `/${locale}${href}` : href.startsWith('https://') ? href : `/${locale}/checkout`;
 
   // Motion F: arrows move one card; the track itself scrolls / snaps (drag & swipe on touch).
   function go(i: number) {

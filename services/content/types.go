@@ -3,6 +3,7 @@ package main
 import (
 	"regexp"
 	"sort"
+	"strings"
 )
 
 // Langs are the site languages; TH and EN are required on submit.
@@ -68,7 +69,7 @@ func cleanAttrs(def TypeDef, in map[string]any) (map[string]any, bool) {
 			out[f.Key] = int(n)
 		case KindString:
 			s, ok := v.(string)
-			if !ok {
+			if !ok || (s != "" && !safeURL(s)) {
 				return nil, false
 			}
 			if s != "" {
@@ -92,6 +93,11 @@ func cleanAttrs(def TypeDef, in map[string]any) (map[string]any, bool) {
 		}
 	}
 	return out, true
+}
+
+// safeURL allows site-relative paths ("/x", not "//host") and https URLs only (string attrs are imageUrl/ctaHref).
+func safeURL(s string) bool {
+	return (strings.HasPrefix(s, "/") && !strings.HasPrefix(s, "//") && !strings.HasPrefix(s, "/\\")) || strings.HasPrefix(s, "https://")
 }
 
 // cleanTexts keeps only known languages / fields with non-empty values.

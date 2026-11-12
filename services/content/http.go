@@ -54,23 +54,24 @@ func decode(w http.ResponseWriter, r *http.Request, v any) bool {
 func (a *API) Register(mux *http.ServeMux) {
 	staff := authn.Require("staff")
 	edit := authn.RequireRole("editor", "admin")
+	read := authn.RequireRole("editor", "approver", "admin", "viewer")
 	h := func(fn http.HandlerFunc) http.Handler { return a.names(fn) }
 
 	mux.HandleFunc("GET /public/items", a.publicItems)
 	mux.HandleFunc("GET /public/preview/{token}", a.publicPreview)
 
-	mux.Handle("GET /admin/types", staff(h(a.types)))
-	mux.Handle("GET /admin/items", staff(h(a.listItems)))
-	mux.Handle("GET /admin/items/{id}", staff(h(a.getItem)))
+	mux.Handle("GET /admin/types", read(h(a.types)))
+	mux.Handle("GET /admin/items", read(h(a.listItems)))
+	mux.Handle("GET /admin/items/{id}", read(h(a.getItem)))
 	mux.Handle("POST /admin/items", edit(h(a.createItem)))
 	mux.Handle("POST /admin/items/{id}/draft", edit(h(a.saveDraft)))
 	mux.Handle("POST /admin/items/{id}/preview", edit(h(a.preview)))
 	mux.Handle("POST /admin/items/{id}/submit", edit(h(a.submit)))
-	mux.Handle("GET /admin/approvals", staff(h(a.approvals)))
+	mux.Handle("GET /admin/approvals", read(h(a.approvals)))
 	// Decide checks four-eyes first, then the approver/admin role.
 	mux.Handle("POST /admin/approvals/{id}/approve", staff(h(a.approve)))
 	mux.Handle("POST /admin/approvals/{id}/reject", staff(h(a.reject)))
-	mux.Handle("GET /admin/audit", staff(h(a.audit)))
+	mux.Handle("GET /admin/audit", read(h(a.audit)))
 	mux.HandleFunc("POST /internal/seed", a.seed)
 }
 
