@@ -1,0 +1,9 @@
+{
+  "name": "Nong Nooch",
+  "short_name": "Nong Nooch",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#00271C",
+  "theme_color": "#074536",
+  "icons": []
+}

@@ -1,0 +1,29 @@
+name: nongnooch_app
+description: Nong Nooch Tourist App (demo slice, Flutter web).
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  http: ^1.2.2
+  shared_preferences: ^2.3.2
+  qr_flutter: ^4.1.0
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/images/
