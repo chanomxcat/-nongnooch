@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { canCms } from '@/lib/cms';
 
 export default function Nav({ name, roles }: { name: string; roles: string[] }) {
   const path = usePathname();
-  const cur = (p: string) => (path === p ? ('page' as const) : undefined);
+  const cur = (p: string) => (path === p || path.startsWith(`${p}/`) ? ('page' as const) : undefined);
 
   async function logout() {
     await fetch('/bff/logout', { method: 'POST', headers: { 'X-Requested-With': 'nn-web' } }).catch(() => null);
@@ -26,6 +27,19 @@ export default function Nav({ name, roles }: { name: string; roles: string[] }) 
           <Link href="/gate" aria-current={cur('/gate')}>
             Gate
           </Link>
+          {canCms(roles) ? (
+            <>
+              <Link href="/content" aria-current={cur('/content')}>
+                เนื้อหา
+              </Link>
+              <Link href="/approvals" aria-current={cur('/approvals')}>
+                รออนุมัติ
+              </Link>
+              <Link href="/audit" aria-current={cur('/audit')}>
+                Audit log
+              </Link>
+            </>
+          ) : null}
         </nav>
         <div className="who">
           <div className="who-t">

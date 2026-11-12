@@ -105,6 +105,8 @@ describe('bff upstream path', () => {
     expect(upstreamPath('commerce', ['admin', 'stats', 'today'])).toEqual({ ok: true, path: '/api/commerce/admin/stats/today' });
     expect(upstreamPath('identity', ['auth', 'staff', 'login'])).toEqual({ ok: false, status: 404 });
     expect(upstreamPath('notify', ['x'])).toEqual({ ok: false, status: 404 });
+    expect(upstreamPath('content', ['admin', 'items', 'abc', 'draft'])).toEqual({ ok: true, path: '/api/content/admin/items/abc/draft' });
+    expect(upstreamPath('content', ['internal', 'seed'])).toEqual({ ok: false, status: 404 });
     expect(upstreamPath('member', ['InTeRnAl', 'seed'])).toEqual({ ok: false, status: 404 });
   });
   it.each([

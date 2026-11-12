@@ -1,5 +1,5 @@
 /** Services the browser may reach through the BFF. Login/logout have their own routes. */
-export const BFF_SERVICES = new Set(['member', 'commerce', 'ticket']);
+export const BFF_SERVICES = new Set(['member', 'commerce', 'ticket', 'content']);
 
 export type PathResult = { ok: true; path: string } | { ok: false; status: 400 | 404 };
 
