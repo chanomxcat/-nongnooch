@@ -37,6 +37,8 @@ make demo-reset CONFIRM=yes
 | ระบบเจ้าหน้าที่ (Gate + Dashboard) | http://localhost:3001 (`/gate`, `/dashboard`) |
 | บัญชีประตู | `gate@demo.nongnooch.local` / `Demo1234!` |
 | บัญชีผู้ดูแล | `admin@demo.nongnooch.local` / `Demo1234!` |
+| CMS ผู้แก้ / ผู้อนุมัติ | `editor@demo.nongnooch.local` / `approver@demo.nongnooch.local` · `Demo1234!` |
+| Tourist App (Flutter web) | http://localhost:3002 |
 
 **ข้อมูลสำหรับสมัครสด (ยังไม่มีในระบบหลัง reset)**
 
@@ -132,3 +134,7 @@ make demo-reset CONFIRM=yes
 | อยากคืนหัวข้อเดิม | editor แก้กลับเป็น `สวนสวยระดับโลก` / `Beautiful Garden` (JA `美しい庭園`) → ส่งอนุมัติ → approver อนุมัติ |
 
 **ข้อมูลจำลอง (CMS):** ข้อความหน้าแรก, รอบการแสดง และ FAQ เป็นตัวอย่างจาก seed (TH+EN ครบ ภาษาอื่นบางส่วน) · ไม่มี CDN จริง หลังอนุมัติ service แค่เขียน log "cdn purge (log mode)" · เว็บดึงเนื้อหาแบบไม่แคชเพื่อให้เห็นผลทันที
+
+## 7. Tourist App (ประมาณ 5 นาที)
+
+เปิด http://localhost:3002 ใน Chrome (แอปแสดงในกรอบมือถือให้เอง) ขั้นตอนและทางแก้อยู่ใน [demo-script-app.md](demo-script-app.md)
